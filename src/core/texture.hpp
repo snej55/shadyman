@@ -54,7 +54,7 @@ public:
     }
 
     // load texture from surface pixels
-    bool loadFromPixels(SDL_Renderer *renderer)
+    bool loadFromPixels(SDL_Renderer* renderer)
     {
         if (m_surfacePixels == nullptr)
         {
@@ -75,7 +75,7 @@ public:
     }
 
     // render font to texture
-    bool loadFromRenderedText(const char *text, const SDL_Color textColor, TTF_Font *font, SDL_Renderer *renderer)
+    bool loadFromRenderedText(const char* text, const SDL_Color textColor, TTF_Font* font, SDL_Renderer* renderer)
     {
         free();
 
