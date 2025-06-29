@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15...3.31)
 
-project(lawn-mower-simulator VERSION 1.0
+project(ShadyMan VERSION 1.0
                              LANGUAGES CXX)
 
 set(CMAKE_CPP_COMPILER g++)
