@@ -1,3 +1,3 @@
 ## Shady Man
 
-Game made from scratch with C++ and SDL2.
+Game for SoM game jam.

@@ -9,7 +9,7 @@
 void Game::init()
 {
     // create window
-    InitWindow(CST::SCR_WIDTH, CST::SCR_HEIGHT, CST::WIN_NAME.c_str());
+    InitWindow(CST::SCR_WIDTH, CST::SCR_HEIGHT, CST::WIN_NAME);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     SetTargetFPS(60);
