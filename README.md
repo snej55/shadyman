@@ -1,3 +1,3 @@
-## SDL2 Basic Template
+## Shady Man
 
-This is a basic starter template for a project involving SDL2, and supports basic texture loading and window management.
+Game made from scratch with C++ and SDL2.
