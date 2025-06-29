@@ -149,6 +149,13 @@ public:
                     m_height = event.window.data2 / 3;
                     SDL_RenderPresent(m_renderer);
                 }
+                else if (event.type == SDL_KEYDOWN)
+                {
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        running = false;
+                    }
+                }
             }
 
             SDL_GetWindowPosition(m_window, &m_windowX, &m_windowY);
