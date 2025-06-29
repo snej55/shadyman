@@ -175,6 +175,7 @@ public:
 
             SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_NONE);
 
+            // render screen texture
             SDL_SetRenderTarget(m_renderer, nullptr);
             m_screen.renderClean(0, 0, m_renderer, 3);
 
