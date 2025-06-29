@@ -13,7 +13,6 @@ set(SOURCES main.cpp src/constants.hpp src/core/util.hpp
         src/core/vec2.hpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-#link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 add_executable(${BIN_NAME} ${SOURCES})
 

@@ -47,7 +47,7 @@ public:
 
     bool init()
     {
-        std::cout << "GAME::INITIALIZING";
+        std::cout << "GAME::INITIALIZING...\n";
 
         // ------------- INITIALIZE SDL & Subsystems ------------- //
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
