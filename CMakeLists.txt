@@ -6,7 +6,7 @@ set(CMAKE_CPP_COMPILER g++)
 
 set(BIN_NAME main)
 
-set(SOURCES main.cpp)
+set(SOURCES main.cpp src/game.hpp src/constants.hpp src/game.cpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
