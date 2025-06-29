@@ -3,7 +3,7 @@
 
 #define SDL_MAIN_HANDLED
 
-#include "src/app.h"
+#include "src/app.hpp"
 
 int main(int argc, char** argv)
 {

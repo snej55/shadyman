@@ -13,7 +13,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "./constants.hpp"
+#include "constants.hpp"
+#include "core/texture.hpp"
 
 class App
 {
@@ -102,6 +103,11 @@ public:
     bool loadMedia()
     {
         std::cout << "GAME::LOADING...\n";
+        if (!m_screen.createBlank(m_width, m_height, m_renderer, SDL_TEXTUREACCESS_TARGET))
+        {
+            std::cout << "Failed to create blank texture for screen!\n";
+            return false;
+        }
         std::cout << "GAME::LOADING::OK!" << std::endl;
         return true;
     }
@@ -160,11 +166,17 @@ public:
 
             SDL_GetWindowPosition(m_window, &m_windowX, &m_windowY);
 
+            // render to screen texture
+            m_screen.setAsRenderTarget(m_renderer);
+
             // clear screen
             SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
             SDL_RenderClear(m_renderer);
 
             SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_NONE);
+
+            SDL_SetRenderTarget(m_renderer, nullptr);
+            m_screen.renderClean(0, 0, m_renderer, 3);
 
             SDL_RenderPresent(m_renderer);
 
@@ -204,6 +216,7 @@ public:
 private:
     SDL_Window* m_window{nullptr};
     SDL_Renderer* m_renderer{nullptr};
+    Texture m_screen{};
 
     bool m_closed{false};
 

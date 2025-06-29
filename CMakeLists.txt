@@ -8,8 +8,8 @@ set(CMAKE_CPP_COMPILER g++)
 set(BIN_NAME main)
 
 set(SOURCES main.cpp src/constants.hpp src/core/util.hpp
-        src/app.h
-        src/core/texture.h
+        src/app.hpp
+        src/core/texture.hpp
         src/core/vec2.hpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
