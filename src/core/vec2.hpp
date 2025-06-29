@@ -30,7 +30,7 @@ vec2<T> operator-(vec2<T> vec_0, vec2<T> vec_1) {
 
 template <typename T>
 std::ostream& operator<< (std::ostream& out, const vec2<T> vec) {
-    out << "vec2(" << vec.x << ", " << vec.y << ")";
+    out << "vec2{" << vec.x << ", " << vec.y << "}";
     return out;
 }
 
