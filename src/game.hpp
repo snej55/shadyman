@@ -11,11 +11,31 @@ public:
     Game() = default;
     ~Game() = default;
 
+    // core functions
     void init();
+
+    // update components
+    void update();
 
     void run();
 
     void close();
+    
+    // other stuff
+
+    // check if screen has been resized
+    void checkScreenResize();
+    // update render buffer
+    void updateRenderBuffer(int width, int height);
+
+private:
+    // render buffer
+    RenderTexture2D m_targetBuffer{};
+    Rectangle m_srcRect{};
+    Rectangle m_destRect{};
+
+    int m_width{};
+    int m_height{};
 };
 
 #endif
