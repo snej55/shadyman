@@ -1,15 +1,18 @@
-#include <iostream>
-#include <cstdlib>
+#include "raylib.h"
 
-#define SDL_MAIN_HANDLED
-
-#include "src/app.hpp"
-
-int main(int argc, char** argv)
+int main()
 {
-    if (App app{}; app.start() < 0)
+    InitWindow(800, 450, "raylib [core] example - basic window");
+
+    while (!WindowShouldClose())
     {
-        return EXIT_FAILURE;
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        EndDrawing();
     }
-    return EXIT_SUCCESS;
+
+    CloseWindow();
+
+    return 0;
 }

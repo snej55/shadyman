@@ -1,20 +1,16 @@
 cmake_minimum_required(VERSION 3.15...3.31)
 
-project(ShadyMan VERSION 1.0
-                             LANGUAGES CXX)
+project(ShadyMan VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CPP_COMPILER g++)
 
 set(BIN_NAME main)
 
-set(SOURCES main.cpp src/constants.hpp src/core/util.hpp
-        src/app.hpp
-        src/core/texture.hpp
-        src/core/vec2.hpp)
+set(SOURCES main.cpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(${BIN_NAME} ${SOURCES})
 
-set(SDL2_LIBRARIES SDL2main SDL2 SDL2_image SDL2_mixer SDL2_ttf)
-target_link_libraries(${BIN_NAME} PUBLIC ${SDL2_LIBRARIES})
+set(LIBRARIES raylib GL m pthread dl rt)
+target_link_libraries(${BIN_NAME} PUBLIC ${LIBRARIES})
