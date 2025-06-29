@@ -22,9 +22,9 @@ void Game::init()
 
 void Game::update()
 {
+    ClearBackground(BLACK);
     checkScreenResize();
-    m_width = GetScreenWidth();
-    m_height = GetScreenHeight();
+    drawFPS();
 }
 
 void Game::run()
@@ -36,18 +36,8 @@ void Game::run()
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
         
-        ClearBackground(RED);
-        
-        // update components
+        // update components and do rendering stuff
         update();
-        
-        float frameTime {GetFrameTime() * 1000.f};
-        std::stringstream ss{};
-        ss << "Frame time: " << frameTime << " ms";
-        DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
-        ss.str("");
-        ss << "Win. Dimensions: " << GetScreenWidth() << " * " << GetScreenHeight();
-        DrawText(ss.str().c_str(), 5, 16, 10, WHITE);
         
         // end rendering to screen buffer
         EndTextureMode();
@@ -58,6 +48,7 @@ void Game::run()
             m_srcRect,
             m_destRect, 
             Vector2{0, 0}, 0, WHITE);  
+
         EndDrawing();
     }
 }
@@ -78,6 +69,8 @@ void Game::checkScreenResize()
     {
         updateRenderBuffer(GetScreenWidth(), GetScreenHeight());
     }
+    m_width = GetScreenWidth();
+    m_height = GetScreenHeight();
 }
 
 void Game::updateRenderBuffer(const int width, const int height)
@@ -88,4 +81,15 @@ void Game::updateRenderBuffer(const int width, const int height)
     m_destRect = {-CST::SCR_VRATIO, -CST::SCR_VRATIO, GetScreenWidth() + (CST::SCR_VRATIO * 2), GetScreenHeight() + (CST::SCR_VRATIO * 2)};
 
     std::cout << "Resized render buffer to: " << width << " * " << height << '\n';
+}
+
+void Game::drawFPS()
+{
+    float frameTime {GetFrameTime() * 1000.f};
+    std::stringstream ss{};
+    ss << "Frame time: " << frameTime << " ms";
+    DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
+    ss.str("");
+    ss << "Win. Dimensions: " << GetScreenWidth() << " * " << GetScreenHeight();
+    DrawText(ss.str().c_str(), 5, 16, 10, WHITE);
 }

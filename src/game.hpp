@@ -28,6 +28,8 @@ public:
     // update render buffer
     void updateRenderBuffer(int width, int height);
 
+    void drawFPS();
+
 private:
     // render buffer
     RenderTexture2D m_targetBuffer{};
