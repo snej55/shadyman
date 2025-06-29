@@ -15,22 +15,28 @@
 
 #include "./constants.hpp"
 
-class App {
+class App
+{
 public:
     App() = default;
 
-    ~App() {
-        if (!m_closed) {
+    ~App()
+    {
+        if (!m_closed)
+        {
             close();
         }
     }
 
-    int start() {
-        if (!init()) {
+    int start()
+    {
+        if (!init())
+        {
             std::cerr << "GAME::ERROR Failed to initialize!" << std::endl;
             return -1;
         }
-        if (!loadMedia()) {
+        if (!loadMedia())
+        {
             std::cerr << "GAME::ERROR Failed to load media!" << std::endl;
             return -1;
         }
@@ -39,78 +45,75 @@ public:
         return 0;
     }
 
-    bool init() {
+    bool init()
+    {
         std::cout << "GAME::INITIALIZING";
 
         // ------------- INITIALIZE SDL & Subsystems ------------- //
-        if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-            std::cout << "..!\n";
+        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        {
             std::cout << "GAME::INIT::ERROR SDL_Init: " << SDL_GetError() << std::endl;
             return false;
         }
-        std::cout << ".";
 
         // initialize SDL_Image
-        int imgFlags {IMG_INIT_PNG};
-        if (!(IMG_Init(imgFlags) & imgFlags)) {
-            std::cout << ".!\n";
+        int imgFlags{IMG_INIT_PNG};
+        if (!(IMG_Init(imgFlags) & imgFlags))
+        {
             std::cout << "GAME::INIT::ERROR IMG_Init: " << IMG_GetError() << std::endl;
             return false;
         }
-        std::cout << ".";
 
         // initialize SDL_TTF
-        if (TTF_Init() == -1) {
-            std::cout << ".!\n";
+        if (TTF_Init() == -1)
+        {
             std::cout << "GAME::INIT::ERROR TTF_Init: " << TTF_GetError() << std::endl;
             return false;
         }
-        std::cout << ".";
 
-        if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
+        if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
         {
-            std::cout << "..!\n";
             std::cout << "GAME::INIT::ERROR Mix_OpenAudio: " << Mix_GetError() << std::endl;
             return false;
         }
-        std::cout << ".";
 
         // --------------- INITIALIZE SDL components -------------- //
 
-        _window = SDL_CreateWindow("Shady Man", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-        if (_window == nullptr) {
-            std::cout << "..!\n";
+        m_window = SDL_CreateWindow("Shady Man", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        if (m_window == nullptr)
+        {
             std::cout << "GAME::INIT::ERROR Failed to create SDL_Window! SDL_Error: " << SDL_GetError() << std::endl;
             return false;
         }
-        std::cout << ".";
 
-        m_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        if (m_renderer == nullptr) {
-            std::cout << "..!\n";
+        m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        if (m_renderer == nullptr)
+        {
             std::cout << "GAME::INIT::ERROR Failed to create SDL_Renderer! SDL_Error: " << SDL_GetError() << std::endl;
             return false;
         }
         SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
 
-        std::cout << ".\n";
         std::cout << "GAME::INIT::OK!" << std::endl;
         return true;
     }
 
     // load game assets
-    bool loadMedia() {
+    bool loadMedia()
+    {
         std::cout << "GAME::LOADING...\n";
         std::cout << "GAME::LOADING::OK!" << std::endl;
         return true;
     }
 
     // destroy renderer & window and quit SDL subsystems
-    void close() {
-        if (!m_closed) {
+    void close()
+    {
+        if (!m_closed)
+        {
             std::cout << "GAME::CLOSING...\n";
             SDL_DestroyRenderer(m_renderer);
-            SDL_DestroyWindow(_window);
+            SDL_DestroyWindow(m_window);
             TTF_Quit();
             IMG_Quit();
             Mix_Quit();
@@ -120,20 +123,26 @@ public:
         }
     }
 
-    void run() {
+    void run()
+    {
         SDL_Event event;
-        bool running {true};
+        bool running{true};
 
-        do {
-            while (SDL_PollEvent(&event) != 0) {
-                if (event.type == SDL_QUIT) {
+        do
+        {
+            while (SDL_PollEvent(&event) != 0)
+            {
+                if (event.type == SDL_QUIT)
+                {
                     running = false;
-                } else if (event.type == SDL_MOUSEMOTION)
+                }
+                else if (event.type == SDL_MOUSEMOTION)
                 {
                     SDL_GetGlobalMouseState(&m_mouseX, &m_mouseY);
                     m_mouseX -= m_windowX;
                     m_mouseY -= m_windowY;
-                } else if (event.type == SDL_WINDOWEVENT)
+                }
+                else if (event.type == SDL_WINDOWEVENT)
                 {
                     // handle window events
                     m_width = event.window.data1 / 3;
@@ -142,7 +151,7 @@ public:
                 }
             }
 
-            SDL_GetWindowPosition(_window, &m_windowX, &m_windowY);
+            SDL_GetWindowPosition(m_window, &m_windowX, &m_windowY);
 
             // clear screen
             SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, SDL_ALPHA_OPAQUE);
@@ -155,42 +164,48 @@ public:
         } while (running);
     }
 
-    [[nodiscard]] int getWidth() const {
+    [[nodiscard]] int getWidth() const
+    {
         return m_width;
     }
 
-    [[nodiscard]] int getHeight() const {
+    [[nodiscard]] int getHeight() const
+    {
         return m_height;
     }
 
-    [[nodiscard]] int getMouseX() const {
+    [[nodiscard]] int getMouseX() const
+    {
         return m_mouseX;
     }
 
-    [[nodiscard]] int getMouseY() const {
+    [[nodiscard]] int getMouseY() const
+    {
         return m_mouseY;
     }
 
-    [[nodiscard]] int getWindowX() const {
+    [[nodiscard]] int getWindowX() const
+    {
         return m_windowX;
     }
 
-    [[nodiscard]] int getWindowY() const {
+    [[nodiscard]] int getWindowY() const
+    {
         return m_windowY;
     }
 
 private:
-    SDL_Window* _window {nullptr};
-    SDL_Renderer* m_renderer {nullptr};
+    SDL_Window* m_window{nullptr};
+    SDL_Renderer* m_renderer{nullptr};
 
     bool m_closed{false};
 
-    int m_width {WINDOW_WIDTH};
-    int m_height {WINDOW_HEIGHT};
-    int m_mouseX {0};
-    int m_mouseY {0};
-    int m_windowX {0};
-    int m_windowY {0};
+    int m_width{WINDOW_WIDTH};
+    int m_height{WINDOW_HEIGHT};
+    int m_mouseX{0};
+    int m_mouseY{0};
+    int m_windowX{0};
+    int m_windowY{0};
 };
 
-#endif //APP_H
+#endif // APP_H
