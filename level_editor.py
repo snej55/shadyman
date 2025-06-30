@@ -1,10 +1,12 @@
 import pygame, sys, time, math
 
-SCR_WIDTH = 1000
-SCR_HEIGHT = 800
+SCR_WIDTH = 2000
+SCR_HEIGHT = 1000
 
 TILE_SIZE = 8
 CHUNK_SIZE = 9
+LEVEL_WIDTH = 20
+LEVEL_HEIGHT = 20
 
 class Editor:
     def __init__(self):
@@ -49,6 +51,10 @@ class Editor:
     def draw_grid(self):
         self.draw_tile_grid(self.scroll, [1, 1], (50, 50, 50))
         self.draw_tile_grid(self.scroll, [CHUNK_SIZE, CHUNK_SIZE], (100, 100, 255))
+        pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, -self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, -self.scroll.y), 1)
+        pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, -self.scroll.y), (-self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
+        pygame.draw.line(self.screen, (255, 255, 255), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, -self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
+        pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
     
     def run(self):
         while self.running:
