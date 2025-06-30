@@ -8,6 +8,8 @@ CHUNK_SIZE = 9
 LEVEL_WIDTH = 20
 LEVEL_HEIGHT = 20
 
+MAP = "0.json"
+
 class Editor:
     def __init__(self):
         self.dimensions = pygame.Vector2(SCR_WIDTH, SCR_HEIGHT)
@@ -27,17 +29,18 @@ class Editor:
         # flags
         self.running = True
 
+        # level data
+        self.tiles = {}
+
+        # assets
+        self.assets = {
+            "tiles/dirt": self.load_tileset(pygame.image.load("data/images/tiles/dust.png").convert())
+        }
+
     def close(self):
         self.running = False
         pygame.quit()
         sys.exit()
-
-    def update(self):
-        self.scroll.x += (int(self.controls['right']) - int(self.controls['left'])) * 5 * self.dt
-        self.scroll.y += (int(self.controls['down']) - int(self.controls['up'])) * 5 * self.dt
-
-        self.screen.fill((0, 0, 0))
-        self.draw_grid()
     
     def draw_tile_grid(self, scroll, size, color):
         tile_size = [TILE_SIZE * size[0], TILE_SIZE * size[1]]
@@ -56,6 +59,32 @@ class Editor:
         pygame.draw.line(self.screen, (255, 255, 255), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, -self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
         pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
     
+    def load_tileset(self, sheet):
+        tiles = []
+        for y in range(4):
+            for x in range(4):
+                tile_surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
+                tile_surf.blit(sheet, (-x * TILE_SIZE, -y * TILE_SIZE))
+                tile_surf.set_colorkey((0, 0, 0))
+                tiles.append(tile_surf)
+        return tiles
+
+    def load_sheet(self, sheet, tile_size):
+        tiles = []
+        for x in range(math.floor(sheet.get_width() / tile_size[0])):
+            tile_surf = pygame.Surface(tile_size)
+            tile_surf.blit(sheet, (-x * tile_size[0], 0))
+            tile_surf.set_colorkey((0, 0, 0))
+            tiles.append(tile_surf)
+        return tiles
+    
+    def update(self):
+        self.scroll.x += (int(self.controls['right']) - int(self.controls['left'])) * 5 * self.dt
+        self.scroll.y += (int(self.controls['down']) - int(self.controls['up'])) * 5 * self.dt
+
+        self.screen.fill((0, 0, 0))
+        self.draw_grid()
+
     def run(self):
         while self.running:
             for event in pygame.event.get():
