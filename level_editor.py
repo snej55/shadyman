@@ -3,7 +3,7 @@ import pygame, sys, time, math
 SCR_WIDTH = 2000
 SCR_HEIGHT = 1000
 
-TILE_SIZE = 8
+TILE_SIZE = 12
 CHUNK_SIZE = 9
 LEVEL_WIDTH = 20
 LEVEL_HEIGHT = 20
@@ -34,7 +34,8 @@ class Editor:
 
         # assets
         self.assets = {
-            "tiles/dirt": self.load_tileset(pygame.image.load("data/images/tiles/dust.png").convert())
+            "sand": self.load_tileset(pygame.image.load("data/images/tiles/sand.png").convert()),
+            "grass": self.load_tileset(pygame.image.load("data/images/tiles/grass.png").convert())
         }
 
     def close(self):
