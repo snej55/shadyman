@@ -42,6 +42,7 @@ class Editor:
         self.tile_map = {}
         self.off_grid = []
         self.load(MAP)
+        print(self.tile_map)
 
         # assets
         self.assets = {
@@ -74,13 +75,17 @@ class Editor:
     
     def load(self, path):
         try:
-            f = open(path, 'r')
+            f = open(f"data/maps/{path}", 'r')
             data = json.load(f)
             f.close()
             self.tile_map = {}
             self.off_grid = []
 
+            print(f"Loading level data from `{path}`")
+            print(data)
+
             for tile in data['level']['tiles']:
+                print("hi")
                 tile_loc = f"{tile['pos'][0]};{tile['pos'][1]}"
                 self.tile_map[tile_loc] = {'type': CONVERT_TYPES[tile['type']], 'variant': tile['variant']}
             self.off_grid.extend(data['level']['off_grid'])

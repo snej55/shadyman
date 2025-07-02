@@ -1,9 +1,9 @@
 {
     "level": {
         "tiles": [
-            
+            {"pos": [1, 1], "type": 1, "variant": 15}
         ],
-        "offgrid": [
+        "off_grid": [
             
         ]
     }
