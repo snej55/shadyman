@@ -108,6 +108,23 @@ class Editor:
                         tile_type = key
                 off_grid.append({'pos': tile['pos'], 'type': tile_type, 'variant': tile['variant']});
             json.dump({'level': {'tiles': tiles, 'off_grid': off_grid}}, f)
+    
+    def auto_tile(self):
+        for loc in self.tile_map:
+            tile = self.tile_map[loc]
+            aloc = ''
+            tile_pos = [int(i) * TILE_SIZE for i in loc.split(';')]
+            for shift in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
+                check_loc = str(math.floor(tile_pos[0] / TILE_SIZE) + shift[0]) + ';' + str(math.floor(tile_pos[1] / TILE_SIZE) + shift[1])
+                if check_loc in self.tile_map:
+                    if self.tile_map[check_loc]['type'] in AUTO_TILE_TYPES:
+                        aloc += '1'
+                    else:
+                        aloc += '0'
+                else:
+                    aloc += '0'
+            if tile['type'] in AUTO_TILE_TYPES:
+                tile['variant'] = AUTO_TILE_MAP[aloc] - 1
 
     def close(self):
         self.running = False
