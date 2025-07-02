@@ -29,7 +29,7 @@ class Editor:
         self.clock = pygame.time.Clock()
         # scroll
         self.scroll = pygame.Vector2(0, 0)
-        self.controls = {"right": False, "left": False, "up": False, "down": False}
+        self.controls = {"right": False, "left": False, "up": False, "down": False, "l_shift": False}
 
         # time step
         self.dt = 1
@@ -185,6 +185,13 @@ class Editor:
         self.draw_grid()
         self.draw_tiles()
 
+        mouse_pos = pygame.mouse.get_pos()
+        if self.grid:
+            mouse_pos = [math.floor((mouse_pos[0] / 2 + self.scroll.x) / TILE_SIZE), math.floor((mouse_pos[1] / 2 + self.scroll.y) / TILE_SIZE)]
+            self.screen.blit(self.select_surf, (mouse_pos[0] * TILE_SIZE - self.scroll.x, mouse_pos[1] * TILE_SIZE - self.scroll.y))
+            if not self.right_click:
+                self.screen.blit(self.assets[self.tile_list[self.tile_type]][self.tile_variant], (mouse_pos[0] * TILE_SIZE - self.scroll.x, mouse_pos[1] * TILE_SIZE - self.scroll.y))
+
     def run(self):
         while self.running:
             for event in pygame.event.get():
@@ -205,6 +212,8 @@ class Editor:
                         self.controls["up"] = True
                     if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         self.controls["down"] = True
+                    if event.key == pygame.K_LSHIFT:
+                        self.controls['l_shift'] = True
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.controls["right"] = False
@@ -214,6 +223,30 @@ class Editor:
                         self.controls["up"] = False
                     if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         self.controls["down"] = False
+                    if event.key == pygame.K_LSHIFT:
+                        self.controls['l_shift'] = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.click = True
+                    if event.button == 3:
+                        self.right_click = True
+                    if self.controls['l_shift']:
+                        if event.button == 4:
+                            self.tile_variant = (self.tile_variant - 1) % len(self.assets[self.tile_list[self.tile_type]])
+                        if event.button == 5:
+                            self.tile_variant = (self.tile_variant + 1) % len(self.assets[self.tile_list[self.tile_type]])
+                    else:
+                        if event.button == 4:
+                            self.tile_type = (self.tile_type - 1) % len(self.tile_list)
+                            self.tile_variant = 0
+                        if event.button == 5:
+                            self.tile_type = (self.tile_type + 1) % len(self.tile_list)
+                            self.tile_variant = 0
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1:
+                        self.click = False
+                    if event.button == 3:
+                        self.right_click = False
 
             self.update()
 
