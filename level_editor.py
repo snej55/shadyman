@@ -42,7 +42,6 @@ class Editor:
         self.tile_map = {}
         self.off_grid = []
         self.load(MAP)
-        print(self.tile_map)
 
         # assets
         self.assets = {
@@ -111,6 +110,7 @@ class Editor:
                         tile_type = key
                 off_grid.append({'pos': tile['pos'], 'type': tile_type, 'variant': tile['variant']});
             json.dump({'level': {'tiles': tiles, 'off_grid': off_grid}}, f)
+            print("Saved level data to `{path}`")
     
     def auto_tile(self):
         for loc in self.tile_map:
@@ -181,6 +181,26 @@ class Editor:
         self.scroll.x += (int(self.controls['right']) - int(self.controls['left'])) * 5 * self.dt
         self.scroll.y += (int(self.controls['down']) - int(self.controls['up'])) * 5 * self.dt
 
+        # add tiles
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos = [math.floor((mouse_pos[0] / 2 + self.scroll.x) / TILE_SIZE), math.floor((mouse_pos[1] / 2 + self.scroll.y) / TILE_SIZE)]
+
+        if self.click and self.grid:
+            if 0 <= mouse_pos[0] < LEVEL_WIDTH * CHUNK_SIZE and 0 <= mouse_pos[1] < LEVEL_HEIGHT * CHUNK_SIZE:
+                tile_loc = f"{mouse_pos[0]};{mouse_pos[1]}"
+                if tile_loc in self.tile_map:
+                    if self.tile_map[tile_loc]['type'] == self.tile_list[self.tile_type] and self.tile_map[tile_loc]['variant'] == self.tile_variant:
+                        pass
+                    else:
+                        self.tile_map[tile_loc] = {'type': self.tile_list[self.tile_type], 'variant': self.tile_variant}
+                else:
+                    self.tile_map[tile_loc] = {'type': self.tile_list[self.tile_type], 'variant': self.tile_variant}
+        if self.right_click and self.grid:
+            if 0 <= mouse_pos[0] < LEVEL_WIDTH * CHUNK_SIZE and 0 <= mouse_pos[1] < LEVEL_HEIGHT * CHUNK_SIZE:
+                tile_loc = f"{mouse_pos[0]};{mouse_pos[1]}"
+                if tile_loc in self.tile_map:
+                    del self.tile_map[tile_loc]
+        # ---------- Do drawing ---------- # 
         self.screen.fill((0, 0, 0))
         self.draw_grid()
         self.draw_tiles()
