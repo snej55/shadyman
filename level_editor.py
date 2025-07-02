@@ -1,4 +1,4 @@
-import pygame, sys, time, math
+import pygame, sys, time, math, json
 
 SCR_WIDTH = 2000
 SCR_HEIGHT = 1000
@@ -9,6 +9,15 @@ LEVEL_WIDTH = 20
 LEVEL_HEIGHT = 20
 
 MAP = "0.json"
+
+# saved levels store tile types as integers
+CONVERT_TYPES = {
+    0: 'grass',
+    1: 'sand'
+}
+AUTO_TILE_TYPES = {'grass', 'sand'}
+AUTO_TILE_MAP = {'0011': 1, '1011': 2, '1001': 3, '0001': 4, '0111': 5, '1111': 6, '1101': 7, '0101': 8, 
+                '0110': 9, '1110': 10, '1100': 11, '0100': 12, '0010': 13, '1010': 14, '1000': 15, '0000': 16}
 
 class Editor:
     def __init__(self):
@@ -30,13 +39,75 @@ class Editor:
         self.running = True
 
         # level data
-        self.tiles = {}
+        self.tile_map = {}
+        self.off_grid = []
+        self.load(MAP)
 
         # assets
         self.assets = {
             "sand": self.load_tileset(pygame.image.load("data/images/tiles/sand.png").convert()),
             "grass": self.load_tileset(pygame.image.load("data/images/tiles/grass.png").convert())
         }
+
+        # set colorkeys
+        for key in self.assets:
+            for surf in self.assets[key]:
+                surf.set_colorkey((0, 0, 0))
+        
+        self.click = False
+        self.right_click = False
+
+        self.select_surf = pygame.Surface((TILE_SIZE, TILE_SIZE))
+        self.select_surf.fill((255, 100, 0))
+        self.select_surf.set_alpha(100)
+
+        self.tile_list = list(self.assets)
+        self.tile_type = 0
+        self.tile_variant = 0
+
+        self.grid = True
+    
+    def create_new(self, path):
+        f = open(path, 'w')
+        json.dump({'level': {'tiles': [], 'off_grid': []}}, f)
+        f.close()
+    
+    def load(self, path):
+        try:
+            f = open(path, 'r')
+            data = json.load(f)
+            f.close()
+            self.tile_map = {}
+            self.off_grid = []
+
+            for tile in data['level']['tiles']:
+                tile_loc = f"{tile['pos'][0]};{tile['pos'][1]}"
+                self.tile_map[tile_loc] = {'type': CONVERT_TYPES[tile['type']], 'variant': tile['variant']}
+            self.off_grid.extend(data['level']['off_grid'])
+            for tile in self.off_grid:
+                tile['type'] = CONVERT_TYPES[tile['type']]
+
+        except FileNotFoundError:
+            self.create_new(path)
+            self.load(path)
+    
+    def save(self, path):
+        with open(path, 'w') as f:
+            tiles = []
+            off_grid = []
+            for loc in self.tile_map:
+                tile_type = 0
+                for key in CONVERT_TYPES:
+                    if self.tile_map[loc]['type'] == CONVERT_TYPES[key]:
+                        tile_type = key
+                tiles.append({'pos': [int(c) for c in loc.split(';')], 'type': tile_type, 'variant': self.tile_map[loc]['variant']})
+            for tile in self.off_grid:
+                tile_type = 0
+                for key in CONVERT_TYPES:
+                    if tile['type'] == CONVERT_TYPES[key]:
+                        tile_type = key
+                off_grid.append({'pos': tile['pos'], 'type': tile_type, 'variant': tile['variant']});
+            json.dump({'level': {'tiles': tiles, 'off_grid': off_grid}}, f)
 
     def close(self):
         self.running = False
