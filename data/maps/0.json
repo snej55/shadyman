@@ -1,10 +1,1 @@
-{
-    "level": {
-        "tiles": [
-            {"pos": [1, 1], "type": 1, "variant": 15}
-        ],
-        "off_grid": [
-            
-        ]
-    }
-}
+{"level": {"tiles": [{"pos": [1, 1], "type": 1, "variant": 15}], "off_grid": []}}

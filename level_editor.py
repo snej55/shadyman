@@ -8,7 +8,7 @@ CHUNK_SIZE = 9
 LEVEL_WIDTH = 20
 LEVEL_HEIGHT = 20
 
-MAP = "0.json"
+MAP = "data/maps/0.json"
 
 # saved levels store tile types as integers
 CONVERT_TYPES = {
@@ -75,17 +75,15 @@ class Editor:
     
     def load(self, path):
         try:
-            f = open(f"data/maps/{path}", 'r')
+            f = open(path, 'r')
             data = json.load(f)
             f.close()
             self.tile_map = {}
             self.off_grid = []
 
             print(f"Loading level data from `{path}`")
-            print(data)
 
             for tile in data['level']['tiles']:
-                print("hi")
                 tile_loc = f"{tile['pos'][0]};{tile['pos'][1]}"
                 self.tile_map[tile_loc] = {'type': CONVERT_TYPES[tile['type']], 'variant': tile['variant']}
             self.off_grid.extend(data['level']['off_grid'])
@@ -195,6 +193,10 @@ class Editor:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.close()
+                    if event.key == pygame.K_t:
+                        self.auto_tile()
+                    if event.key == pygame.K_o:
+                        self.save(MAP)
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.controls["right"] = True
                     if event.key == pygame.K_LEFT or event.key == pygame.K_a:
