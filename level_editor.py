@@ -200,6 +200,7 @@ class Editor:
                 tile_loc = f"{mouse_pos[0]};{mouse_pos[1]}"
                 if tile_loc in self.tile_map:
                     del self.tile_map[tile_loc]
+
         # ---------- Do drawing ---------- # 
         self.screen.fill((0, 0, 0))
         self.draw_grid()
