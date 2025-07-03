@@ -13,6 +13,7 @@ namespace CST
     inline constexpr int CHUNK_SIZE{8};
     inline constexpr int LEVEL_WIDTH{20};
     inline constexpr int LEVEL_HEIGHT{20};
+    inline constexpr int NUM_CHUNKS{LEVEL_WIDTH * LEVEL_HEIGHT};
 }
 
 #endif
