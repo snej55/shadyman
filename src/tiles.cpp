@@ -47,8 +47,15 @@ TileType World::getTileType(const int type)
 
 void World::loadFromFile(const char* path)
 {
-    std::ifstream f{path};
+    std::ifstream f;
+    f.open(path);
+    if (f.fail())
+    {
+        std::cout << "Failed to read from `" << path << "`!\n";
+        return;
+    }
     json data = json::parse(f);
+    std::cout << "Parsed json from `" << path << "`!\n";
 
     for (std::size_t i{0}; i < CST::NUM_CHUNKS; ++i)
     {

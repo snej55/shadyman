@@ -17,6 +17,8 @@ void Game::init()
     // load components
     updateRenderBuffer(CST::SCR_WIDTH, CST::SCR_HEIGHT);
 
+    m_world.loadFromFile(m_mapPath.c_str());
+
     std::cout << "Initialized!\n";
 }
 

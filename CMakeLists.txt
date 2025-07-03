@@ -14,3 +14,8 @@ add_executable(${BIN_NAME} ${SOURCES})
 
 set(LIBRARIES raylib GL m pthread dl rt)
 target_link_libraries(${BIN_NAME} PUBLIC ${LIBRARIES})
+
+add_custom_target(copy_assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
+)
+add_dependencies(${BIN_NAME} copy_assets)

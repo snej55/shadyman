@@ -4,6 +4,9 @@
 #include "raylib.h"
 
 #include "constants.hpp"
+#include "tiles.hpp"
+
+#include <string>
 
 class Game
 {
@@ -35,6 +38,11 @@ private:
     RenderTexture2D m_targetBuffer{};
     Rectangle m_srcRect{};
     Rectangle m_destRect{};
+
+    // components
+    World m_world{};
+
+    std::string m_mapPath{"data/maps/0.json"};
 
     int m_width{};
     int m_height{};
