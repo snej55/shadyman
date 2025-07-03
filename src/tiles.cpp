@@ -45,6 +45,30 @@ TileType World::getTileType(const int type)
     }
 }
 
+Texture2D* World::getTileTex(const Tile& tile, AssetManager* assets) const
+{
+    switch (tile.type)
+    {
+        case TileType::GRASS:
+        return assets->getTexture("grass");
+        case TileType::SAND:
+        return assets->getTexture("sand");
+        default:
+        return nullptr;
+    }
+}
+
+Rectangle World::getClipRect(const Tile& tile)
+{
+    Rectangle clip{(tile.variant % 4) * CST::TILE_SIZE, static_cast<int>((tile.variant - (tile.variant % 4)) / 4) * CST::TILE_SIZE, CST::TILE_SIZE, CST::TILE_SIZE};
+    return clip;
+}
+
+void World::renderChunk(const vec2<float>& scroll, AssetManager* assets)
+{
+    
+}
+
 void World::loadFromFile(const char* path)
 {
     std::ifstream f;

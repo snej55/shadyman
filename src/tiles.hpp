@@ -7,6 +7,7 @@ using json = nlohmann::json;
 
 #include "vec2.hpp"
 #include "constants.hpp"
+#include "assets.hpp"
 
 #include <vector>
 #include <cmath>
@@ -45,9 +46,15 @@ public:
     Tile* getTileAt(const float x, const float y);
 
     TileType getTileType(int type);
+    
+    Texture2D* getTileTex(const Tile& tile, AssetManager* assets) const;
+    
+    Rectangle getClipRect(const Tile& tile);
+
+    void renderChunk(const vec2<float>& scroll, AssetManager* assets);
 
     void loadFromFile(const char* path);
-
+    
 private:
     Chunk m_chunks[CST::NUM_CHUNKS];
 };

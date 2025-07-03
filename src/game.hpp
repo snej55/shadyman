@@ -52,6 +52,8 @@ private:
 
     int m_width{};
     int m_height{};
+
+    vec2<float> m_scroll{0.0f, 0.0f};
 };
 
 #endif
