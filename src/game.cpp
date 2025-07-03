@@ -18,6 +18,7 @@ void Game::init()
     updateRenderBuffer(CST::SCR_WIDTH, CST::SCR_HEIGHT);
 
     m_world.loadFromFile(m_mapPath.c_str());
+    m_assets.init();
 
     std::cout << "Initialized!\n";
 }
@@ -25,6 +26,13 @@ void Game::init()
 void Game::update()
 {
     ClearBackground(BLACK);
+
+    // ------ do rendering ------  //
+
+    DrawTexture(*m_assets.getTexture("sand"), 0, 0, WHITE);
+
+    // -------------------------- //
+
     checkScreenResize();
     drawFPS();
 }

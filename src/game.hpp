@@ -5,6 +5,7 @@
 
 #include "constants.hpp"
 #include "tiles.hpp"
+#include "assets.hpp"
 
 #include <string>
 
@@ -33,6 +34,10 @@ public:
 
     void drawFPS();
 
+    [[nodiscard]] World* getWorld() {return &m_world;}
+    [[nodiscard]] AssetManager* getAssets() {return &m_assets;}
+
+
 private:
     // render buffer
     RenderTexture2D m_targetBuffer{};
@@ -41,6 +46,7 @@ private:
 
     // components
     World m_world{};
+    AssetManager m_assets{};
 
     std::string m_mapPath{"data/maps/0.json"};
 

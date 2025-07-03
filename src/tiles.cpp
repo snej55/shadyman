@@ -49,7 +49,7 @@ void World::loadFromFile(const char* path)
 {
     std::ifstream f;
     f.open(path);
-    if (f.fail())
+    if (!f.is_open())
     {
         std::cout << "Failed to read from `" << path << "`!\n";
         return;
