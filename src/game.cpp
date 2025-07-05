@@ -25,7 +25,7 @@ void Game::init()
 
 void Game::update()
 {
-    ClearBackground(BLACK);
+    ClearBackground({37, 49, 94, 0xFF});
 
     // ------ do rendering ------  //
 

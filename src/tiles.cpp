@@ -70,7 +70,7 @@ void World::renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* ass
     {
         Rectangle clip {getClipRect(tile)};
         Texture2D* tex {getTileTex(tile, assets)};
-        DrawTexture(*tex, tile.pos.x * CST::TILE_SIZE - scroll.x, tile.pos.y * CST::TILE_SIZE - scroll.y, WHITE);
+        DrawTextureRec(*tex, clip, {static_cast<float>(tile.pos.x * CST::TILE_SIZE - scroll.x), static_cast<float>(tile.pos.y * CST::TILE_SIZE - scroll.y)}, WHITE);
     }
 }
 
