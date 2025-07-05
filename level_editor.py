@@ -13,7 +13,8 @@ MAP = "data/maps/0.json"
 # saved levels store tile types as integers
 CONVERT_TYPES = {
     0: 'grass',
-    1: 'sand'
+    1: 'sand',
+    2: 'decor'
 }
 AUTO_TILE_TYPES = {'grass', 'sand'}
 AUTO_TILE_MAP = {'0011': 1, '1011': 2, '1001': 3, '0001': 4, '0111': 5, '1111': 6, '1101': 7, '0101': 8, 
@@ -46,7 +47,8 @@ class Editor:
         # assets
         self.assets = {
             "sand": self.load_tileset(pygame.image.load("data/images/tiles/sand.png").convert()),
-            "grass": self.load_tileset(pygame.image.load("data/images/tiles/grass.png").convert())
+            "grass": self.load_tileset(pygame.image.load("data/images/tiles/grass.png").convert()),
+            "decor": self.load_sheet(pygame.image.load("data/images/tiles/decor.png").convert(), [32, 32])
         }
 
         # set colorkeys
@@ -271,7 +273,7 @@ class Editor:
 
             self.update()
 
-            pygame.transform.scale2x(self.screen, self.display)
+            pygame.transform.scale(self.screen, self.display.size, self.display)
             pygame.display.set_caption(f"FPS: {self.clock.get_fps() :.1f}")
             pygame.display.flip()
             self.clock.tick()
