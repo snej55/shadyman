@@ -20,6 +20,12 @@ enum class TileType
     NONE
 };
 
+enum class DecorType
+{
+    DECOR,
+    NONE,
+};
+
 constexpr TileType SOLID_TILES[2] {TileType::GRASS, TileType::SAND};
 
 struct Tile
@@ -29,10 +35,23 @@ struct Tile
     int variant;
 };
 
+struct Decor
+{
+    vec2<int> pos; // absolute position
+    DecorType type;
+    int variant;
+};
+
 struct Chunk
 {
     vec2<int> pos; // relative pos
     std::vector<Tile> tiles{};
+};
+
+struct DecorChunk
+{
+    vec2<int> pos;  
+    std::vector<Decor> decor{};
 };
 
 class World
@@ -46,12 +65,18 @@ public:
     Tile* getTileAt(const float x, const float y);
 
     TileType getTileType(int type);
+
+    DecorType getDecorType(int type);
     
     Texture2D* getTileTex(const Tile& tile, AssetManager* assets) const;
+    Texture2D* getDecorTex(const Decor& tile, AssetManager* assets) const;
     
-    Rectangle getClipRect(const Tile& tile);
+    Rectangle getClipRect(const Tile& tile) const;
+
+    Rectangle getDecorClipRect(const Decor& tile) const;
 
     void renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* assets);
+    void renderDecorChunk(DecorChunk* chunk, const vec2<int>& scroll, AssetManager* assets);
 
     void render(const vec2<int>& scroll, int width, int height, AssetManager* assets);
 
@@ -59,6 +84,7 @@ public:
     
 private:
     Chunk m_chunks[CST::NUM_CHUNKS];
+    DecorChunk m_decorChunks[CST::NUM_CHUNKS];
 };
 
 #endif

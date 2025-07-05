@@ -11,6 +11,8 @@ void AssetManager::init()
 {
     addTexture("grass", "data/images/tiles/grass.png");
     addTexture("sand", "data/images/tiles/sand.png");
+    addTexture("decor", "data/images/tiles/decor.png");
+    addTexture("player/idle", "data/images/player/idle.png");
 
     std::cout << "Loaded textures!\n";
 }
