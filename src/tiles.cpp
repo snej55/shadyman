@@ -64,9 +64,14 @@ Rectangle World::getClipRect(const Tile& tile)
     return clip;
 }
 
-void World::renderChunk(const vec2<float>& scroll, AssetManager* assets)
+void World::renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* assets)
 {
-    
+    for (const Tile& tile : chunk->tiles)
+    {
+        Rectangle clip {getClipRect(tile)};
+        Texture2D* tex {getTileTex(tile, assets)};
+        DrawTexture(*tex, tile.pos.x * CST::TILE_SIZE - scroll.x, tile.pos.y * CST::TILE_SIZE - scroll.y, WHITE);
+    }
 }
 
 void World::loadFromFile(const char* path)

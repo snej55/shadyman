@@ -51,7 +51,7 @@ public:
     
     Rectangle getClipRect(const Tile& tile);
 
-    void renderChunk(const vec2<float>& scroll, AssetManager* assets);
+    void renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* assets);
 
     void loadFromFile(const char* path);
     
