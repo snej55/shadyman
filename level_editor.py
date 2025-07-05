@@ -206,6 +206,8 @@ class Editor:
         # ---------- Do drawing ---------- # 
         self.screen.fill((0, 0, 0))
         self.draw_grid()
+        for tile in self.off_grid: # tile: [pos, type, variant] absolute pos
+            self.screen.blit(self.assets[tile['type']][tile['variant']], (tile['pos'][0] - self.scroll.x, tile['pos'][1] - self.scroll.y))
         self.draw_tiles()
 
         mouse_pos = pygame.mouse.get_pos()
@@ -214,6 +216,11 @@ class Editor:
             self.screen.blit(self.select_surf, (mouse_pos[0] * TILE_SIZE - self.scroll.x, mouse_pos[1] * TILE_SIZE - self.scroll.y))
             if not self.right_click:
                 self.screen.blit(self.assets[self.tile_list[self.tile_type]][self.tile_variant], (mouse_pos[0] * TILE_SIZE - self.scroll.x, mouse_pos[1] * TILE_SIZE - self.scroll.y))
+        else:
+            mouse_pos = [math.floor(mouse_pos[0] / 2 + self.scroll.x), math.floor(mouse_pos[1] / 2 + self.scroll.y)]
+            self.screen.blit(self.select_surf, (mouse_pos[0] - self.scroll.x, mouse_pos[1] - self.scroll.y))
+            if not self.right_click:
+                self.screen.blit(self.assets[self.tile_list[self.tile_type]][self.tile_variant], (mouse_pos[0] - self.scroll.x, mouse_pos[1] - self.scroll.y))
 
     def run(self):
         while self.running:
@@ -237,6 +244,8 @@ class Editor:
                         self.controls["down"] = True
                     if event.key == pygame.K_LSHIFT:
                         self.controls['l_shift'] = True
+                    if event.key == pygame.K_g:
+                        self.grid = not self.grid
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.controls["right"] = False
@@ -265,6 +274,18 @@ class Editor:
                         if event.button == 5:
                             self.tile_type = (self.tile_type + 1) % len(self.tile_list)
                             self.tile_variant = 0
+                    if not self.grid:
+                        mouse_pos = pygame.mouse.get_pos()
+                        mouse_pos = [math.floor(mouse_pos[0] / 2 + self.scroll.x), math.floor(mouse_pos[1] / 2 + self.scroll.y)]
+                        if self.click:
+                            if 0 <= mouse_pos[0] < LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE and 0 <= mouse_pos[1] < LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE:
+                                self.off_grid.append({'pos': mouse_pos, 'type': self.tile_list[self.tile_type], 'variant': self.tile_variant}) 
+                        if self.right_click:
+                            for i, tile in sorted(enumerate(self.off_grid), reverse=True):
+                                tile_img = self.assets[tile['type']][tile['variant']];
+                                tile_rect = pygame.Rect(tile['pos'][0], tile['pos'][1], tile_img.get_width(), tile_img.get_height())
+                                if tile_rect.collidepoint(mouse_pos[0], mouse_pos[1]):
+                                    self.off_grid.pop(i)
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
                         self.click = False
