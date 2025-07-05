@@ -74,6 +74,26 @@ void World::renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* ass
     }
 }
 
+void World::render(const vec2<int>& scroll, int width, int height, AssetManager* assets)
+{
+    int chunkX {static_cast<int>(std::floor(static_cast<float>(scroll.x) / static_cast<float>(CST::TILE_SIZE) / static_cast<float>(CST::CHUNK_SIZE)))};
+    int chunkY {static_cast<int>(std::floor(static_cast<float>(scroll.y) / static_cast<float>(CST::TILE_SIZE) / static_cast<float>(CST::CHUNK_SIZE)))};
+    for (int y{0}; y < std::floor(height / CST::TILE_SIZE) + 1; ++y)
+    {
+        for (int x{0}; x < std::floor(width / CST::TILE_SIZE) + 1; ++x)
+        {
+            int targetX {chunkX - 1 + x};
+            int targetY {chunkY - 1 + y};
+            if (0 <= targetX && targetX < CST::LEVEL_WIDTH && 0 <= targetY && targetY < CST::LEVEL_HEIGHT)
+            {
+                int chunk_idx{targetY * CST::LEVEL_WIDTH + targetX};
+                Chunk* chunk {&m_chunks[chunk_idx]};
+                renderChunk(chunk, scroll, assets);
+            }
+        }
+    }
+}
+
 void World::loadFromFile(const char* path)
 {
     std::ifstream f;

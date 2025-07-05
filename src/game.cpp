@@ -29,7 +29,8 @@ void Game::update()
 
     // ------ do rendering ------  //
 
-    DrawTexture(*m_assets.getTexture("sand"), 0, 0, WHITE);
+    vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
+    m_world.render(renderScroll, m_width, m_height, &m_assets);
 
     // -------------------------- //
 

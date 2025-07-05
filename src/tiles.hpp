@@ -53,6 +53,8 @@ public:
 
     void renderChunk(Chunk* chunk, const vec2<int>& scroll, AssetManager* assets);
 
+    void render(const vec2<int>& scroll, int width, int height, AssetManager* assets);
+
     void loadFromFile(const char* path);
     
 private:
