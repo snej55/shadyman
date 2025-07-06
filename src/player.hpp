@@ -7,12 +7,12 @@
 
 #include <map>
 
-enum class Control
+enum Control
 {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    C_UP,
+    C_DOWN,
+    C_LEFT,
+    C_RIGHT
 };
 
 class Controller
@@ -24,7 +24,7 @@ public:
     bool getControl(const Control control) {return m_controls[control];}
 
 private:
-    std::map<Control, bool> m_controls {{Control::UP, false}, {Control::DOWN, false}, {Control::LEFT, false}, {Control::RIGHT, false}};
+    std::map<Control, bool> m_controls {{C_UP, false}, {C_DOWN, false}, {C_LEFT, false}, {C_RIGHT, false}};
 };
 
 class Player
@@ -33,8 +33,8 @@ public:
     Player(vec2<float> pos, vec2<int> dimensions);
     ~Player() = default;
 
-    //void update();
-    //void draw(vec2<int> scroll);
+    void update(float dt);
+    void draw(const vec2<int>& scroll);
 
     Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
 

@@ -6,6 +6,7 @@
 #include "constants.hpp"
 #include "tiles.hpp"
 #include "assets.hpp"
+#include "player.hpp"
 
 #include <string>
 
@@ -36,6 +37,7 @@ public:
 
     [[nodiscard]] World* getWorld() {return &m_world;}
     [[nodiscard]] AssetManager* getAssets() {return &m_assets;}
+    [[nodiscard]] Player* getPlayer() {return &m_player;}
 
     [[nodiscard]] float getDT() const {return m_dt;}
 
@@ -48,6 +50,7 @@ private:
     // components
     World m_world{};
     AssetManager m_assets{};
+    Player m_player{{10.f, 10.f}, {4, 7}};
 
     std::string m_mapPath{"data/maps/0.json"};
 
