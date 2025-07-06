@@ -32,8 +32,11 @@ public:
     void checkScreenResize();
     // update render buffer
     void updateRenderBuffer(int width, int height);
-
+    // render debug info
     void drawFPS();
+
+    // handle user input
+    void handleControls();
 
     [[nodiscard]] World* getWorld() {return &m_world;}
     [[nodiscard]] AssetManager* getAssets() {return &m_assets;}

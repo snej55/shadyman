@@ -8,8 +8,8 @@ Player::Player(const vec2<float> pos, const vec2<int> dimensions)
 void Player::update(const float dt)
 {
     constexpr float gravity {0.3f};
-    constexpr float friction {0.48f};
-    constexpr float speed {1.0f};
+    constexpr float friction {0.7f};
+    constexpr float speed {1.2f};
 
     if (m_controller.getControl(C_RIGHT))
     {
@@ -20,6 +20,10 @@ void Player::update(const float dt)
         m_vel.x -= speed * dt;
     }
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
+
+    m_pos.x += m_vel.x * dt;
+    // m_vel.y += gravity;
+    m_pos.y += m_vel.y * dt;
 }
 
 void Player::draw(const vec2<int>& scroll)

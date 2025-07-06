@@ -25,6 +25,7 @@ void Game::init()
 
 void Game::update()
 {
+    handleControls();
     ClearBackground({37, 49, 94, 0xFF});
 
     // ------ do rendering ------  //
@@ -113,4 +114,19 @@ void Game::drawFPS()
     ss.str("");
     ss << "Win. Dimensions: " << GetScreenWidth() << " * " << GetScreenHeight();
     DrawText(ss.str().c_str(), 5, 16, 10, WHITE);
+}
+
+void Game::handleControls()
+{
+    if (IsKeyPressed(KEY_UP))
+    {
+        m_player.getController()->setControl(C_UP, true);
+    } else if (IsKeyReleased(KEY_UP))
+    {
+        m_player.getController()->setControl(C_UP, false);
+    }
+
+    m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT));
+    m_player.getController()->setControl(C_LEFT, IsKeyDown(KEY_LEFT));
+    m_player.getController()->setControl(C_DOWN, IsKeyDown(KEY_DOWN));
 }
