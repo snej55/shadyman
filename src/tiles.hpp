@@ -10,6 +10,7 @@ using json = nlohmann::json;
 #include "assets.hpp"
 
 #include <vector>
+#include <array>
 #include <cmath>
 #include <fstream>
 
@@ -26,7 +27,7 @@ enum class DecorType
     NONE,
 };
 
-constexpr TileType SOLID_TILES[2] {TileType::GRASS, TileType::SAND};
+constexpr std::array<TileType, 2> SOLID_TILES {TileType::GRASS, TileType::SAND};
 
 struct Tile
 {

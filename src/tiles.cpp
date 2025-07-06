@@ -15,14 +15,13 @@ Chunk* World::getChunkAt(const float x, const float y)
 Tile* World::getTileAt(const float x, const float y)
 {
     Chunk* chunk{getChunkAt(x, y)};
+    const int tileX {static_cast<int>(std::floor(x / (float)CST::TILE_SIZE))};
+    const int tileY {static_cast<int>(std::floor(y / (float)CST::TILE_SIZE))};
     if (chunk != nullptr)
     {
         for (std::size_t i{0}; i < chunk->tiles.size(); ++i)
         {
             Tile* tile = &(chunk->tiles[i]);
-            int tileX {static_cast<int>(std::floor(x / (float)CST::TILE_SIZE))};
-            int tileY {static_cast<int>(std::floor(y / (float)CST::TILE_SIZE))};
-            //std::cout << tileX << '\t' << tileY << '\n';
             if (tileX == tile->pos.x && tileY == tile->pos.y)
             {
                 return tile;
