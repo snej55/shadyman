@@ -1,3 +1,13 @@
 ## Shady Man
 
 Game for SoM game jam.
+
+## TODO:
+ - [ ] Player movement + collisions
+ - [ ] Player animations
+ - [ ] Blobbos
+ - [ ] Fighting
+ - [ ] Penguins
+ - [ ] Add spawners to level editor
+ - [ ] Render with shader
+ - [ ] Explosions!
