@@ -42,6 +42,8 @@ void Game::run()
 {
     std::cout << "Running!\n";
 
+    double lastTime {GetTime()};
+
     while (!WindowShouldClose())
     {
         BeginTextureMode(m_targetBuffer);
@@ -61,6 +63,10 @@ void Game::run()
             Vector2{0, 0}, 0, WHITE);  
 
         EndDrawing();
+
+        m_dt = GetTime() - lastTime;
+        m_dt *= 60.f;
+        lastTime = GetTime();
     }
 }
 

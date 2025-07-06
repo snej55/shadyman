@@ -37,6 +37,7 @@ public:
     [[nodiscard]] World* getWorld() {return &m_world;}
     [[nodiscard]] AssetManager* getAssets() {return &m_assets;}
 
+    [[nodiscard]] float getDT() const {return m_dt;}
 
 private:
     // render buffer
@@ -54,6 +55,8 @@ private:
     int m_height{};
 
     vec2<float> m_scroll{0.0f, 0.0f};
+
+    float m_dt{1.0f};
 };
 
 #endif
