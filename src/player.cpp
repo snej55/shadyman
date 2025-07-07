@@ -13,10 +13,10 @@ Player::~Player()
 
 void Player::loadAnim(AssetManager* assets)
 {
-    m_idleAnim = new Anim{4, 8, 5, 0.2f, true, assets->getTexture("player/idle")};
-    m_runAnim = new Anim{4, 8, 8, 0.5f, true, assets->getTexture("player/run")};
-    m_jumpAnim = new Anim{4, 8, 3, 0.1f, true, assets->getTexture("player/jump")};
-    m_landAnim = new Anim{4, 8, 8, 0.3f, false, assets->getTexture("player/land")};
+    m_idleAnim = new Anim{9, 14, 6, 0.2f, true, assets->getTexture("player/idle")};
+    m_runAnim = new Anim{9, 14, 10, 0.35f, true, assets->getTexture("player/run")};
+    m_jumpAnim = new Anim{9, 14, 1, 0.1f, true, assets->getTexture("player/jump")};
+    m_landAnim = new Anim{9, 14, 8, 0.3f, false, assets->getTexture("player/land")};
     std::cout << "Loaded animations!\n";
 
     m_anim = m_idleAnim;
@@ -27,7 +27,7 @@ void Player::update(const float dt, World* world)
     // movement constants
     constexpr float gravity {0.25f};
     constexpr float friction {0.67f};
-    constexpr float speed {1.2f};
+    constexpr float speed {1.0f};
     constexpr float jumpBuf {10.f}; // 0.25s
     constexpr float fallBuf {5.f};
     constexpr float jumpHeight {3.5f};
@@ -135,7 +135,7 @@ void Player::handleAnimations(const float dt, const float fallBuf)
         m_idleAnim->reset();
         m_landAnim->reset();
         m_grounded = false;
-    } else if (std::abs(m_vel.x) > 0.1f)
+    } else if (m_controller.getControl(C_RIGHT) || m_controller.getControl(C_LEFT))
     {
         m_anim = m_runAnim;
         m_landAnim->reset();
@@ -168,7 +168,7 @@ void Player::draw(const vec2<int>& scroll)
 {
     Rectangle rect {getRect()};
     // DrawRectangle(rect.x - scroll.x, rect.y - scroll.y, rect.width, rect.height, RED);
-    m_anim->render({m_pos.x, m_pos.y - 1.0f}, scroll);
+    m_anim->render({m_pos.x - 1.0f, m_pos.y}, scroll);
 }
 
 void Player::free()

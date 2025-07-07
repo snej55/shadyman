@@ -13,10 +13,10 @@ void AssetManager::init()
     addTexture("grass", "data/images/tiles/grass.png");
     addTexture("sand", "data/images/tiles/sand.png");
     addTexture("decor", "data/images/tiles/decor.png");
-    addTexture("player/idle", "data/images/player/idle.png");
-    addTexture("player/run", "data/images/player/run.png");
-    addTexture("player/jump", "data/images/player/jump.png");
-    addTexture("player/land", "data/images/player/land.png");
+    addTexture("player/idle", "data/images/player/v2/idle.png");
+    addTexture("player/run", "data/images/player/v2/run.png");
+    addTexture("player/jump", "data/images/player/v2/jump.png");
+    addTexture("player/land", "data/images/player/v2/land.png");
 
     std::cout << "Loaded textures!\n";
 }
