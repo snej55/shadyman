@@ -15,17 +15,14 @@ Chunk* World::getChunkAt(const float x, const float y)
 Tile* World::getTileAt(const float x, const float y)
 {
     Chunk* chunk{getChunkAt(x, y)};
-    const int tileX {static_cast<int>(std::floor(x / (float)CST::TILE_SIZE))};
-    const int tileY {static_cast<int>(std::floor(y / (float)CST::TILE_SIZE))};
     if (chunk != nullptr)
     {
-        for (std::size_t i{0}; i < chunk->tiles.size(); ++i)
+        const int tileX {static_cast<int>(std::floor(x / (float)CST::TILE_SIZE))};
+        const int tileY {static_cast<int>(std::floor(y / (float)CST::TILE_SIZE))};
+        std::string key {std::to_string(tileX) + ";" + std::to_string(tileY)};
+        if (chunk->colliders.find(key) != chunk->colliders.end())
         {
-            Tile* tile = &(chunk->tiles[i]);
-            if (tileX == tile->pos.x && tileY == tile->pos.y)
-            {
-                return tile;
-            }
+            return chunk->colliders.find(key)->second;
         }
     }
     return nullptr;
@@ -188,11 +185,8 @@ void World::loadFromFile(const char* path)
         Chunk* chunk {&m_chunks[i]};
         for (std::size_t t{0}; t < chunk->tiles.size(); ++t)
         {
-            // std::cout << chunk->tiles[t].pos.x << ' ' << chunk->tiles[t].pos.y << '\n';
-            
             std::string key {std::to_string(chunk->tiles[t].pos.x) + ";" + std::to_string(chunk->tiles[t].pos.y)};
-            std::cout << key << '\n';
-            chunk->colliders.insert(std::pair<std::string, Tile*>("key", &chunk->tiles[t]));
+            chunk->colliders.insert(std::pair<std::string, Tile*>(key, &chunk->tiles[t]));
         }
     }
 

@@ -37,6 +37,13 @@ void Game::update()
 
     m_player.draw(renderScroll);
 
+    Tile* tile {m_world.getTileAt(GetMouseX() / CST::SCR_VRATIO, GetMouseY() / CST::SCR_VRATIO)};
+
+    if (tile != nullptr)
+    {
+        DrawRectangle(tile->pos.x * CST::TILE_SIZE, tile->pos.y * CST::TILE_SIZE, 12, 12, GREEN);
+    }
+
     // -------------------------- //
 
     checkScreenResize();
