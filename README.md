@@ -3,7 +3,7 @@
 Game for SoM game jam.
 
 ## TODO:
- - [ ] Player movement + collisions
+ - [X] Player movement + collisions
  - [ ] Player animations
  - [ ] Blobbos
  - [ ] Fighting
