@@ -20,17 +20,49 @@ void Player::update(const float dt, World* world)
         m_vel.x -= speed * dt;
     }
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
+    m_vel.y += gravity * dt;
 
-    m_pos.x += m_vel.x * dt;
+    vec2<float> movement {m_vel.x * dt, m_vel.y * dt};
+
+    m_pos.x += movement.x;
+
     std::array<Rectangle, 9> rects{};
     world->getTilesAroundPos(getCenter(), rects);
+
+    // check collisions
     for (const Rectangle& rect : rects)
     {
-        DrawRectangle(rect.x, rect.y, rect.width, rect.height, WHITE);
+        // check if we collided with tile
+        if (CheckCollisionRecs(rect, getRect()))
+        {
+            // player was moving left?
+            if (movement.x < 0.0f)
+            {
+                m_pos.x = rect.x + rect.width; // back bro off
+            } else { // hmm must be moving right
+                m_pos.x = rect.x - m_dimensions.x; // just squidge in there...
+            }
+            m_vel.x = 0.0f; // STOP!
+        }
     }
 
-    m_vel.y += gravity;
-    // m_pos.y += m_vel.y * dt;
+    m_pos.y += movement.y;
+    // same for y motion
+    for (const Rectangle& rect : rects)
+    {
+        // check if we collided with tile
+        if (CheckCollisionRecs(rect, getRect()))
+        {
+            // player was moving up?
+            if (movement.y < 0.0f)
+            {
+                m_pos.y = rect.y + rect.height; // back bro off
+            } else { // hmm must be pelting from the sky
+                m_pos.y = rect.y - m_dimensions.y; // do a nice balancing act
+            }
+            m_vel.y = 0.0f; // STOP!
+        }
+    }
 }
 
 void Player::draw(const vec2<int>& scroll)

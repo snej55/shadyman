@@ -25,24 +25,21 @@ void Game::init()
 
 void Game::update()
 {
+    // ------ Update stuff ------ //
+
     handleControls();
-    ClearBackground({37, 49, 94, 0xFF});
 
+    m_player.update(m_dt, &m_world);
+
+    // -------------------------- //
     // ------ do rendering ------  //
-
+    
+    ClearBackground({37, 49, 94, 0xFF});
     
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);
-    m_player.update(m_dt, &m_world);
 
     m_player.draw(renderScroll);
-
-    Tile* tile {m_world.getTileAt(GetMouseX() / CST::SCR_VRATIO, GetMouseY() / CST::SCR_VRATIO)};
-
-    if (tile != nullptr)
-    {
-        DrawRectangle(tile->pos.x * CST::TILE_SIZE, tile->pos.y * CST::TILE_SIZE, 12, 12, GREEN);
-    }
 
     // -------------------------- //
 
