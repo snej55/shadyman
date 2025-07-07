@@ -37,6 +37,8 @@ public:
     void update(float dt, World* world);
     void draw(const vec2<int>& scroll);
 
+    void jump();
+
     Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
     vec2<float> getCenter()
     {
@@ -48,6 +50,9 @@ public:
 
     Controller* getController() {return &m_controller;}
 
+    float getJumping() const {return m_jumping;}
+    float getFalling() const {return m_falling;}
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -55,6 +60,9 @@ private:
     vec2<float> m_vel{0.0f, 0.0f};
 
     Controller m_controller{};
+
+    float m_jumping{99.0f};
+    float m_falling{99.0f};
 };
 
 #endif

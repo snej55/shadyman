@@ -125,6 +125,7 @@ void Game::handleControls()
     if (IsKeyPressed(KEY_UP))
     {
         m_player.getController()->setControl(C_UP, true);
+        m_player.jump();
     } else if (IsKeyReleased(KEY_UP))
     {
         m_player.getController()->setControl(C_UP, false);

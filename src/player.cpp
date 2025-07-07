@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include "constants.hpp"
 
 Player::Player(const vec2<float> pos, const vec2<int> dimensions)
  : m_pos{pos}, m_dimensions{dimensions}
@@ -7,10 +8,18 @@ Player::Player(const vec2<float> pos, const vec2<int> dimensions)
 
 void Player::update(const float dt, World* world)
 {
-    constexpr float gravity {0.3f};
-    constexpr float friction {0.7f};
+    // movement constants
+    constexpr float gravity {0.25f};
+    constexpr float friction {0.67f};
     constexpr float speed {1.2f};
+    constexpr float jumpBuf {10.f}; // 0.25s
+    constexpr float fallBuf {5.f};
+    constexpr float jumpHeight {3.5f};
 
+    m_falling += dt;
+    m_jumping += dt;
+
+    // x velocity
     if (m_controller.getControl(C_RIGHT))
     {
         m_vel.x += speed * dt;
@@ -20,7 +29,20 @@ void Player::update(const float dt, World* world)
         m_vel.x -= speed * dt;
     }
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
+
+    // y velocity
     m_vel.y += gravity * dt;
+    if (m_jumping < jumpBuf)
+    {
+        if (m_falling < fallBuf)
+        {
+            // jump!
+            m_vel.y = -jumpHeight;
+            // can't jump anymore buddy
+            m_falling = fallBuf + 1.0f;
+            m_jumping = jumpBuf + 1.0f;
+        }
+    }
 
     vec2<float> movement {m_vel.x * dt, m_vel.y * dt};
 
@@ -46,6 +68,16 @@ void Player::update(const float dt, World* world)
         }
     }
 
+    // keep player in level
+    if (m_pos.x < 0.0f)
+    {
+        m_pos.x = 0.0f;
+        m_vel.x = 0.0f;
+    } else if (m_pos.x + m_dimensions.x > CST::LEVEL_WIDTH * CST::CHUNK_SIZE * CST::TILE_SIZE)
+    {
+        m_pos.x = CST::LEVEL_WIDTH * CST::CHUNK_SIZE * CST::TILE_SIZE - m_dimensions.x;
+    }
+
     m_pos.y += movement.y;
     // same for y motion
     for (const Rectangle& rect : rects)
@@ -61,8 +93,20 @@ void Player::update(const float dt, World* world)
                 m_pos.y = rect.y - m_dimensions.y; // do a nice balancing act
             }
             m_vel.y = 0.0f; // STOP!
+            m_falling = 0.0f; // reset falling
         }
     }
+
+    // keep player in level
+    if (static_cast<int>(m_pos.y) + m_dimensions.y > CST::LEVEL_HEIGHT * CST::CHUNK_SIZE * CST::TILE_SIZE)
+    {
+        m_pos.y = CST::LEVEL_HEIGHT * CST::CHUNK_SIZE * CST::TILE_SIZE - m_dimensions.y;
+    }
+}
+
+void Player::jump()
+{
+    m_jumping = 0.0f;
 }
 
 void Player::draw(const vec2<int>& scroll)
