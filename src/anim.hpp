@@ -21,7 +21,7 @@ public:
     {
         if (m_tex != nullptr)
         {
-            DrawTexturePro(*m_tex, getSourceRect(), {pos.x - (float)scroll.x, pos.y - (float)scroll.y, (float)m_width, (float)m_height}, {getCenter().x, getCenter().y}, m_angle, WHITE);
+            DrawTexturePro(*m_tex, getSourceRect(), {pos.x - (float)scroll.x, pos.y - (float)scroll.y, (float)m_width, (float)m_height}, {0.f, 0.f}, m_angle, WHITE);
         }
     }
 

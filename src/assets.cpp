@@ -9,10 +9,14 @@ AssetManager::~AssetManager()
 
 void AssetManager::init()
 {
+    // load all da textures
     addTexture("grass", "data/images/tiles/grass.png");
     addTexture("sand", "data/images/tiles/sand.png");
     addTexture("decor", "data/images/tiles/decor.png");
     addTexture("player/idle", "data/images/player/idle.png");
+    addTexture("player/run", "data/images/player/run.png");
+    addTexture("player/jump", "data/images/player/jump.png");
+    addTexture("player/land", "data/images/player/land.png");
 
     std::cout << "Loaded textures!\n";
 }

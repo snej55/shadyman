@@ -5,6 +5,8 @@
 
 #include "vec2.hpp"
 #include "tiles.hpp"
+#include "assets.hpp"
+#include "anim.hpp"
 
 #include <map>
 
@@ -32,7 +34,9 @@ class Player
 {
 public:
     Player(vec2<float> pos, vec2<int> dimensions);
-    ~Player() = default;
+    ~Player();
+
+    void loadAnim(AssetManager* assets);
 
     void update(float dt, World* world);
     void draw(const vec2<int>& scroll);
@@ -63,6 +67,17 @@ private:
 
     float m_jumping{99.0f};
     float m_falling{99.0f};
+
+    Anim* m_idleAnim{nullptr};
+    Anim* m_runAnim{nullptr};
+    Anim* m_jumpAnim{nullptr};
+    Anim* m_landAnim{nullptr};
+    Anim* m_anim{nullptr}; // anim to play
+
+    bool m_flipped{false};
+
+    // free animations
+    void free();
 };
 
 #endif

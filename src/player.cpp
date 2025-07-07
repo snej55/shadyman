@@ -6,6 +6,22 @@ Player::Player(const vec2<float> pos, const vec2<int> dimensions)
 {
 }
 
+Player::~Player()
+{
+    free();
+}
+
+void Player::loadAnim(AssetManager* assets)
+{
+    m_idleAnim = new Anim{4, 8, 5, 0.2f, true, assets->getTexture("player/idle")};
+    m_runAnim = new Anim{4, 8, 8, 0.12f, true, assets->getTexture("player/run")};
+    m_jumpAnim = new Anim{4, 8, 3, 0.1f, true, assets->getTexture("player/jump")};
+    m_landAnim = new Anim{4, 8, 8, 0.1f, false, assets->getTexture("player/land")};
+    std::cout << "Loaded animations!\n";
+
+    m_anim = m_idleAnim;
+}
+
 void Player::update(const float dt, World* world)
 {
     // movement constants
@@ -23,10 +39,12 @@ void Player::update(const float dt, World* world)
     if (m_controller.getControl(C_RIGHT))
     {
         m_vel.x += speed * dt;
+        m_flipped = false;
     }
     if (m_controller.getControl(C_LEFT))
     {
         m_vel.x -= speed * dt;
+        m_flipped = true;
     }
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
 
@@ -102,6 +120,10 @@ void Player::update(const float dt, World* world)
     {
         m_pos.y = CST::LEVEL_HEIGHT * CST::CHUNK_SIZE * CST::TILE_SIZE - m_dimensions.y;
     }
+
+    // update animation
+    m_anim->tick(dt);
+    m_anim->setFlipped(m_flipped);
 }
 
 void Player::jump()
@@ -112,5 +134,15 @@ void Player::jump()
 void Player::draw(const vec2<int>& scroll)
 {
     Rectangle rect {getRect()};
-    DrawRectangle(rect.x - scroll.x, rect.y - scroll.y, rect.width, rect.height, RED);
+    // DrawRectangle(rect.x - scroll.x, rect.y - scroll.y, rect.width, rect.height, RED);
+    m_anim->render({m_pos.x, m_pos.y - 1.0f}, scroll);
+}
+
+void Player::free()
+{
+    delete m_idleAnim;
+    delete m_runAnim;
+    delete m_jumpAnim;
+    delete m_landAnim;
+    std::cout << "Freed animations!\n";
 }

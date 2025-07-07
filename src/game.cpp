@@ -20,6 +20,8 @@ void Game::init()
     m_world.loadFromFile(m_mapPath.c_str());
     m_assets.init();
 
+    m_player.loadAnim(&m_assets);
+
     std::cout << "Initialized!\n";
 }
 
@@ -34,7 +36,7 @@ void Game::update()
     // -------------------------- //
     // ------ do rendering ------  //
     
-    ClearBackground({37, 49, 94, 0xFF});
+    ClearBackground({27, 29, 54, 0xFF});
     
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);
