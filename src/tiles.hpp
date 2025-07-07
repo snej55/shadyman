@@ -8,6 +8,7 @@ using json = nlohmann::json;
 #include "vec2.hpp"
 #include "constants.hpp"
 #include "assets.hpp"
+#include "raylib.h"
 
 #include <vector>
 #include <array>
@@ -66,6 +67,8 @@ public:
     Chunk* getChunkAt(const float x, const float y);
 
     Tile* getTileAt(const float x, const float y);
+
+    void getTilesAroundPos(const vec2<float>& pos, std::array<Rectangle, 9>& rects);
 
     TileType getTileType(int type);
 

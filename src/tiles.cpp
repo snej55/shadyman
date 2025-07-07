@@ -1,4 +1,5 @@
 #include "tiles.hpp"
+#include "util.hpp"
 
 Chunk* World::getChunkAt(const float x, const float y)
 {
@@ -26,6 +27,29 @@ Tile* World::getTileAt(const float x, const float y)
         }
     }
     return nullptr;
+}
+
+void World::getTilesAroundPos(const vec2<float>& pos, std::array<Rectangle, 9>& rects)
+{
+    for (auto& e : rects)
+    {
+        // something nothing will hopefully collide with :)
+        e = Rectangle{-99, -99, 1, 1};
+    }
+    for (int y{0}; y < 3; ++y)
+    {
+        for (int x{0}; x < 3; ++x)
+        {
+            Tile* tile {getTileAt(pos.x - CST::TILE_SIZE + CST::TILE_SIZE * x, pos.y - CST::TILE_SIZE + CST::TILE_SIZE * y)};
+            if (tile != nullptr)
+            {
+                if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
+                {
+                    rects[y * 3 + x] = Rectangle{static_cast<float>(tile->pos.x * CST::TILE_SIZE), static_cast<float>(tile->pos.y * CST::TILE_SIZE), CST::TILE_SIZE, CST::TILE_SIZE};
+                }
+            }
+        }
+    }
 }
 
 TileType World::getTileType(const int type)
