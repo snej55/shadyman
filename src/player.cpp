@@ -5,7 +5,7 @@ Player::Player(const vec2<float> pos, const vec2<int> dimensions)
 {
 }
 
-void Player::update(const float dt)
+void Player::update(const float dt, World* world)
 {
     constexpr float gravity {0.3f};
     constexpr float friction {0.7f};
@@ -22,8 +22,15 @@ void Player::update(const float dt)
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
 
     m_pos.x += m_vel.x * dt;
-    // m_vel.y += gravity;
-    m_pos.y += m_vel.y * dt;
+    std::array<Rectangle, 9> rects{};
+    world->getTilesAroundPos(getCenter(), rects);
+    for (const Rectangle& rect : rects)
+    {
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, WHITE);
+    }
+
+    m_vel.y += gravity;
+    // m_pos.y += m_vel.y * dt;
 }
 
 void Player::draw(const vec2<int>& scroll)

@@ -4,6 +4,7 @@
 #include "raylib.h"
 
 #include "vec2.hpp"
+#include "tiles.hpp"
 
 #include <map>
 
@@ -33,10 +34,14 @@ public:
     Player(vec2<float> pos, vec2<int> dimensions);
     ~Player() = default;
 
-    void update(float dt);
+    void update(float dt, World* world);
     void draw(const vec2<int>& scroll);
 
     Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
+    vec2<float> getCenter()
+    {
+        return vec2<float>{m_pos.x + static_cast<float>(m_dimensions.x) / 2.0f, m_pos.y + static_cast<float>(m_dimensions.y) / 2.0f};
+    }
 
     const vec2<float>& getPos() const {return m_pos;}
     const vec2<int>& getDimensions() const {return m_dimensions;}

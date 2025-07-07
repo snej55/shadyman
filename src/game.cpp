@@ -30,10 +30,10 @@ void Game::update()
 
     // ------ do rendering ------  //
 
-    m_player.update(m_dt);
-
+    
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);
+    m_player.update(m_dt, &m_world);
 
     m_player.draw(renderScroll);
 

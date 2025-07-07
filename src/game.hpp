@@ -53,7 +53,7 @@ private:
     // components
     World m_world{};
     AssetManager m_assets{};
-    Player m_player{{10.f, 10.f}, {4, 7}};
+    Player m_player{{10.f, 80.f}, {4, 7}};
 
     std::string m_mapPath{"data/maps/0.json"};
 
