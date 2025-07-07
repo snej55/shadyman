@@ -41,6 +41,8 @@ public:
     void update(float dt, World* world);
     void draw(const vec2<int>& scroll);
 
+    void handleAnimations(float dt, float fallBuf);
+
     void jump();
 
     Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
@@ -75,6 +77,7 @@ private:
     Anim* m_anim{nullptr}; // anim to play
 
     bool m_flipped{false};
+    bool m_grounded{false};
 
     // free animations
     void free();

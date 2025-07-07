@@ -14,9 +14,9 @@ Player::~Player()
 void Player::loadAnim(AssetManager* assets)
 {
     m_idleAnim = new Anim{4, 8, 5, 0.2f, true, assets->getTexture("player/idle")};
-    m_runAnim = new Anim{4, 8, 8, 0.12f, true, assets->getTexture("player/run")};
+    m_runAnim = new Anim{4, 8, 8, 0.5f, true, assets->getTexture("player/run")};
     m_jumpAnim = new Anim{4, 8, 3, 0.1f, true, assets->getTexture("player/jump")};
-    m_landAnim = new Anim{4, 8, 8, 0.1f, false, assets->getTexture("player/land")};
+    m_landAnim = new Anim{4, 8, 8, 0.3f, false, assets->getTexture("player/land")};
     std::cout << "Loaded animations!\n";
 
     m_anim = m_idleAnim;
@@ -122,6 +122,39 @@ void Player::update(const float dt, World* world)
     }
 
     // update animation
+    handleAnimations(dt, fallBuf);
+}
+
+void Player::handleAnimations(const float dt, const float fallBuf)
+{
+    // update animation
+    if (m_falling > fallBuf)
+    {
+        m_anim = m_jumpAnim;
+        m_runAnim->reset();
+        m_idleAnim->reset();
+        m_landAnim->reset();
+        m_grounded = false;
+    } else if (!m_grounded)
+    {
+        m_anim = m_landAnim;
+        m_runAnim->reset();
+        m_idleAnim->reset();
+        m_jumpAnim->reset();
+        if (m_landAnim->getFinished())
+        {
+            m_grounded = true;
+        }
+    } else if (std::abs(m_vel.x) > 0.1f)
+    {
+        m_anim = m_runAnim;
+        m_landAnim->reset();
+        m_idleAnim->reset();
+        m_jumpAnim->reset();
+    } else 
+    {
+        m_anim = m_idleAnim;
+    }
     m_anim->tick(dt);
     m_anim->setFlipped(m_flipped);
 }
