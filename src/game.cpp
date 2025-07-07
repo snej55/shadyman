@@ -36,7 +36,7 @@ void Game::update()
     // -------------------------- //
     // ------ do rendering ------  //
     
-    ClearBackground({27, 29, 54, 0xFF});
+    ClearBackground({0, 0, 0, 0xFF});
     
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);

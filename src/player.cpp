@@ -135,6 +135,12 @@ void Player::handleAnimations(const float dt, const float fallBuf)
         m_idleAnim->reset();
         m_landAnim->reset();
         m_grounded = false;
+    } else if (std::abs(m_vel.x) > 0.1f)
+    {
+        m_anim = m_runAnim;
+        m_landAnim->reset();
+        m_idleAnim->reset();
+        m_jumpAnim->reset();
     } else if (!m_grounded)
     {
         m_anim = m_landAnim;
@@ -145,12 +151,6 @@ void Player::handleAnimations(const float dt, const float fallBuf)
         {
             m_grounded = true;
         }
-    } else if (std::abs(m_vel.x) > 0.1f)
-    {
-        m_anim = m_runAnim;
-        m_landAnim->reset();
-        m_idleAnim->reset();
-        m_jumpAnim->reset();
     } else 
     {
         m_anim = m_idleAnim;
