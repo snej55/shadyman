@@ -11,6 +11,7 @@ using json = nlohmann::json;
 
 #include <vector>
 #include <array>
+#include <map>
 #include <cmath>
 #include <fstream>
 
@@ -47,6 +48,7 @@ struct Chunk
 {
     vec2<int> pos; // relative pos
     std::vector<Tile> tiles{};
+    std::map<std::string, Tile*> colliders{};
 };
 
 struct DecorChunk

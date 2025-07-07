@@ -150,6 +150,8 @@ void World::loadFromFile(const char* path)
     for (std::size_t i{0}; i < CST::NUM_CHUNKS; ++i)
     {
         m_chunks[i] = Chunk{{0, 0}};
+        m_chunks[i].colliders.clear();
+        m_chunks[i].tiles.clear();
     }
 
     // handle tiles that are on the grid
@@ -177,6 +179,20 @@ void World::loadFromFile(const char* path)
             DecorChunk* chunk {&(m_decorChunks[chunk_idx])};
             chunk->decor.push_back(Decor{{tile["pos"][0], tile["pos"][1]}, getDecorType(tile["type"]), tile["variant"]});
             chunk->pos = chunk_loc;
+        }
+    }
+
+    // load colliders
+    for (std::size_t i{0}; i < CST::NUM_CHUNKS; ++i)
+    {
+        Chunk* chunk {&m_chunks[i]};
+        for (std::size_t t{0}; t < chunk->tiles.size(); ++t)
+        {
+            // std::cout << chunk->tiles[t].pos.x << ' ' << chunk->tiles[t].pos.y << '\n';
+            
+            std::string key {std::to_string(chunk->tiles[t].pos.x) + ";" + std::to_string(chunk->tiles[t].pos.y)};
+            std::cout << key << '\n';
+            chunk->colliders.insert(std::pair<std::string, Tile*>("key", &chunk->tiles[t]));
         }
     }
 
