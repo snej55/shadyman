@@ -99,6 +99,7 @@ void Player::update(const float dt, World* world)
     }
 
     m_pos.y += movement.y;
+    world->getTilesAroundPos(getCenter(), rects);
     // same for y motion
     for (const Rectangle& rect : rects)
     {

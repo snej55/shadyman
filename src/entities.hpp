@@ -5,12 +5,17 @@
 
 #include "vec2.hpp"
 #include "tiles.hpp"
+#include "assets.hpp"
+
+#include <string>
 
 class Entity
 {
 public:
-    Entity(const vec2<float>& m_pos, const vec2<int>& m_dimensions);
+    Entity(const vec2<float>& m_pos, const vec2<int>& m_dimensions, const std::string& name);
 
+    // initialize animations or something
+    virtual void init(AssetManager* assets);
     // handle physics
     virtual void update(float dt, World* world);
     // draw entity
@@ -19,6 +24,7 @@ public:
     // getters
     [[nodiscard]] vec2<float> getPos() const {return m_pos;}
     [[nodiscard]] vec2<int> getDimensions() const {return m_dimensions;}
+    [[nodiscard]] std::string_view getName() const {return m_name;}
 
     [[nodiscard]] vec2<float> getVel() const {return m_vel;}
     [[nodiscard]] float getFalling() const {return m_falling;}
@@ -32,9 +38,15 @@ public:
         };
     }
 
+    [[nodiscard]] vec2<float> getCenter() const
+    {
+        return vec2<float>{m_pos.x + static_cast<float>(m_dimensions.x) / 2.0f, m_pos.y + static_cast<float>(m_dimensions.y) / 2.0f};
+    }
+
 protected:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
+    std::string m_name;
 
     vec2<float> m_vel{};
 
