@@ -6,8 +6,8 @@
 template <typename T>
 struct vec2
 {
-    T x;
-    T y;
+    T x{0};
+    T y{0};
 };
 
 template <typename T>
