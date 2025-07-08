@@ -38,8 +38,8 @@ void Game::update()
     
     ClearBackground({0, 0, 0, 0xFF});
 
-    m_scroll.x += (m_player.getPos().x - static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - m_scroll.x) / 4 * m_dt;
-    m_scroll.y += (m_player.getPos().y - static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - m_scroll.y) / 6 * m_dt;
+    m_scroll.x += (m_player.getPos().x - static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - m_scroll.x) / 20 * m_dt;
+    m_scroll.y += (m_player.getPos().y - static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - m_scroll.y) / 30 * m_dt;
 
     m_scroll.x = std::max(static_cast<float>(CST::TILE_SIZE), std::min(m_scroll.x, static_cast<float>(CST::TILE_SIZE * CST::CHUNK_SIZE * CST::LEVEL_WIDTH)));
     m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
@@ -83,6 +83,7 @@ void Game::run()
 
         m_dt = GetTime() - lastTime;
         m_dt *= 60.f;
+        m_dt = std::min(4.0f, m_dt);
         lastTime = GetTime();
     }
 }

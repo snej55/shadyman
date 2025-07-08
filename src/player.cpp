@@ -31,6 +31,7 @@ void Player::update(const float dt, World* world)
     constexpr float jumpBuf {10.f}; // 0.25s
     constexpr float fallBuf {5.f};
     constexpr float jumpHeight {3.5f};
+    constexpr float maxVelY {8.f};
 
     m_falling += dt;
     m_jumping += dt;
@@ -50,6 +51,7 @@ void Player::update(const float dt, World* world)
 
     // y velocity
     m_vel.y += gravity * dt;
+    m_vel.y = std::min(maxVelY, m_vel.y);
     if (m_jumping < jumpBuf)
     {
         if (m_falling < fallBuf)
