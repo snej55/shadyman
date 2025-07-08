@@ -16,7 +16,7 @@ void Player::loadAnim(AssetManager* assets)
     m_idleAnim = new Anim{9, 14, 6, 0.2f, true, assets->getTexture("player/idle")};
     m_runAnim = new Anim{9, 14, 10, 0.35f, true, assets->getTexture("player/run")};
     m_jumpAnim = new Anim{9, 14, 1, 0.1f, true, assets->getTexture("player/jump")};
-    m_landAnim = new Anim{9, 14, 8, 0.3f, false, assets->getTexture("player/land")};
+    m_landAnim = new Anim{9, 14, 8, 0.5f, false, assets->getTexture("player/land")};
     std::cout << "Loaded animations!\n";
 
     m_anim = m_idleAnim;

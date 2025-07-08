@@ -124,16 +124,16 @@ void Game::drawFPS()
 
 void Game::handleControls()
 {
-    if (IsKeyPressed(KEY_UP))
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     {
         m_player.getController()->setControl(C_UP, true);
         m_player.jump();
-    } else if (IsKeyReleased(KEY_UP))
+    } else if (IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))
     {
         m_player.getController()->setControl(C_UP, false);
     }
 
-    m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT));
-    m_player.getController()->setControl(C_LEFT, IsKeyDown(KEY_LEFT));
-    m_player.getController()->setControl(C_DOWN, IsKeyDown(KEY_DOWN));
+    m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
+    m_player.getController()->setControl(C_LEFT, IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A));
+    m_player.getController()->setControl(C_DOWN, IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S));
 }
