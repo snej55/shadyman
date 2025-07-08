@@ -4,7 +4,7 @@ Game for SoM game jam.
 
 ## TODO:
  - [X] Player movement + collisions
- - [ ] Player animations
+ - [X] Player animations
  - [ ] Blobbos
  - [ ] Fighting
  - [ ] Penguins
