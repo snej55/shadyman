@@ -5,7 +5,7 @@ namespace CST
 {
     inline constexpr int SCR_WIDTH {1000};
     inline constexpr int SCR_HEIGHT {800};
-    inline constexpr float SCR_VRATIO {3.f};
+    inline constexpr float SCR_VRATIO {4.f};
 
     inline const char* WIN_NAME {"Shady Man"};
 

@@ -37,6 +37,12 @@ void Game::update()
     // ------ do rendering ------  //
     
     ClearBackground({0, 0, 0, 0xFF});
+
+    m_scroll.x += (m_player.getPos().x - static_cast<float>(m_width) / 2.f - m_scroll.x) * m_dt;
+    m_scroll.y += (m_player.getPos().y - static_cast<float>(m_height) / 2.f - m_scroll.y)* m_dt;
+
+    m_scroll.x = std::max(static_cast<float>(CST::TILE_SIZE), std::min(m_scroll.x, static_cast<float>(CST::TILE_SIZE * CST::CHUNK_SIZE * CST::LEVEL_WIDTH)));
+    m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
     
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);
