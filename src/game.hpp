@@ -55,7 +55,7 @@ private:
     World m_world{};
     AssetManager m_assets{};
     Player m_player{{20.f, 20.f}, {7, 14}};
-    Entity m_entity {{50.f, 10.f}, {6, 7}, "blobbo"};
+    Blobbo m_entity {{100.f, 10.f}};
 
     std::string m_mapPath{"data/maps/0.json"};
 

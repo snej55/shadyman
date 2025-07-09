@@ -119,7 +119,7 @@ void Blobbo::update(const float dt, World* world)
 
 void Blobbo::render(const vec2<int>& scroll)
 {
-    m_anim->render(m_pos, scroll);
+    m_anim->render({m_pos.x - 1.0f, m_pos.y - 1.0f}, scroll);
 }
 
 void Blobbo::handleAnimations(const float dt)
