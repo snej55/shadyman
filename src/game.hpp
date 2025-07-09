@@ -11,6 +11,8 @@
 
 #include <string>
 
+#define DEBUG_INFO_ENABLED
+
 class Game
 {
 public:

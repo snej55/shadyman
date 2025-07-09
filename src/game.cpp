@@ -34,6 +34,7 @@ void Game::update()
     handleControls();
 
     m_player.update(m_dt, &m_world);
+    m_entity.update(m_dt, &m_world, &m_player);
 
     // -------------------------- //
     // ------ do rendering ------  //
@@ -51,13 +52,11 @@ void Game::update()
 
     m_player.draw(renderScroll);
 
-    m_entity.update(m_dt, &m_world);
     m_entity.render(renderScroll);
 
     // -------------------------- //
 
     checkScreenResize();
-    drawFPS();
 }
 
 void Game::run()
@@ -83,6 +82,10 @@ void Game::run()
             m_srcRect,
             m_destRect, 
             Vector2{0, 0}, 0, WHITE);  
+        
+#ifdef DEBUG_INFO_ENABLED
+        drawFPS();
+#endif
 
         EndDrawing();
 
@@ -130,8 +133,8 @@ void Game::drawFPS()
     ss << "Frame time: " << frameTime << " ms";
     DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
     ss.str("");
-    ss << "Win. Dimensions: " << GetScreenWidth() << " * " << GetScreenHeight();
-    DrawText(ss.str().c_str(), 5, 16, 10, WHITE);
+    ss << "Window dimensions: " << m_width << " * " << m_height << ""; 
+    DrawText(ss.str().c_str(), 5, 15, 10, WHITE);
 }
 
 void Game::handleControls()

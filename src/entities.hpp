@@ -7,6 +7,7 @@
 #include "tiles.hpp"
 #include "assets.hpp"
 #include "anim.hpp"
+#include "player.hpp"
 
 #include <string>
 
@@ -61,10 +62,13 @@ public:
     ~Blobbo();
 
     virtual void init(AssetManager* assets);
-    virtual void update(float dt, World* world);
+    virtual void update(float dt, World* world, Player* player);
     virtual void render(const vec2<int>& scroll);
 
     void handleAnimations(float dt);
+
+    void setFlipped(const bool val) {m_flipped = val;}
+    [[nodiscard]] bool getFlipped() const {return m_flipped;}
 
 private:
     Anim* m_idleAnim{nullptr};
@@ -74,6 +78,8 @@ private:
     Anim* m_attackAnim{nullptr};
 
     Anim* m_anim{nullptr};
+
+    bool m_flipped{false};
 };
 
 #endif

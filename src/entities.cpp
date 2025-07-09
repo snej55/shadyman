@@ -26,7 +26,7 @@ void Entity::update(const float dt, World* world)
 
     vec2<float> movement{m_vel.x * dt, m_vel.y * dt};
 
-    m_vel.x += movement.x;
+    m_pos.x += movement.x;
 
     std::array<Rectangle, 9> rects{};
     world->getTilesAroundPos(getCenter(), rects);
@@ -103,7 +103,7 @@ Blobbo::~Blobbo()
 void Blobbo::init(AssetManager* assets)
 {
     m_idleAnim = new Anim{8, 8, 5, 0.2, true, assets->getTexture("blobbo/idle")};
-    m_runAnim = new Anim{8, 8, 4, 0.3, true, assets->getTexture("blobbo/run")};
+    m_runAnim = new Anim{8, 8, 4, 0.2, true, assets->getTexture("blobbo/run")};
     m_attackAnim = new Anim{8, 8, 6, 0.5, true, assets->getTexture("blobbo/attack")};
     m_hurt = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/hurt")};
     m_damage = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/damage")};
@@ -111,18 +111,40 @@ void Blobbo::init(AssetManager* assets)
     m_anim = m_idleAnim;
 }
 
-void Blobbo::update(const float dt, World* world)
+void Blobbo::update(const float dt, World* world, Player* player)
 {
     handleAnimations(dt);
+    if (std::abs(player->getPos().x - m_pos.x) < 192.f)
+    {
+        if (player->getPos().x > m_pos.x + 10.f)
+        {
+            m_vel.x += 0.3f * dt;
+            m_flipped = false;
+        } else if (player->getPos().x < m_pos.x - 10.f)
+        {
+            m_vel.x -= 0.3f * dt;
+            m_flipped = true;
+        }
+    }
     Entity::update(dt, world);
 }
 
 void Blobbo::render(const vec2<int>& scroll)
 {
     m_anim->render({m_pos.x - 1.0f, m_pos.y - 1.0f}, scroll);
+    m_anim->setFlipped(m_flipped);
 }
 
 void Blobbo::handleAnimations(const float dt)
 {
+    if (m_falling > 3.0f)
+    {
+        m_anim = m_runAnim;
+    } else if (std::abs(m_vel.x) > 0.1f)
+    {
+        m_anim = m_runAnim;
+    } else {
+        m_anim = m_idleAnim;
+    }
     m_anim->tick(dt);
 }
