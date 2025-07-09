@@ -22,7 +22,7 @@ void Game::init()
 
     m_player.loadAnim(&m_assets);
 
-    m_entity.init(&m_assets);
+    m_entityManager.addEntity(EnemyType::BLOBBO, {50, 10}, &m_assets);
 
     std::cout << "Initialized!\n";
 }
@@ -34,7 +34,6 @@ void Game::update()
     handleControls();
 
     m_player.update(m_dt, &m_world);
-    m_entity.update(m_dt, &m_world, &m_player);
 
     // -------------------------- //
     // ------ do rendering ------  //
@@ -52,7 +51,7 @@ void Game::update()
 
     m_player.draw(renderScroll);
 
-    m_entity.render(renderScroll);
+    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll);
 
     // -------------------------- //
 
@@ -81,7 +80,7 @@ void Game::run()
         DrawTexturePro(m_targetBuffer.texture, 
             m_srcRect,
             m_destRect, 
-            Vector2{0, 0}, 0, WHITE);  
+            Vector2{0, 0}, 0, WHITE);
         
 #ifdef DEBUG_INFO_ENABLED
         drawFPS();

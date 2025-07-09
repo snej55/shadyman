@@ -78,7 +78,7 @@ public:
 
     void update(float dt, World* world, Player* player, const vec2<int>& scroll);
     
-    void addEntity(EnemyType type, const vec2<float>& pos);
+    void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
     
 private:
     std::vector<Entity*> m_entities{};  

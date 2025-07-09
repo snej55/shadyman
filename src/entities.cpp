@@ -117,16 +117,24 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     }), m_entities.end());
 }
 
-void EntityManager::addEntity(EnemyType type, const vec2<float>& pos)
+void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
 {
     switch (type)
     {
         case EnemyType::BLOBBO:
-            m_entities.push_back(new Blobbo{pos});
-            break;
+            { // NOTE: scope fixes jump to case label error
+                Blobbo* blobbo {new Blobbo{pos}};
+                blobbo->init(assets);
+                m_entities.push_back(blobbo);
+                break;
+            }
         default:
-            m_entities.push_back(new Entity{pos, {10, 10}, "dummy"});
-            break;
+            {
+                Entity* entity {new Entity{pos, {10, 10}, "dummy"}};
+                entity->init(assets);
+                m_entities.push_back(entity);
+                break;
+            }
     }
 }
 

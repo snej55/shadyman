@@ -56,8 +56,8 @@ private:
     // components
     World m_world{};
     AssetManager m_assets{};
+    EntityManager m_entityManager{};
     Player m_player{{20.f, 20.f}, {7, 14}};
-    Blobbo m_entity {{100.f, 10.f}};
 
     std::string m_mapPath{"data/maps/0.json"};
 
