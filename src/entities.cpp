@@ -120,17 +120,17 @@ void Blobbo::update(const float dt, World* world, Player* player)
     // basic movement
     if (std::abs(player->getPos().x - m_pos.x) < 192.f)
     {
-        if (player->getPos().x > m_pos.x + 10.f)
+        if (player->getPos().x > m_pos.x + 5.f)
         {
             m_vel.x += 0.3f * dt;
             m_flipped = false;
-        } else if (player->getPos().x < m_pos.x - 10.f)
+        } else if (player->getPos().x < m_pos.x - 5.f)
         {
             m_vel.x -= 0.3f * dt;
             m_flipped = true;
         }
     }
-    if (player->getCenter().y < m_pos.y - 12.f || Util::random() < 0.05 * dt)
+    if (Util::random() < 0.05 * dt)
     {
         if (m_falling < 3.0f)
         {
