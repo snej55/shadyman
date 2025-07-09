@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "constants.hpp"
+#include "util.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -34,6 +35,13 @@ void Game::update()
     handleControls();
 
     m_player.update(m_dt, &m_world);
+
+    m_timer += m_dt;
+    if (m_timer > 30.f)
+    {
+        m_timer = 0.0f;
+        m_entityManager.addEntity(EnemyType::BLOBBO, {Util::random() * 200.f + 10.f, 10}, &m_assets);
+    }
 
     // -------------------------- //
     // ------ do rendering ------  //

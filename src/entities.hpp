@@ -57,6 +57,9 @@ public:
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
     [[nodiscard]] bool getKill() const {return m_health < 0.f;}
 
+    void setWandering(const bool val) {m_wandering = val;}
+    [[nodiscard]] bool getWandering() const {return m_wandering;}
+
 protected:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -68,6 +71,8 @@ protected:
 
     float m_health{10.f};
     const float m_maxHealth{10.f};
+
+    bool m_wandering {false};
 };
 
 class EntityManager
@@ -111,6 +116,13 @@ private:
     Anim* m_anim{nullptr};
 
     bool m_flipped{false};
+
+    float m_speed = 0.2f;
+
+    float m_walk{110.0f};
+    float m_walkTarget{100.f};
+    int m_direction{1};
+    bool m_walking{true};
 };
 
 #endif

@@ -67,6 +67,7 @@ private:
     vec2<float> m_scroll{0.0f, 0.0f};
 
     float m_dt{1.0f};
+    float m_timer{0.0f};
 };
 
 #endif

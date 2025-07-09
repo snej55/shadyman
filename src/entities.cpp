@@ -97,8 +97,10 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll)
 {
+    constexpr unsigned int numAttackers {10};
     for (std::size_t i{0}; i < m_entities.size(); ++i)
     {
+        m_entities[i]->setWandering(i > numAttackers);
         m_entities[i]->update(dt, world, player);
 
         if (m_entities[i]->getKill())
@@ -173,6 +175,9 @@ void Blobbo::init(AssetManager* assets)
     m_damage = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/damage")};
 
     m_anim = m_idleAnim;
+
+    // bit of randomness
+    m_speed = Util::random() * 0.3f + 0.1f;
 }
 
 void Blobbo::update(const float dt, World* world, Player* player)
@@ -181,18 +186,41 @@ void Blobbo::update(const float dt, World* world, Player* player)
     handleAnimations(dt);
 
     // basic movement
-    if (std::abs(player->getPos().x - m_pos.x) < 192.f)
+
+    if (!m_wandering || std::abs(player->getPos().x - m_pos.x) < 24.f)
     {
-        if (player->getPos().x > m_pos.x + 5.f)
+        if (std::abs(player->getPos().x - m_pos.x) < 192.f)
         {
-            m_vel.x += 0.3f * dt;
-            m_flipped = false;
-        } else if (player->getPos().x < m_pos.x - 5.f)
-        {
-            m_vel.x -= 0.3f * dt;
-            m_flipped = true;
+            if (player->getPos().x > m_pos.x + 5.f)
+            {
+                m_vel.x += m_speed * dt;
+                m_flipped = false;
+            } else if (player->getPos().x < m_pos.x - 5.f)
+            {
+                m_vel.x -= m_speed * dt;
+                m_flipped = true;
+            }
         }
+    } else {
+        m_walk += dt;
+        if (m_walk > m_walkTarget)
+        {
+            m_walk = 0.0f;
+            m_direction = (Util::random() > 0.5f) ? -1 : 1;
+            m_walking = !m_walking;
+            m_walkTarget = m_walking ? (Util::random() * 100 + 100.f) : (Util::random() * 60.f + 20.f); 
+        }
+
+        if (m_walking)
+        {
+            m_vel.x += m_speed * static_cast<float>(m_direction);
+        } else {
+            m_vel.x += (m_vel.x * 0.1f - m_vel.x) * dt;
+        }
+
+        m_flipped = m_direction < 0;
     }
+
     if (Util::random() < 0.05 * dt)
     {
         if (m_falling < 3.0f)
