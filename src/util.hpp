@@ -28,13 +28,13 @@ namespace Util {
         return arr[static_cast<std::size_t>(std::rand() % N)];
     }
 
-    inline double random()
+    inline float random()
     {
-        return static_cast<double>((double)std::rand() / (RAND_MAX));
+        return static_cast<float>((float)std::rand() / (RAND_MAX));
     }
 
     template <typename T>
-    inline double distance(vec2<T> vec1, vec2<T> vec2)
+    inline float distance(vec2<T> vec1, vec2<T> vec2)
     {
         return std::sqrt(std::pow(vec1.y - vec2.y, 2) + std::pow(vec1.x - vec2.x, 2));
     }

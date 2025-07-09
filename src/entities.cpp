@@ -1,5 +1,6 @@
 #include "entities.hpp"
 #include "constants.hpp"
+#include "util.hpp"
 
 Entity::Entity(const vec2<float>& pos, const vec2<int>& dimensions, const std::string& name)
 : m_pos{pos}, m_dimensions{dimensions}, m_name{name}
@@ -113,7 +114,10 @@ void Blobbo::init(AssetManager* assets)
 
 void Blobbo::update(const float dt, World* world, Player* player)
 {
+    // handle animations
     handleAnimations(dt);
+
+    // basic movement
     if (std::abs(player->getPos().x - m_pos.x) < 192.f)
     {
         if (player->getPos().x > m_pos.x + 10.f)
@@ -126,14 +130,25 @@ void Blobbo::update(const float dt, World* world, Player* player)
             m_flipped = true;
         }
     }
-    if (player->getCenter().y < m_pos.y - 12.f)
+    if (player->getCenter().y < m_pos.y - 12.f || Util::random() < 0.05 * dt)
     {
         if (m_falling < 3.0f)
         {
-            m_vel.y = -3.f;
+            m_vel.y = -2.f;
             m_falling = 4.0f;
         }
     }
+    
+    // handle beef with player
+    if (player->getVel().y > 0.2f)
+    {
+        if (CheckCollisionRecs(player->getRect(), getRect()))
+        {
+            player->setVelY(-4.f);
+        }
+    }
+
+    // update physics
     Entity::update(dt, world);
 }
 

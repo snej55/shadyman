@@ -59,6 +59,10 @@ public:
     float getJumping() const {return m_jumping;}
     float getFalling() const {return m_falling;}
 
+    void setVelX(const float val) {m_vel.x = val;}
+    void setVelY(const float val) {m_vel.y = val;}
+    [[nodiscard]] const vec2<float>& getVel() const {return m_vel;} 
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
