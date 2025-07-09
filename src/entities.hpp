@@ -6,6 +6,7 @@
 #include "vec2.hpp"
 #include "tiles.hpp"
 #include "assets.hpp"
+#include "anim.hpp"
 
 #include <string>
 
@@ -51,6 +52,28 @@ protected:
     vec2<float> m_vel{};
 
     float m_falling{0.0f};
+};
+
+class Blobbo : public Entity
+{
+public:
+    Blobbo(const vec2<float>& pos);
+    ~Blobbo();
+
+    virtual void init(AssetManager* assets);
+    virtual void update(float dt, World* world);
+    virtual void render(const vec2<int>& scroll);
+
+    void handleAnimations(float dt);
+
+private:
+    Anim* m_idleAnim{nullptr};
+    Anim* m_runAnim{nullptr};
+    Anim* m_damage{nullptr};
+    Anim* m_hurt{nullptr};
+    Anim* m_attackAnim{nullptr};
+
+    Anim* m_anim{nullptr};
 };
 
 #endif

@@ -83,3 +83,46 @@ void Entity::render(const vec2<int>& scroll)
 {
     DrawRectangle(static_cast<int>(getRect().x) - scroll.x, static_cast<int>(getRect().y) - scroll.y, m_dimensions.x, m_dimensions.y, RED);
 }
+
+// --------- Blobbo --------- //
+
+Blobbo::Blobbo(const vec2<float>& pos)
+ : Entity{pos, {6, 7}, "blobbo"}
+{
+}
+
+Blobbo::~Blobbo()
+{
+    delete m_idleAnim;
+    delete m_runAnim;
+    delete m_attackAnim;
+    delete m_hurt;
+    delete m_damage;
+}
+
+void Blobbo::init(AssetManager* assets)
+{
+    m_idleAnim = new Anim{8, 8, 5, 0.2, true, assets->getTexture("blobbo/idle")};
+    m_runAnim = new Anim{8, 8, 4, 0.3, true, assets->getTexture("blobbo/run")};
+    m_attackAnim = new Anim{8, 8, 6, 0.5, true, assets->getTexture("blobbo/attack")};
+    m_hurt = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/hurt")};
+    m_damage = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/damage")};
+
+    m_anim = m_idleAnim;
+}
+
+void Blobbo::update(const float dt, World* world)
+{
+    handleAnimations(dt);
+    Entity::update(dt, world);
+}
+
+void Blobbo::render(const vec2<int>& scroll)
+{
+    m_anim->render(m_pos, scroll);
+}
+
+void Blobbo::handleAnimations(const float dt)
+{
+    m_anim->tick(dt);
+}
