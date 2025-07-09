@@ -112,9 +112,9 @@ void Player::update(const float dt, World* world)
                 m_pos.y = rect.y + rect.height; // back bro off
             } else { // hmm must be pelting from the sky
                 m_pos.y = rect.y - m_dimensions.y; // do a nice balancing act
+                m_falling = 0.0f; // reset falling
             }
             m_vel.y = 0.0f; // STOP!
-            m_falling = 0.0f; // reset falling
         }
     }
 

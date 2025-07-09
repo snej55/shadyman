@@ -66,9 +66,9 @@ void Entity::update(const float dt, World* world)
                 m_pos.y = rect.y + rect.height;
             } else { 
                 m_pos.y = rect.y - m_dimensions.y;
+                m_falling = 0.0f;
             }
             m_vel.y = 0.0f;
-            m_falling = 0.0f;
         }
     }
 
@@ -124,6 +124,14 @@ void Blobbo::update(const float dt, World* world, Player* player)
         {
             m_vel.x -= 0.3f * dt;
             m_flipped = true;
+        }
+    }
+    if (player->getCenter().y < m_pos.y - 12.f)
+    {
+        if (m_falling < 3.0f)
+        {
+            m_vel.y = -3.f;
+            m_falling = 4.0f;
         }
     }
     Entity::update(dt, world);
