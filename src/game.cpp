@@ -22,6 +22,8 @@ void Game::init()
 
     m_player.loadAnim(&m_assets);
 
+    m_entity.init(&m_assets);
+
     std::cout << "Initialized!\n";
 }
 
@@ -48,6 +50,9 @@ void Game::update()
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
     m_player.draw(renderScroll);
+
+    m_entity.update(m_dt, &m_world);
+    m_entity.render(renderScroll);
 
     // -------------------------- //
 

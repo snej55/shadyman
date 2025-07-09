@@ -81,5 +81,5 @@ void Entity::update(const float dt, World* world)
 
 void Entity::render(const vec2<int>& scroll)
 {
-    DrawRectangle(static_cast<int>(getRect().x), static_cast<int>(getRect().y), m_dimensions.x, m_dimensions.y, RED);
+    DrawRectangle(static_cast<int>(getRect().x) - scroll.x, static_cast<int>(getRect().y) - scroll.y, m_dimensions.x, m_dimensions.y, RED);
 }

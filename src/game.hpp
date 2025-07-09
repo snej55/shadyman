@@ -7,6 +7,7 @@
 #include "tiles.hpp"
 #include "assets.hpp"
 #include "player.hpp"
+#include "entities.hpp"
 
 #include <string>
 
@@ -54,6 +55,7 @@ private:
     World m_world{};
     AssetManager m_assets{};
     Player m_player{{20.f, 20.f}, {7, 14}};
+    Entity m_entity {{50.f, 10.f}, {6, 7}, "blobbo"};
 
     std::string m_mapPath{"data/maps/0.json"};
 
