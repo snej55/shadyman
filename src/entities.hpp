@@ -11,6 +11,12 @@
 
 #include <string>
 
+enum class EnemyType
+{
+    BLOBBO,
+    NONE
+};
+
 class Entity
 {
 public:
@@ -19,7 +25,7 @@ public:
     // initialize animations or something
     virtual void init(AssetManager* assets);
     // handle physics
-    virtual void update(float dt, World* world);
+    virtual void update(float dt, World* world, Player* player);
     // draw entity
     virtual void render(const vec2<int>& scroll);
 
@@ -45,6 +51,12 @@ public:
         return vec2<float>{m_pos.x + static_cast<float>(m_dimensions.x) / 2.0f, m_pos.y + static_cast<float>(m_dimensions.y) / 2.0f};
     }
 
+    void damage(const float amount) {m_health -= amount;}
+    
+    [[nodiscard]] float getHealth() const {return m_health;}
+    [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
+    [[nodiscard]] bool getKill() const {return m_health < 0.f;}
+
 protected:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -53,6 +65,25 @@ protected:
     vec2<float> m_vel{};
 
     float m_falling{0.0f};
+
+    float m_health{10.f};
+    const float m_maxHealth{10.f};
+};
+
+class EntityManager
+{
+public:
+    EntityManager();
+    ~EntityManager();
+
+    void update(float dt, World* world, Player* player, const vec2<int>& scroll);
+    
+    void addEntity(EnemyType type, const vec2<float>& pos);
+    
+private:
+    std::vector<Entity*> m_entities{};  
+
+    void free();
 };
 
 class Blobbo : public Entity

@@ -14,7 +14,7 @@ void Entity::init(AssetManager* assets)
 }
 
 // handle physics
-void Entity::update(const float dt, World* world)
+void Entity::update(const float dt, World* world, Player* player)
 {
     constexpr float gravity {0.15f};
     constexpr float friction {0.7f};
@@ -85,6 +85,61 @@ void Entity::render(const vec2<int>& scroll)
     DrawRectangle(static_cast<int>(getRect().x) - scroll.x, static_cast<int>(getRect().y) - scroll.y, m_dimensions.x, m_dimensions.y, RED);
 }
 
+// --------- Entity Manager --------- //
+EntityManager::EntityManager()
+{
+}
+
+EntityManager::~EntityManager()
+{
+    free();
+}
+
+void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll)
+{
+    for (std::size_t i{0}; i < m_entities.size(); ++i)
+    {
+        m_entities[i]->update(dt, world, player);
+
+        if (m_entities[i]->getKill())
+        {
+            delete m_entities[i];
+            m_entities[i] = nullptr;
+        } else {
+            m_entities[i]->render(scroll);
+        }
+    }
+
+    // clear deleted entities
+    m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(), [](Entity* entity)
+    {
+        return entity == nullptr;
+    }), m_entities.end());
+}
+
+void EntityManager::addEntity(EnemyType type, const vec2<float>& pos)
+{
+    switch (type)
+    {
+        case EnemyType::BLOBBO:
+            m_entities.push_back(new Blobbo{pos});
+            break;
+        default:
+            m_entities.push_back(new Entity{pos, {10, 10}, "dummy"});
+            break;
+    }
+}
+
+void EntityManager::free()
+{
+    for (std::size_t i{0}; i < m_entities.size(); ++i)
+    {
+        delete m_entities[i];
+        m_entities[i] = nullptr;
+    }
+    m_entities.clear();
+}
+
 // --------- Blobbo --------- //
 
 Blobbo::Blobbo(const vec2<float>& pos)
@@ -149,7 +204,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
     }
 
     // update physics
-    Entity::update(dt, world);
+    Entity::update(dt, world, player);
 }
 
 void Blobbo::render(const vec2<int>& scroll)
