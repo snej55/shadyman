@@ -56,7 +56,6 @@ void Entity::update(const float dt, World* world, Player* player)
     }
 
     m_pos.y += movement.y;
-    world->getTilesAroundPos(getCenter(), rects);
     // same for y motion
     for (const Rectangle& rect : rects)
     {
@@ -97,7 +96,7 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll)
 {
-    constexpr unsigned int numAttackers {10};
+    constexpr unsigned int numAttackers {15};
     for (std::size_t i{0}; i < m_entities.size(); ++i)
     {
         m_entities[i]->setWandering(i > numAttackers);
@@ -187,7 +186,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
 
     // basic movement
 
-    if (!m_wandering || std::abs(player->getPos().x - m_pos.x) < 24.f)
+    if (!m_wandering)
     {
         if (std::abs(player->getPos().x - m_pos.x) < 192.f)
         {
@@ -233,7 +232,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
     // handle beef with player
     if (player->getVel().y > 0.2f)
     {
-        if (CheckCollisionRecs(player->getRect(), getRect()))
+        if (CheckCollisionRecs(player->getRect(), getRect()) && m_vel.y < 1.0f)
         {
             player->setVelY(-4.f);
         }
