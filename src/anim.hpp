@@ -70,6 +70,10 @@ public:
     [[nodiscard]] int getHeight() const {return m_height;}
     [[nodiscard]] int getLength() const {return m_length;}
     
+    void setSpeed(const float val)
+    {
+        m_speed = std::max(0.0f, val);
+    }
     [[nodiscard]] float getSpeed() const {return m_speed;}
 
     void setFlipped(const bool val)

@@ -22,6 +22,7 @@ void AssetManager::init()
     addTexture("blobbo/hurt", "data/images/blobbo/hurt.png");
     addTexture("blobbo/run", "data/images/blobbo/run.png");
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
+    addTexture("blasters/default", "data/images/blasters/blaster.png");
 
     std::cout << "Loaded textures!\n";
 }
