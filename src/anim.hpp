@@ -21,7 +21,7 @@ public:
     {
         if (m_tex != nullptr)
         {
-            DrawTexturePro(*m_tex, getSourceRect(), {pos.x - (float)scroll.x, pos.y - (float)scroll.y, (float)m_width, (float)m_height}, {m_origin.x, m_origin.y}, m_angle, WHITE);
+            DrawTexturePro(*m_tex, getSourceRect(), {std::floor(pos.x - (float)scroll.x), std::floor(pos.y - (float)scroll.y), (float)m_width, (float)m_height}, {std::floor(m_origin.x), std::floor(m_origin.y)}, m_angle, WHITE);
         }
     }
 
@@ -53,8 +53,8 @@ public:
 
     Rectangle getSourceRect() const
     {
-        return Rectangle{static_cast<float>(m_step * m_width), 0.f,
-            static_cast<float>(m_flipped ? -m_width : m_width), static_cast<float>(m_height)};
+        return Rectangle{std::floor(static_cast<float>(m_step * m_width)), 0.f,
+            std::floor(static_cast<float>(m_flipped ? -m_width : m_width)), std::floor(static_cast<float>(m_height))};
     }
 
     vec2<float> getCenter() const

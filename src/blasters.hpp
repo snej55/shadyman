@@ -10,7 +10,7 @@
 class Blaster
 {
 public:
-    Blaster(Player* player, const std::string& name, const vec2<float>& offset);
+    Blaster(Player* player, const std::string& name, const vec2<float>& offset, float armLength);
     ~Blaster();
 
     virtual void init(AssetManager* assets);
@@ -37,6 +37,7 @@ protected:
     std::string m_name;
 
     vec2<float> m_offset;
+    float m_armLength;
     vec2<float> m_pos{};
     float m_angle{0.0f};
     bool m_flipped{false};

@@ -63,6 +63,8 @@ public:
     void setVelY(const float val) {m_vel.y = val;}
     [[nodiscard]] const vec2<float>& getVel() const {return m_vel;} 
 
+    [[nodiscard]] bool getFlipped() const {return m_flipped;}
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
