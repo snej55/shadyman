@@ -21,7 +21,7 @@ public:
     {
         if (m_tex != nullptr)
         {
-            DrawTexturePro(*m_tex, getSourceRect(), {pos.x - (float)scroll.x, pos.y - (float)scroll.y, (float)m_width, (float)m_height}, {0.f, 0.f}, m_angle, WHITE);
+            DrawTexturePro(*m_tex, getSourceRect(), {pos.x - (float)scroll.x, pos.y - (float)scroll.y, (float)m_width, (float)m_height}, {m_origin.x, m_origin.y}, m_angle, WHITE);
         }
     }
 
@@ -94,6 +94,9 @@ public:
     void setAngle(const float val) {m_angle = val;}
     [[nodiscard]] float getAngle() const {return m_angle;}
 
+    void setOrigin(const vec2<float>& val) {m_origin = val;}
+    [[nodiscard]] vec2<float> getOrigin() const {return m_origin;}
+
 private:
     int m_width;
     int m_height;
@@ -109,6 +112,7 @@ private:
     bool m_finished{false};
 
     float m_angle{0.0f};
+    vec2<float> m_origin{0.0f, 0.0f};
 };
 
 #endif

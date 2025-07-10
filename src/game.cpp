@@ -25,6 +25,9 @@ void Game::init()
 
     m_entityManager.addEntity(EnemyType::BLOBBO, {50, 10}, &m_assets);
 
+    m_blaster = new Blaster{&m_player, "default",  {5.f, 5.f}};
+    m_blaster->init(&m_assets);
+
     std::cout << "Initialized!\n";
 }
 
@@ -35,6 +38,7 @@ void Game::update()
     handleControls();
 
     m_player.update(m_dt, &m_world);
+    m_blaster->update(m_dt);
 
     m_timer += m_dt;
     if (m_timer > 60.f)
@@ -58,6 +62,7 @@ void Game::update()
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
     m_player.draw(renderScroll);
+    m_blaster->render(renderScroll);
 
     m_entityManager.update(m_dt, &m_world, &m_player, renderScroll);
 
@@ -105,6 +110,7 @@ void Game::run()
 
 void Game::close()
 {
+    delete m_blaster;
     UnloadRenderTexture(m_targetBuffer);
     CloseWindow();
     std::cout << "Closed!" << std::endl;

@@ -8,6 +8,7 @@
 #include "assets.hpp"
 #include "player.hpp"
 #include "entities.hpp"
+#include "blasters.hpp"
 
 #include <string>
 
@@ -58,6 +59,7 @@ private:
     AssetManager m_assets{};
     EntityManager m_entityManager{};
     Player m_player{{20.f, 20.f}, {7, 14}};
+    Blaster* m_blaster{nullptr};
 
     std::string m_mapPath{"data/maps/0.json"};
 

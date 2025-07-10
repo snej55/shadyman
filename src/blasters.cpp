@@ -14,10 +14,12 @@ Blaster::~Blaster()
 void Blaster::init(AssetManager* assets)
 {
     m_anim = new Anim{12, 5, 3, 0.1f, true, assets->getTexture("blasters/default")};
+    m_anim->setOrigin({6.f, 2.5f});
 }
 
 void Blaster::update(const float dt)
 {
+    m_pos = m_player->getCenter();
     m_anim->tick(dt);
 }
 
