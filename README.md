@@ -6,7 +6,8 @@ Game for SoM game jam.
  - [X] Player movement + collisions
  - [X] Player animations
  - [X] Blobbos
- - [ ] Blasters
+ - [X] Blasters
+ - [ ] Springs with blaster (recoil, etc)
  - [ ] Bullets
  - [ ] Melee knife/slash
  - [ ] Player health bar
@@ -20,6 +21,7 @@ Game for SoM game jam.
  - [ ] Inventory
  - [ ] Fighting
  - [ ] Penguins
+ - [ ] Pausing
  - [ ] Add spawners to level editor
  - [ ] Render with shader
  - [ ] Explosions!

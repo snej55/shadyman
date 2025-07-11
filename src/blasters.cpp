@@ -10,7 +10,6 @@ Blaster::~Blaster()
     free();
 }
 
-
 void Blaster::init(AssetManager* assets)
 {
     m_anim = new Anim{12, 5, 3, 0.5f, true, assets->getTexture("blasters/default")};
@@ -22,6 +21,7 @@ void Blaster::update(const float dt)
     m_pos = m_player->getCenter();
     m_flipped = m_player->getFlipped();
     m_anim->tick(dt);
+    // m_anim->setAngle(m_anim->getAngle() + dt * 15.f);
 }
 
 void Blaster::free()
