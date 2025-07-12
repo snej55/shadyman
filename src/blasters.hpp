@@ -10,10 +10,10 @@
 
 struct Bullet
 {
-    vec2<float> pos;
-    float speed;
-    float angle;
-    bool kill{false};
+  vec2<float> pos;
+  float speed;
+  float angle;
+  bool kill{false};
 };
 
 struct BlasterStats
