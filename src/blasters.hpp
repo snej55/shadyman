@@ -16,10 +16,18 @@ struct Bullet
     bool kill{false};
 };
 
+struct BlasterStats
+{
+    float speed;
+    float rate;
+    float armLength;
+    float halfLength;
+};
+
 class Blaster
 {
 public:
-    Blaster(Player* player, const std::string& name, const vec2<float>& offset, float armLength);
+    Blaster(Player* player, const std::string& name, const vec2<float>& offset);
     ~Blaster();
 
     virtual void init(AssetManager* assets);
@@ -47,12 +55,21 @@ public:
 
     const std::vector<Bullet*>& getBullets() const {return m_bullets;}
 
+    [[nodiscard]] virtual Anim* getAnim() const {return m_anim;}
+    [[nodiscard]] virtual Anim* getBulletAnim() const {return m_bulletAnim;}
+
+    BlasterStats stats {
+        5.f, // speed
+        1.f, // rate
+        7.f, // armLength
+        4.f  // halfLength
+    };
+
 protected:
     Player* m_player;
     std::string m_name;
 
     vec2<float> m_offset;
-    float m_armLength;
     vec2<float> m_pos{};
     float m_angle{0.0f};
     bool m_flipped{false};
@@ -61,6 +78,7 @@ protected:
     float m_rate{0.0f};
 
     Anim* m_anim{nullptr};
+    Anim* m_bulletAnim{nullptr};
 
     std::vector<Bullet*> m_bullets{};
 };

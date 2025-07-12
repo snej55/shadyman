@@ -8,7 +8,7 @@ Game for SoM game jam.
  - [X] Blobbos
  - [X] Blasters
  - [ ] Springs with blaster (recoil, etc)
- - [ ] Bullets
+ - [X] Bullets
  - [ ] Melee knife/slash
  - [ ] Player health bar
  - [ ] Player health pot

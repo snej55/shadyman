@@ -1,8 +1,8 @@
 #include "blasters.hpp"
 #include "util.hpp"
 
-Blaster::Blaster(Player* player, const std::string& name, const vec2<float>& offset, const float armLength)
- : m_player{player}, m_name{name}, m_offset{offset}, m_armLength{armLength}
+Blaster::Blaster(Player* player, const std::string& name, const vec2<float>& offset)
+ : m_player{player}, m_name{name}, m_offset{offset}
 {
 }
 
@@ -61,25 +61,24 @@ void Blaster::render(const vec2<int>& scroll)
     }
 
     m_anim->setFlipped(m_flipped);
-    m_anim->render({m_pos.x + m_offset.x + (m_flipped ? -m_armLength : m_armLength), m_pos.y + m_offset.y}, scroll);
+    m_anim->render({m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength), m_pos.y + m_offset.y}, scroll);
 }
 
 void Blaster::fire()
 {
     m_bullets.emplace_back(new Bullet{{
-        m_pos.x + m_offset.x + (m_flipped ? -m_armLength : m_armLength) * 2.f, // pos
+        m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, // pos
         m_pos.y + m_offset.y},
-        2.f, // speed
+        stats.speed, // speed
         m_flipped ? PI : 0.f}); // angle
 }
 
 void Blaster::updateBullet(Bullet* bullet, const float dt, World* world)
 {
-    constexpr float halfLength {5.f};
     bullet->pos.x += std::cos(bullet->angle) * bullet->speed * dt;
     bullet->pos.y += std::sin(bullet->angle) * bullet->speed * dt;
-    Tile* tile {world->getTileAt(bullet->pos.x + std::cos(bullet->angle) * halfLength, 
-                                 bullet->pos.y + std::sin(bullet->angle) * halfLength)};
+    Tile* tile {world->getTileAt(bullet->pos.x + std::cos(bullet->angle) * stats.halfLength, 
+                                 bullet->pos.y + std::sin(bullet->angle) * stats.halfLength)};
     if (tile != nullptr)
     {
         if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
@@ -91,5 +90,6 @@ void Blaster::updateBullet(Bullet* bullet, const float dt, World* world)
 
 void Blaster::renderBullet(Bullet* bullet, const vec2<int>& scroll)
 {
+    // if ()
     DrawRectangle(static_cast<int>(bullet->pos.x) - scroll.x, static_cast<int>(bullet->pos.y) - scroll.y, 10, 10, RED);
 }
