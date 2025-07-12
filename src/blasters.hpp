@@ -6,6 +6,15 @@
 #include "assets.hpp"
 
 #include <string>
+#include <string_view>
+
+struct Bullet
+{
+    vec2<float> pos;
+    float speed;
+    float angle;
+    bool kill{false};
+};
 
 class Blaster
 {
@@ -14,10 +23,14 @@ public:
     ~Blaster();
 
     virtual void init(AssetManager* assets);
-    virtual void update(float dt);
+    virtual void update(float dt, World* world);
     virtual void free();
 
     virtual void render(const vec2<int>& scroll);
+
+    virtual void fire();
+    virtual void updateBullet(Bullet* bullet, float dt, World* world);
+    virtual void renderBullet(Bullet* bullet, const vec2<int>& scroll);
 
     [[nodiscard]] Player* getPlayer() const {return m_player;}
     [[nodiscard]] std::string_view getName() const {return m_name;}
@@ -31,6 +44,8 @@ public:
     }
     [[nodiscard]] vec2<float> getOffset() const {return m_offset;}
     [[nodiscard]] vec2<float> getPos() const {return m_pos;}
+
+    const std::vector<Bullet*>& getBullets() const {return m_bullets;}
 
 protected:
     Player* m_player;
@@ -46,6 +61,8 @@ protected:
     float m_rate{0.0f};
 
     Anim* m_anim{nullptr};
+
+    std::vector<Bullet*> m_bullets{};
 };
 
 #endif

@@ -38,7 +38,7 @@ void Game::update()
     handleControls();
 
     m_player.update(m_dt, &m_world);
-    m_blaster->update(m_dt);
+    m_blaster->update(m_dt, &m_world);
 
     m_timer += m_dt;
     if (m_timer > 60.f)
@@ -159,6 +159,11 @@ void Game::handleControls()
     } else if (IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W))
     {
         m_player.getController()->setControl(C_UP, false);
+    }
+
+    if (IsKeyPressed(KEY_X) || IsKeyPressed(KEY_SPACE))
+    {
+        m_blaster->fire();
     }
 
     m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
