@@ -10,10 +10,10 @@
 
 struct Bullet
 {
-  vec2<float> pos;
-  float speed;
-  float angle;
-  bool kill{false};
+    vec2<float> pos;
+    float speed;
+    float angle;
+    bool kill{false};
 };
 
 struct BlasterStats
@@ -58,7 +58,8 @@ public:
     [[nodiscard]] virtual Anim* getAnim() const {return m_anim;}
     [[nodiscard]] virtual Anim* getBulletAnim() const {return m_bulletAnim;}
 
-    BlasterStats stats {
+    BlasterStats stats
+    {
         5.f, // speed
         1.f, // rate
         7.f, // armLength

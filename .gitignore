@@ -3,3 +3,4 @@
 /.kdev4/
 shadyman.kdev4
 /.cache/
+*.directory
