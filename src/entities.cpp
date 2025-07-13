@@ -10,7 +10,7 @@ Entity::Entity(const vec2<float>& pos, const vec2<int>& dimensions, const std::s
 // load assets or smth
 void Entity::init(AssetManager* assets)
 {
-    std::cout << "Initialized `" << m_name << "`!\n"; 
+    std::cout << "Initialized `" << m_name << "`!\n";
 }
 
 // handle physics
@@ -64,7 +64,7 @@ void Entity::update(const float dt, World* world, Player* player)
             if (movement.y < 0.0f)
             {
                 m_pos.y = rect.y + rect.height;
-            } else { 
+            } else {
                 m_pos.y = rect.y - m_dimensions.y;
                 m_falling = 0.0f;
             }
@@ -94,7 +94,7 @@ EntityManager::~EntityManager()
     free();
 }
 
-void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll)
+void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster)
 {
     constexpr unsigned int numAttackers {15};
     for (std::size_t i{0}; i < m_entities.size(); ++i)
@@ -207,7 +207,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
             m_walk = 0.0f;
             m_direction = (Util::random() > 0.5f) ? -1 : 1;
             m_walking = !m_walking;
-            m_walkTarget = m_walking ? (Util::random() * 100 + 100.f) : (Util::random() * 60.f + 20.f); 
+            m_walkTarget = m_walking ? (Util::random() * 100 + 100.f) : (Util::random() * 60.f + 20.f);
         }
 
         if (m_walking)
@@ -228,7 +228,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
             m_falling = 4.0f;
         }
     }
-    
+
     // handle beef with player
     if (player->getVel().y > 0.2f)
     {

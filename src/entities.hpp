@@ -8,6 +8,7 @@
 #include "assets.hpp"
 #include "anim.hpp"
 #include "player.hpp"
+#include "blasters.hpp"
 
 #include <string>
 
@@ -52,7 +53,7 @@ public:
     }
 
     void damage(const float amount) {m_health -= amount;}
-    
+
     [[nodiscard]] float getHealth() const {return m_health;}
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
     [[nodiscard]] bool getKill() const {return m_health < 0.f;}
@@ -71,6 +72,8 @@ protected:
 
     float m_health{10.f};
     const float m_maxHealth{10.f};
+    const float m_recoveryTime {10.f};
+    float m_recovery{99.f};
 
     bool m_wandering {false};
 };
@@ -81,12 +84,12 @@ public:
     EntityManager();
     ~EntityManager();
 
-    void update(float dt, World* world, Player* player, const vec2<int>& scroll);
-    
+    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster);
+
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
-    
+
 private:
-    std::vector<Entity*> m_entities{};  
+    std::vector<Entity*> m_entities{};
 
     void free();
 };

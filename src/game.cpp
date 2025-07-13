@@ -49,22 +49,22 @@ void Game::update()
 
     // -------------------------- //
     // ------ do rendering ------  //
-    
+
     ClearBackground({30, 70, 118, 0xFF});
 
-    m_scroll.x += (m_player.getPos().x - static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - m_scroll.x) / 5 * m_dt;
-    m_scroll.y += (m_player.getPos().y - static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - m_scroll.y) / 10 * m_dt;
+    m_scroll.x += std::floor((m_player.getPos().x - static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - m_scroll.x) / 6) * m_dt;
+    m_scroll.y += std::floor((m_player.getPos().y - static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - m_scroll.y) / 10) * m_dt;
 
     m_scroll.x = std::max(static_cast<float>(CST::TILE_SIZE), std::min(m_scroll.x, static_cast<float>(CST::TILE_SIZE * CST::CHUNK_SIZE * CST::LEVEL_WIDTH)));
     m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
-    
+
     vec2<int> renderScroll {static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)};
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
     m_player.draw(renderScroll);
     m_blaster->render(renderScroll);
 
-    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll);
+    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster);
 
     // -------------------------- //
 
@@ -81,20 +81,20 @@ void Game::run()
     {
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
-        
+
         // update components and do rendering stuff
         update();
-        
+
         // end rendering to screen buffer
         EndTextureMode();
 
         BeginDrawing();
-        
-        DrawTexturePro(m_targetBuffer.texture, 
+
+        DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
-            m_destRect, 
+            m_destRect,
             Vector2{0, 0}, 0, WHITE);
-        
+
 #ifdef DEBUG_INFO_ENABLED
         drawFPS();
 #endif
@@ -146,7 +146,7 @@ void Game::drawFPS()
     ss << "Frame time: " << frameTime << " ms";
     DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
     ss.str("");
-    ss << "Window dimensions: " << m_width << " * " << m_height << ""; 
+    ss << "Window dimensions: " << m_width << " * " << m_height << "";
     DrawText(ss.str().c_str(), 5, 15, 10, WHITE);
 }
 
