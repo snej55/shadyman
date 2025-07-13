@@ -18,10 +18,14 @@ struct Bullet
 
 struct BlasterStats
 {
-    float speed;
-    float rate;
-    float armLength;
-    float halfLength;
+    float speed; // bullet speed
+    float rate; // fire rate
+    float armLength; // arm length
+    float halfLength; // half length of bullet
+    float damage; // bullet damage
+    float knockBack; // bullet damage
+    float recoil; // gun recoil animation
+    float bulletRange; // bullet rect size
 };
 
 class Blaster
@@ -63,7 +67,11 @@ public:
         5.f, // speed
         1.f, // rate
         7.f, // armLength
-        4.f  // halfLength
+        4.f, // halfLength
+        4.f, // damage
+        5.f, // knockBack
+        0.2f, // recoil
+        2.f, // bulletRange
     };
 
 protected:

@@ -1,6 +1,8 @@
 #include "entities.hpp"
+#include "blasters.hpp"
 #include "constants.hpp"
 #include "util.hpp"
+#include <raylib.h>
 
 Entity::Entity(const vec2<float>& pos, const vec2<int>& dimensions, const std::string& name)
 : m_pos{pos}, m_dimensions{dimensions}, m_name{name}
@@ -20,6 +22,11 @@ void Entity::update(const float dt, World* world, Player* player)
     constexpr float friction {0.7f};
 
     m_falling += dt;
+    m_recovery += dt;
+
+    // prevent overflow error lol?
+    m_falling = std::min(10000.f, m_falling);
+    m_recovery = std::min(10000.f, m_recovery);
 
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
     m_vel.y += gravity * dt;
@@ -79,6 +86,12 @@ void Entity::update(const float dt, World* world, Player* player)
     }
 }
 
+void Entity::damage(const float amount)
+{
+    m_health -= amount;
+    m_recovery = 0.0f;
+}
+
 void Entity::render(const vec2<int>& scroll)
 {
     DrawRectangle(static_cast<int>(getRect().x) - scroll.x, static_cast<int>(getRect().y) - scroll.y, m_dimensions.x, m_dimensions.y, RED);
@@ -96,11 +109,29 @@ EntityManager::~EntityManager()
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster)
 {
+    const std::vector<Bullet*>& bullets {blaster->getBullets()};
+    const BlasterStats* stats {&blaster->stats};
+
     constexpr unsigned int numAttackers {15};
     for (std::size_t i{0}; i < m_entities.size(); ++i)
     {
         m_entities[i]->setWandering(i > numAttackers);
         m_entities[i]->update(dt, world, player);
+
+        // handle bullet collisions
+        for (Bullet* bullet : bullets)
+        {
+            if (CheckCollisionRecs({
+                bullet->pos.x + std::cos(bullet->angle) * stats->halfLength - stats->bulletRange * 0.5f,
+                bullet->pos.y + std::sin(bullet->angle) * stats->halfLength - stats->bulletRange * 0.5f,
+                stats->bulletRange,
+                stats->bulletRange
+            }, m_entities[i]->getRect()))
+            {
+                bullet->kill = true;
+                m_entities[i]->damage(stats->damage);
+            }
+        }
 
         if (m_entities[i]->getKill())
         {
@@ -130,7 +161,7 @@ void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManag
                 break;
             }
         default:
-            {
+            { // "" ""
                 Entity* entity {new Entity{pos, {10, 10}, "dummy"}};
                 entity->init(assets);
                 m_entities.push_back(entity);
@@ -258,6 +289,11 @@ void Blobbo::handleAnimations(const float dt)
         m_anim = m_runAnim;
     } else {
         m_anim = m_idleAnim;
+    }
+
+    if (!getRecovered())
+    {
+        m_anim = m_damage;
     }
     m_anim->tick(dt);
 }

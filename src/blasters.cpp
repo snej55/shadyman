@@ -102,6 +102,5 @@ void Blaster::renderBullet(Bullet* bullet, const vec2<int>& scroll)
     {
         m_bulletAnim->setFlipped(std::cos(bullet->angle) < 0.0f);
         m_bulletAnim->render({bullet->pos.x, bullet->pos.y - 1.f}, scroll);
-        // DrawRectangle(static_cast<int>(bullet->pos.x) - scroll.x, static_cast<int>(bullet->pos.y) - scroll.y, 10, 10, RED);
     }
 }

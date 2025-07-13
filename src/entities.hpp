@@ -52,7 +52,7 @@ public:
         return vec2<float>{m_pos.x + static_cast<float>(m_dimensions.x) / 2.0f, m_pos.y + static_cast<float>(m_dimensions.y) / 2.0f};
     }
 
-    void damage(const float amount) {m_health -= amount;}
+    void damage(float amount);
 
     [[nodiscard]] float getHealth() const {return m_health;}
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
@@ -60,6 +60,12 @@ public:
 
     void setWandering(const bool val) {m_wandering = val;}
     [[nodiscard]] bool getWandering() const {return m_wandering;}
+
+    [[nodiscard]] float getRecoveryTime() const {return m_recoveryTime;}
+    [[nodiscard]] float getRevovery() const {return m_recovery;}
+    [[nodiscard]] bool getRecovered() const {
+        return m_recoveryTime < m_recovery;
+    }
 
 protected:
     vec2<float> m_pos;
