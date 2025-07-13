@@ -61,9 +61,14 @@ public:
 
     void setVelX(const float val) {m_vel.x = val;}
     void setVelY(const float val) {m_vel.y = val;}
-    [[nodiscard]] const vec2<float>& getVel() const {return m_vel;} 
+    [[nodiscard]] const vec2<float>& getVel() const {return m_vel;}
 
     [[nodiscard]] bool getFlipped() const {return m_flipped;}
+
+    void setHealth(const float val) {m_health = val;}
+    [[nodiscard]] float getHealth() const {return m_health;}
+    void setMaxHealth(const float val) {m_maxHealth = val;}
+    [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
 
 private:
     vec2<float> m_pos;
@@ -84,6 +89,9 @@ private:
 
     bool m_flipped{false};
     bool m_grounded{false};
+
+    float m_health{50.f};
+    float m_maxHealth{50.f};
 
     // free animations
     void free();

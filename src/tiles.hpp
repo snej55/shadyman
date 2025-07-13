@@ -13,8 +13,6 @@ using json = nlohmann::json;
 #include <vector>
 #include <array>
 #include <map>
-#include <cmath>
-#include <fstream>
 
 enum class TileType
 {
@@ -54,7 +52,7 @@ struct Chunk
 
 struct DecorChunk
 {
-    vec2<int> pos;  
+    vec2<int> pos;
     std::vector<Decor> decor{};
 };
 
@@ -73,10 +71,10 @@ public:
     TileType getTileType(int type);
 
     DecorType getDecorType(int type);
-    
+
     Texture2D* getTileTex(const Tile& tile, AssetManager* assets) const;
     Texture2D* getDecorTex(const Decor& tile, AssetManager* assets) const;
-    
+
     Rectangle getClipRect(const Tile& tile) const;
 
     Rectangle getDecorClipRect(const Decor& tile) const;
@@ -87,7 +85,7 @@ public:
     void render(const vec2<int>& scroll, int width, int height, AssetManager* assets);
 
     void loadFromFile(const char* path);
-    
+
 private:
     Chunk m_chunks[CST::NUM_CHUNKS];
     DecorChunk m_decorChunks[CST::NUM_CHUNKS];

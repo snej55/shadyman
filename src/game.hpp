@@ -3,7 +3,6 @@
 
 #include "raylib.h"
 
-#include "constants.hpp"
 #include "tiles.hpp"
 #include "assets.hpp"
 #include "player.hpp"
@@ -29,7 +28,7 @@ public:
     void run();
 
     void close();
-    
+
     // other stuff
 
     // check if screen has been resized

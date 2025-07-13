@@ -154,7 +154,7 @@ void Player::handleAnimations(const float dt, const float fallBuf)
         {
             m_grounded = true;
         }
-    } else 
+    } else
     {
         m_anim = m_idleAnim;
     }

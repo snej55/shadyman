@@ -1,6 +1,8 @@
 #include "tiles.hpp"
 #include "util.hpp"
 
+#include <fstream>
+
 Chunk* World::getChunkAt(const float x, const float y)
 {
     vec2<int> chunk_loc {static_cast<int>(std::floor(x / (float)CST::TILE_SIZE / (float)CST::CHUNK_SIZE)), static_cast<int>(std::floor(y / (float)CST::TILE_SIZE / (float)CST::CHUNK_SIZE))};
@@ -104,7 +106,7 @@ Texture2D* World::getDecorTex(const Decor& tile, AssetManager* assets) const
 
 Rectangle World::getClipRect(const Tile& tile) const
 {
-    Rectangle clip{(tile.variant % 4) * CST::TILE_SIZE, static_cast<int>((tile.variant - (tile.variant % 4)) / 4) * CST::TILE_SIZE, CST::TILE_SIZE, CST::TILE_SIZE};
+    Rectangle clip{static_cast<float>((tile.variant % 4) * CST::TILE_SIZE), static_cast<float>(static_cast<int>((tile.variant - (tile.variant % 4)) / 4) * CST::TILE_SIZE), CST::TILE_SIZE, CST::TILE_SIZE};
     return clip;
 }
 

@@ -1,7 +1,6 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <array>
 #include <vector>
 #include <cstdlib>
 #include <cmath>
