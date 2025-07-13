@@ -3,26 +3,16 @@
 Game for SoM game jam.
 
 ## TODO:
- - [X] Player movement + collisions
- - [X] Player animations
- - [X] Blobbos
- - [X] Blasters
- - [ ] Springs with blaster (recoil, etc)
- - [X] Bullets
- - [ ] Melee knife/slash
+ - [ ] Melee weapon
  - [ ] Player health bar
- - [ ] Player health pot
- - [ ] Blobbo squash frame
+ - [ ] Blobbo attack
+ - [ ] Red screen border flash on damage
+ - [ ] Player damage
+ - [ ] Blaster fire rate
+ - [ ] Enemy knock back
  - [ ] Shop
- - [ ] Sparks
- - [ ] Shockwaves
- - [ ] Smoke
- - [ ] Dust
- - [ ] Inventory
- - [ ] Fighting
- - [ ] Penguins
- - [ ] Pausing
- - [ ] Add spawners to level editor
- - [ ] Render with shader
- - [ ] Explosions!
- - [ ] Settings (screenshake, smoothscroll toggles, screen scale)
+
+## Maybe?
+ - [ ] Grass
+ - [ ] Shaders
+ - [ ] Health bar preview

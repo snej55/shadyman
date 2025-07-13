@@ -17,7 +17,7 @@ CONVERT_TYPES = {
     2: 'decor'
 }
 AUTO_TILE_TYPES = {'grass', 'sand'}
-AUTO_TILE_MAP = {'0011': 1, '1011': 2, '1001': 3, '0001': 4, '0111': 5, '1111': 6, '1101': 7, '0101': 8, 
+AUTO_TILE_MAP = {'0011': 1, '1011': 2, '1001': 3, '0001': 4, '0111': 5, '1111': 6, '1101': 7, '0101': 8,
                 '0110': 9, '1110': 10, '1100': 11, '0100': 12, '0010': 13, '1010': 14, '1000': 15, '0000': 16}
 
 class Editor:
@@ -55,7 +55,7 @@ class Editor:
         for key in self.assets:
             for surf in self.assets[key]:
                 surf.set_colorkey((0, 0, 0))
-        
+
         self.click = False
         self.right_click = False
 
@@ -68,12 +68,12 @@ class Editor:
         self.tile_variant = 0
 
         self.grid = True
-    
+
     def create_new(self, path):
         f = open(path, 'w')
         json.dump({'level': {'tiles': [], 'off_grid': []}}, f)
         f.close()
-    
+
     def load(self, path):
         try:
             f = open(path, 'r')
@@ -94,7 +94,7 @@ class Editor:
         except FileNotFoundError:
             self.create_new(path)
             self.load(path)
-    
+
     def save(self, path):
         with open(path, 'w') as f:
             tiles = []
@@ -113,7 +113,7 @@ class Editor:
                 off_grid.append({'pos': tile['pos'], 'type': tile_type, 'variant': tile['variant']});
             json.dump({'level': {'tiles': tiles, 'off_grid': off_grid}}, f)
             print("Saved level data to `{path}`")
-    
+
     def auto_tile(self):
         for loc in self.tile_map:
             tile = self.tile_map[loc]
@@ -135,7 +135,7 @@ class Editor:
         self.running = False
         pygame.quit()
         sys.exit()
-    
+
     def draw_tile_grid(self, scroll, size, color):
         tile_size = [TILE_SIZE * size[0], TILE_SIZE * size[1]]
         length = math.ceil(self.screen.get_width() / tile_size[0]) + 2
@@ -144,7 +144,7 @@ class Editor:
             pygame.draw.line(self.screen, color, ((x - 1) * tile_size[0] - (scroll[0] % tile_size[0]), 0), ((x - 1) * tile_size[0] - (scroll[0] % tile_size[0]), self.screen.get_height()))
         for y in range(height):
             pygame.draw.line(self.screen, color, (0, (y - 1) * tile_size[1] - (scroll[1] % tile_size[1])), (self.screen.get_width(), (y - 1) * tile_size[1] - (scroll[1] % tile_size[1])))
-    
+
     def draw_grid(self):
         self.draw_tile_grid(self.scroll, [1, 1], (50, 50, 50))
         self.draw_tile_grid(self.scroll, [CHUNK_SIZE, CHUNK_SIZE], (100, 100, 255))
@@ -152,7 +152,7 @@ class Editor:
         pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, -self.scroll.y), (-self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
         pygame.draw.line(self.screen, (255, 255, 255), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, -self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
         pygame.draw.line(self.screen, (255, 255, 255), (-self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), (LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE - self.scroll.x, LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE - self.scroll.y), 1)
-    
+
     def draw_tiles(self):
         for x in range(math.floor(self.scroll.x / TILE_SIZE), math.floor((self.scroll.x + self.screen.get_width()) // TILE_SIZE + 1)):
             for y in range(math.floor(self.scroll.y / TILE_SIZE), math.floor((self.scroll.y + self.screen.get_height()) // TILE_SIZE + 1)):
@@ -178,7 +178,7 @@ class Editor:
             tile_surf.set_colorkey((0, 0, 0))
             tiles.append(tile_surf)
         return tiles
-    
+
     def update(self):
         self.scroll.x += (int(self.controls['right']) - int(self.controls['left'])) * 5 * self.dt
         self.scroll.y += (int(self.controls['down']) - int(self.controls['up'])) * 5 * self.dt
@@ -203,7 +203,7 @@ class Editor:
                 if tile_loc in self.tile_map:
                     del self.tile_map[tile_loc]
 
-        # ---------- Do drawing ---------- # 
+        # ---------- Do drawing ---------- #
         self.screen.fill((0, 0, 0))
         self.draw_grid()
         for tile in self.off_grid: # tile: [pos, type, variant] absolute pos
@@ -230,48 +230,48 @@ class Editor:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.close()
-                    if event.key == pygame.K_t:
+                    elif event.key == pygame.K_t:
                         self.auto_tile()
-                    if event.key == pygame.K_o:
+                    elif event.key == pygame.K_o:
                         self.save(MAP)
-                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.controls["right"] = True
-                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         self.controls["left"] = True
-                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    elif event.key == pygame.K_UP or event.key == pygame.K_w:
                         self.controls["up"] = True
-                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         self.controls["down"] = True
-                    if event.key == pygame.K_LSHIFT:
+                    elif event.key == pygame.K_LSHIFT:
                         self.controls['l_shift'] = True
-                    if event.key == pygame.K_g:
+                    elif event.key == pygame.K_g:
                         self.grid = not self.grid
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         self.controls["right"] = False
-                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         self.controls["left"] = False
                     if event.key == pygame.K_UP or event.key == pygame.K_w:
                         self.controls["up"] = False
-                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         self.controls["down"] = False
-                    if event.key == pygame.K_LSHIFT:
+                    elif event.key == pygame.K_LSHIFT:
                         self.controls['l_shift'] = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.click = True
-                    if event.button == 3:
+                    elif event.button == 3:
                         self.right_click = True
-                    if self.controls['l_shift']:
+                    elif self.controls['l_shift']:
                         if event.button == 4:
                             self.tile_variant = (self.tile_variant - 1) % len(self.assets[self.tile_list[self.tile_type]])
-                        if event.button == 5:
+                        elif event.button == 5:
                             self.tile_variant = (self.tile_variant + 1) % len(self.assets[self.tile_list[self.tile_type]])
                     else:
                         if event.button == 4:
                             self.tile_type = (self.tile_type - 1) % len(self.tile_list)
                             self.tile_variant = 0
-                        if event.button == 5:
+                        elif event.button == 5:
                             self.tile_type = (self.tile_type + 1) % len(self.tile_list)
                             self.tile_variant = 0
                     if not self.grid:
@@ -279,7 +279,7 @@ class Editor:
                         mouse_pos = [math.floor(mouse_pos[0] / 2 + self.scroll.x), math.floor(mouse_pos[1] / 2 + self.scroll.y)]
                         if self.click:
                             if 0 <= mouse_pos[0] < LEVEL_WIDTH * CHUNK_SIZE * TILE_SIZE and 0 <= mouse_pos[1] < LEVEL_HEIGHT * CHUNK_SIZE * TILE_SIZE:
-                                self.off_grid.append({'pos': mouse_pos, 'type': self.tile_list[self.tile_type], 'variant': self.tile_variant}) 
+                                self.off_grid.append({'pos': mouse_pos, 'type': self.tile_list[self.tile_type], 'variant': self.tile_variant})
                         if self.right_click:
                             for i, tile in sorted(enumerate(self.off_grid), reverse=True):
                                 tile_img = self.assets[tile['type']][tile['variant']];
