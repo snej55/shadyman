@@ -33,6 +33,7 @@ void Player::update(const float dt, World* world)
     constexpr float fallBuf {5.f};
     constexpr float jumpHeight {3.5f};
     constexpr float maxVelY {8.f};
+    constexpr float offsetDecay {0.5f};
 
     m_falling += dt;
     m_jumping += dt;
@@ -66,7 +67,7 @@ void Player::update(const float dt, World* world)
         }
     }
 
-    vec2<float> movement {m_vel.x * dt, m_vel.y * dt};
+    vec2<float> movement{m_vel.x * dt + m_offset.x * dt, m_vel.y * dt + m_offset.y * dt};
 
     m_pos.x += movement.x;
 
@@ -128,6 +129,21 @@ void Player::update(const float dt, World* world)
 
     // update animation
     handleAnimations(dt, fallBuf);
+
+    // update offset
+    if (m_offset.x > 0.f)
+    {
+        m_offset.x = std::max(0.f, m_offset.x - offsetDecay * dt);
+    } else if (m_offset.x < 0.f) {
+        m_offset.x = std::min(0.f, m_offset.x + offsetDecay * dt);
+    }
+
+    if (m_offset.y > 0.f)
+    {
+        m_offset.y = std::max(0.f, m_offset.y - offsetDecay * dt);
+    } else if (m_offset.x < 0.f) {
+        m_offset.y = std::min(0.f, m_offset.y + offsetDecay * dt);
+    }
 }
 
 void Player::handleAnimations(const float dt, const float fallBuf)

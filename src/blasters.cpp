@@ -29,6 +29,7 @@ void Blaster::update(const float dt, World* world)
     m_anim->setSpeed(std::max(0.f, 1.f - m_timer * 0.01f));
     m_anim->tick(dt);
     m_anim->setAngle(m_angle);
+    m_angle = m_flipped ? PI : 0.f;
 
     // update bullets
     for (std::size_t i{0}; i < m_bullets.size(); ++i)
@@ -83,6 +84,7 @@ void Blaster::fire()
             m_flipped ? PI : 0.f}); // angle
         // reset timer
         m_timer = 0.0f;
+        m_player->setOffset({-std::cos(m_angle) * stats.knockBack, -std::sin(m_angle) * stats.knockBack});
     }
 }
 

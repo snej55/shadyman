@@ -75,6 +75,11 @@ public:
     [[nodiscard]] float getRecovery() const {return m_recovery;}
     [[nodiscard]] float getRecoverTime() const {return m_recoveryTime;}
 
+    void setOffsetX(const float val) {m_offset.x = val;}
+    void setOffsetY(const float val) {m_offset.y = val;}
+    void setOffset(const vec2<float>& val) {m_offset = val;}
+    [[nodiscard]] vec2<float> getOffset() {return m_offset;}
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -101,6 +106,8 @@ private:
 
     float m_recovery{99.f};
     const float m_recoveryTime{10.f};
+
+    vec2<float> m_offset{0.f, 0.f};
 
     // free animations
     void free();
