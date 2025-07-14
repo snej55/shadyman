@@ -87,6 +87,7 @@ private:
     Anim* m_runAnim{nullptr};
     Anim* m_jumpAnim{nullptr};
     Anim* m_landAnim{nullptr};
+    Anim* m_damageAnim{nullptr};
     Anim* m_anim{nullptr}; // anim to play
 
     bool m_flipped{false};

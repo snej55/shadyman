@@ -17,6 +17,7 @@ void AssetManager::init()
     addTexture("player/run", "data/images/player/v2/run.png");
     addTexture("player/jump", "data/images/player/v2/jump.png");
     addTexture("player/land", "data/images/player/v2/land.png");
+    addTexture("player/damage", "data/images/player/v2/damage.png");
     addTexture("blobbo/attack", "data/images/blobbo/attack.png");
     addTexture("blobbo/idle", "data/images/blobbo/idle.png");
     addTexture("blobbo/hurt", "data/images/blobbo/hurt.png");
