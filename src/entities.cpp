@@ -23,20 +23,25 @@ void Entity::update(const float dt, World* world, Player* player)
     constexpr float friction {0.75f};
     constexpr float offsetDecay {0.3f};
 
+    // air time counter
     m_falling += dt;
+    // recover counter
     m_recovery += dt;
 
     // prevent overflow error lol?
     m_falling = std::min(10000.f, m_falling);
     m_recovery = std::min(10000.f, m_recovery);
 
+    // take acount for deltatime with friction calculation
     m_vel.x += (m_vel.x * friction - m_vel.x) * dt;
+    // gravity
     m_vel.y += gravity * dt;
     m_vel.y = std::min(m_vel.y, 8.0f); // plz don't fall through blocks
 
     // frame movement = velocity + offset (knockback)
     vec2<float> movement{m_vel.x * dt + m_offset.x * dt, m_vel.y * dt + m_offset.y * dt};
 
+    // 1. Horizontal movement
     m_pos.x += movement.x;
 
     std::array<Rectangle, 9> rects{};
@@ -65,7 +70,9 @@ void Entity::update(const float dt, World* world, Player* player)
         m_pos.x = CST::LEVEL_WIDTH * CST::CHUNK_SIZE * CST::TILE_SIZE - m_dimensions.x;
     }
 
+    // 2. Vertical movement
     m_pos.y += movement.y;
+
     // same for y motion
     for (const Rectangle& rect : rects)
     {
@@ -274,7 +281,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
         m_flipped = m_direction < 0;
     }
 
-    if (Util::random() < 0.05 * dt)
+    if (Util::random() < (m_attacking ? 0.1 : 0.05) * dt)
     {
         if (m_falling < 3.0f)
         {

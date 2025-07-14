@@ -70,6 +70,8 @@ public:
     void setMaxHealth(const float val) {m_maxHealth = val;}
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
 
+    void damage(float amount);
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -92,6 +94,9 @@ private:
 
     float m_health{50.f};
     float m_maxHealth{50.f};
+
+    float m_recovery{99.f};
+    const float m_recoveryTime{10.f};
 
     // free animations
     void free();
