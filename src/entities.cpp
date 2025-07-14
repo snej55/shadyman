@@ -21,6 +21,7 @@ void Entity::update(const float dt, World* world, Player* player)
 {
     constexpr float gravity {0.15f};
     constexpr float friction {0.75f};
+    constexpr float offsetDecay {0.3f};
 
     m_falling += dt;
     m_recovery += dt;
@@ -33,7 +34,8 @@ void Entity::update(const float dt, World* world, Player* player)
     m_vel.y += gravity * dt;
     m_vel.y = std::min(m_vel.y, 8.0f); // plz don't fall through blocks
 
-    vec2<float> movement{m_vel.x * dt, m_vel.y * dt};
+    // frame movement = velocity + offset (knockback)
+    vec2<float> movement{m_vel.x * dt + m_offset.x * dt, m_vel.y * dt + m_offset.y * dt};
 
     m_pos.x += movement.x;
 
@@ -85,6 +87,21 @@ void Entity::update(const float dt, World* world, Player* player)
     {
         m_pos.y = CST::LEVEL_HEIGHT * CST::CHUNK_SIZE * CST::TILE_SIZE - m_dimensions.y;
     }
+
+    // update offset
+    if (m_offset.x > 0.f)
+    {
+        m_offset.x = std::max(0.f, m_offset.x - offsetDecay * dt);
+    } else if (m_offset.x < 0.f) {
+        m_offset.x = std::min(0.f, m_offset.x + offsetDecay * dt);
+    }
+
+    if (m_offset.y > 0.f)
+    {
+        m_offset.y = std::max(0.f, m_offset.y - offsetDecay * dt);
+    } else if (m_offset.x < 0.f) {
+        m_offset.y = std::min(0.f, m_offset.y + offsetDecay * dt);
+    }
 }
 
 void Entity::damage(const float amount)
@@ -123,6 +140,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
         // handle bullet collisions
         for (Bullet* bullet : bullets)
         {
+            // check if bullet collided
             if (CheckCollisionRecs({
                 bullet->pos.x + std::cos(bullet->angle) * stats->halfLength - stats->bulletRange * 0.5f,
                 bullet->pos.y + std::sin(bullet->angle) * stats->halfLength - stats->bulletRange * 0.5f,
@@ -130,6 +148,9 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 stats->bulletRange
             }, m_entities[i]->getRect()))
             {
+                // knockback enemy
+                m_entities[i]->setOffset({std::cos(bullet->angle) * stats->knockBack, std::sin(bullet->angle) * stats->knockBack});
+                // damage enemy and get rid of bullet
                 bullet->kill = true;
                 m_entities[i]->damage(stats->damage);
             }
