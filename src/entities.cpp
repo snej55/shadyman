@@ -115,6 +115,7 @@ void Entity::damage(const float amount)
 {
     m_health -= amount;
     m_recovery = 0.0f;
+    m_attacking = true;
 }
 
 void Entity::render(const vec2<int>& scroll)
@@ -248,7 +249,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
     // basic movement
 
     m_walk += dt;
-    if (!m_wandering)
+    if (!m_wandering || m_attacking || (std::abs(player->getCenter().x - m_pos.x) < CST::TILE_SIZE * 2 && std::abs(player->getCenter().y - m_pos.y) < CST::TILE_SIZE * 2))
     {
         if (std::abs(player->getPos().x - m_pos.x) < 192.f)
         {
@@ -261,6 +262,10 @@ void Blobbo::update(const float dt, World* world, Player* player)
                 m_vel.x -= m_speed * dt;
                 m_flipped = true;
             }
+        }
+        if (CheckCollisionRecs(player->getRect(), getRect()))
+        {
+            player->damage(m_danger);
         }
     } else {
         if (m_walk > m_walkTarget)

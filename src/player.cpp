@@ -17,6 +17,7 @@ void Player::loadAnim(AssetManager* assets)
     m_runAnim = new Anim{9, 14, 10, 0.35f, true, assets->getTexture("player/run")};
     m_jumpAnim = new Anim{9, 14, 1, 0.1f, true, assets->getTexture("player/jump")};
     m_landAnim = new Anim{9, 14, 8, 0.5f, false, assets->getTexture("player/land")};
+    m_damageAnim = new Anim{9, 14, 14, 1.0f, true, assets->getTexture("player/damage")};
     std::cout << "Loaded animations!\n";
 
     m_anim = m_idleAnim;
@@ -35,6 +36,7 @@ void Player::update(const float dt, World* world)
 
     m_falling += dt;
     m_jumping += dt;
+    m_recovery += dt;
 
     // x velocity
     if (m_controller.getControl(C_RIGHT))
@@ -158,6 +160,12 @@ void Player::handleAnimations(const float dt, const float fallBuf)
     {
         m_anim = m_idleAnim;
     }
+
+    if (m_recovery < m_recoveryTime)
+    {
+        m_anim = m_damageAnim;
+    }
+
     m_anim->tick(dt);
     m_anim->setFlipped(m_flipped);
 }
@@ -180,5 +188,15 @@ void Player::free()
     delete m_runAnim;
     delete m_jumpAnim;
     delete m_landAnim;
+    delete m_damageAnim;
     std::cout << "Freed animations!\n";
+}
+
+void Player::damage(float amount)
+{
+    if (m_recovery > m_recoveryTime)
+    {
+        m_health -= amount;
+        m_recovery = 0.0f;
+    }
 }

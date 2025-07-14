@@ -24,7 +24,7 @@ public:
     Controller() = default;
 
     void setControl(const Control control, const bool val) {m_controls[control] = val;}
-    bool getControl(const Control control) {return m_controls[control];}
+    [[nodiscard]] bool getControl(const Control control) {return m_controls[control];}
 
 private:
     std::map<Control, bool> m_controls {{C_UP, false}, {C_DOWN, false}, {C_LEFT, false}, {C_RIGHT, false}};
@@ -45,19 +45,19 @@ public:
 
     void jump();
 
-    Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
-    vec2<float> getCenter()
+    [[nodiscard]] Rectangle getRect() {return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};}
+    [[nodiscard]] vec2<float> getCenter()
     {
         return vec2<float>{m_pos.x + static_cast<float>(m_dimensions.x) / 2.0f, m_pos.y + static_cast<float>(m_dimensions.y) / 2.0f};
     }
 
-    const vec2<float>& getPos() const {return m_pos;}
-    const vec2<int>& getDimensions() const {return m_dimensions;}
+    [[nodiscard]] const vec2<float>& getPos() const {return m_pos;}
+    [[nodiscard]] const vec2<int>& getDimensions() const {return m_dimensions;}
 
-    Controller* getController() {return &m_controller;}
+    [[nodiscard]] Controller* getController() {return &m_controller;}
 
-    float getJumping() const {return m_jumping;}
-    float getFalling() const {return m_falling;}
+    [[nodiscard]] float getJumping() const {return m_jumping;}
+    [[nodiscard]] float getFalling() const {return m_falling;}
 
     void setVelX(const float val) {m_vel.x = val;}
     void setVelY(const float val) {m_vel.y = val;}
@@ -71,6 +71,9 @@ public:
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
 
     void damage(float amount);
+    [[nodiscard]] bool getRecovered() const {return m_recovery > m_recoveryTime;}
+    [[nodiscard]] float getRecovery() const {return m_recovery;}
+    [[nodiscard]] float getRecoverTime() const {return m_recoveryTime;}
 
 private:
     vec2<float> m_pos;

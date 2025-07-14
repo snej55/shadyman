@@ -1,6 +1,8 @@
 #include "blasters.hpp"
 #include "util.hpp"
 
+#include <cmath>
+
 Blaster::Blaster(Player* player, const std::string& name, const vec2<float>& offset)
  : m_player{player}, m_name{name}, m_offset{offset}
 {
@@ -24,6 +26,7 @@ void Blaster::update(const float dt, World* world)
     m_timer += dt;
     m_pos = m_player->getCenter();
     m_flipped = m_player->getFlipped();
+    m_anim->setSpeed(std::max(0.f, 1.f - m_timer * 0.01f));
     m_anim->tick(dt);
     m_anim->setAngle(m_angle);
 

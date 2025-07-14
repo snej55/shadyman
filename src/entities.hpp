@@ -75,6 +75,8 @@ public:
     void setOffset(const vec2<float>& val) {m_offset = val;}
     [[nodiscard]] vec2<float> getOffset() {return m_offset;}
 
+    [[nodiscard]] float getDanger() const {return m_danger;}
+
 protected:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -93,6 +95,8 @@ protected:
     bool m_attacking{false};
 
     vec2<float> m_offset{0.f, 0.f};
+
+    const float m_danger{3.0f}; // amount of damage enemy does
 };
 
 class EntityManager
@@ -143,6 +147,8 @@ private:
     float m_walkTarget{100.f};
     int m_direction{1};
     bool m_walking{true};
+
+    const float m_danger{4.f};
 };
 
 #endif

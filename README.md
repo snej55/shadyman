@@ -12,6 +12,7 @@ Game for SoM game jam.
  - [ ] Blaster fire rate
  - [ ] Enemy knock back
  - [ ] Shop
+ - [ ] Screenshake + reverse screenshake? (player)
 
 ## Maybe?
  - [ ] Grass

@@ -62,7 +62,11 @@ void Game::update()
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
     m_player.draw(renderScroll);
-    m_blaster->render(renderScroll);
+
+    if (m_player.getRecovery() > m_player.getRecoverTime() + 20.f)
+    {
+        m_blaster->render(renderScroll);
+    }
 
     m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster);
 
@@ -161,9 +165,12 @@ void Game::handleControls()
         m_player.getController()->setControl(C_UP, false);
     }
 
-    if (IsKeyDown(KEY_X) || IsKeyDown(KEY_SPACE))
+    if (m_player.getRecovery() > m_player.getRecoverTime() + 20.f)
     {
-        m_blaster->fire();
+        if (IsKeyDown(KEY_X) || IsKeyDown(KEY_SPACE))
+        {
+            m_blaster->fire();
+        }
     }
 
     m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
