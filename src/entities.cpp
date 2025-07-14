@@ -2,6 +2,7 @@
 #include "blasters.hpp"
 #include "constants.hpp"
 #include "util.hpp"
+
 #include <raylib.h>
 
 Entity::Entity(const vec2<float>& pos, const vec2<int>& dimensions, const std::string& name)
@@ -19,7 +20,7 @@ void Entity::init(AssetManager* assets)
 void Entity::update(const float dt, World* world, Player* player)
 {
     constexpr float gravity {0.15f};
-    constexpr float friction {0.7f};
+    constexpr float friction {0.8f};
 
     m_falling += dt;
     m_recovery += dt;
@@ -116,6 +117,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     for (std::size_t i{0}; i < m_entities.size(); ++i)
     {
         m_entities[i]->setWandering(i > numAttackers);
+        m_entities[i]->setAttacking(i < numAttackers);
         m_entities[i]->update(dt, world, player);
 
         // handle bullet collisions
@@ -200,7 +202,7 @@ void Blobbo::init(AssetManager* assets)
 {
     m_idleAnim = new Anim{8, 8, 5, 0.2, true, assets->getTexture("blobbo/idle")};
     m_runAnim = new Anim{8, 8, 4, 0.2, true, assets->getTexture("blobbo/run")};
-    m_attackAnim = new Anim{8, 8, 6, 0.5, true, assets->getTexture("blobbo/attack")};
+    m_attackAnim = new Anim{8, 8, 5, 0.5, true, assets->getTexture("blobbo/attack")};
     m_hurt = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/hurt")};
     m_damage = new Anim{8, 8, 1, 0.1, true, assets->getTexture("blobbo/damage")};
 
@@ -217,6 +219,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
 
     // basic movement
 
+    m_walk += dt;
     if (!m_wandering)
     {
         if (std::abs(player->getPos().x - m_pos.x) < 192.f)
@@ -232,7 +235,6 @@ void Blobbo::update(const float dt, World* world, Player* player)
             }
         }
     } else {
-        m_walk += dt;
         if (m_walk > m_walkTarget)
         {
             m_walk = 0.0f;
@@ -289,6 +291,11 @@ void Blobbo::handleAnimations(const float dt)
         m_anim = m_runAnim;
     } else {
         m_anim = m_idleAnim;
+    }
+
+    if (m_attacking)
+    {
+        m_anim = m_attackAnim;
     }
 
     if (!getRecovered())

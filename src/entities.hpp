@@ -67,6 +67,9 @@ public:
         return m_recoveryTime < m_recovery;
     }
 
+    void setAttacking(const bool val) {m_attacking = val;}
+    [[nodiscard]] bool getAttacking() const {return m_attacking;}
+
 protected:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
@@ -82,6 +85,7 @@ protected:
     float m_recovery{99.f};
 
     bool m_wandering {false};
+    bool m_attacking{false};
 };
 
 class EntityManager
@@ -126,7 +130,7 @@ private:
 
     bool m_flipped{false};
 
-    float m_speed = 0.2f;
+    float m_speed = 0.05f;
 
     float m_walk{110.0f};
     float m_walkTarget{100.f};

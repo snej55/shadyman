@@ -6,6 +6,7 @@ Game for SoM game jam.
  - [ ] Melee weapon
  - [ ] Player health bar
  - [ ] Blobbo attack
+ - [ ] Add direction to blobbos
  - [ ] Red screen border flash on damage
  - [ ] Player damage
  - [ ] Blaster fire rate
