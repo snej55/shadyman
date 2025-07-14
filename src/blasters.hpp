@@ -65,7 +65,7 @@ public:
     BlasterStats stats
     {
         5.f, // speed
-        1.f, // rate
+        7.f, // rate
         7.f, // armLength
         4.f, // halfLength
         4.f, // damage
@@ -90,6 +90,8 @@ protected:
     Anim* m_bulletAnim{nullptr};
 
     std::vector<Bullet*> m_bullets{};
+
+    float m_timer{0.0f};
 };
 
 #endif

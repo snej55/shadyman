@@ -161,7 +161,7 @@ void Game::handleControls()
         m_player.getController()->setControl(C_UP, false);
     }
 
-    if (IsKeyPressed(KEY_X) || IsKeyPressed(KEY_SPACE))
+    if (IsKeyDown(KEY_X) || IsKeyDown(KEY_SPACE))
     {
         m_blaster->fire();
     }

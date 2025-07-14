@@ -20,7 +20,7 @@ void Entity::init(AssetManager* assets)
 void Entity::update(const float dt, World* world, Player* player)
 {
     constexpr float gravity {0.15f};
-    constexpr float friction {0.8f};
+    constexpr float friction {0.75f};
 
     m_falling += dt;
     m_recovery += dt;

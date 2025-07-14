@@ -21,6 +21,7 @@ void Blaster::init(AssetManager* assets)
 
 void Blaster::update(const float dt, World* world)
 {
+    m_timer += dt;
     m_pos = m_player->getCenter();
     m_flipped = m_player->getFlipped();
     m_anim->tick(dt);
@@ -70,11 +71,16 @@ void Blaster::render(const vec2<int>& scroll)
 
 void Blaster::fire()
 {
-    m_bullets.emplace_back(new Bullet{{
-        m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, // pos
-        m_pos.y + m_offset.y},
-        stats.speed, // speed
-        m_flipped ? PI : 0.f}); // angle
+    if (m_timer > stats.rate)
+    {
+        m_bullets.emplace_back(new Bullet{{
+            m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, // pos
+            m_pos.y + m_offset.y},
+            stats.speed, // speed
+            m_flipped ? PI : 0.f}); // angle
+        // reset timer
+        m_timer = 0.0f;
+    }
 }
 
 void Blaster::updateBullet(Bullet* bullet, const float dt, World* world)
