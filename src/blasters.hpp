@@ -70,7 +70,7 @@ public:
         4.f, // halfLength
         4.f, // damage
         5.f, // knockBack
-        0.4f, // recoil
+        1.7f, // recoil
         2.f, // bulletRange
     };
 
