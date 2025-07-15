@@ -255,11 +255,11 @@ void Blobbo::update(const float dt, World* world, Player* player)
         {
             if (player->getPos().x > m_pos.x + 5.f)
             {
-                m_vel.x += m_speed * dt;
+                m_vel.x += m_speed * dt * 1.1f;
                 m_flipped = false;
             } else if (player->getPos().x < m_pos.x - 5.f)
             {
-                m_vel.x -= m_speed * dt;
+                m_vel.x -= m_speed * dt * 1.1f;
                 m_flipped = true;
             }
         }

@@ -69,8 +69,8 @@ public:
         7.f, // armLength
         4.f, // halfLength
         4.f, // damage
-        1.7f, // knockBack
-        0.2f, // recoil
+        5.f, // knockBack
+        0.4f, // recoil
         2.f, // bulletRange
     };
 

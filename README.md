@@ -13,6 +13,7 @@ Game for SoM game jam.
  - [ ] Enemy knock back
  - [ ] Shop
  - [ ] Screenshake + reverse screenshake? (player)
+ - [ ] Pause
 
 ## Maybe?
  - [ ] Grass

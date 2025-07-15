@@ -84,7 +84,7 @@ void Blaster::fire()
             m_flipped ? PI : 0.f}); // angle
         // reset timer
         m_timer = 0.0f;
-        m_player->setOffset({-std::cos(m_angle) * stats.knockBack, -std::sin(m_angle) * stats.knockBack});
+        m_player->setOffset({-std::cos(m_angle) * stats.recoil, -std::sin(m_angle) * stats.recoil});
     }
 }
 
