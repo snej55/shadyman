@@ -1,11 +1,13 @@
 #include "assets.hpp"
 
 #include <iostream>
+#include <raylib.h>
 
 AssetManager::~AssetManager()
 {
     freeTextures();
     freeFonts();
+    freeShaders();
 }
 
 void AssetManager::init()
@@ -27,6 +29,7 @@ void AssetManager::init()
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     addTexture("bullets/laser", "data/images/blasters/laser.png");
     addFont("pixel", "data/fonts/PixelOperator8.ttf");
+    addShader("screenShader", "data/shaders/screenShader.frag");
 
     std::cout << "Loaded textures!\n";
 }
@@ -40,9 +43,16 @@ void AssetManager::addTexture(const std::string& name, const char* path)
     m_textures.insert(std::pair<std::string, Texture2D>{name, texture});
 }
 
+// load new font
 void AssetManager::addFont(const std::string& name, const char* path)
 {
     m_fonts.insert(std::pair<std::string, Font>(name, LoadFont(path)));
+}
+
+// create new shader
+void AssetManager::addShader(const std::string& name, const char* fspath)
+{
+    m_shaders.insert(std::pair<std::string, Shader>(name, LoadShader(0, fspath)));
 }
 
 void AssetManager::freeTextures()
@@ -63,6 +73,16 @@ void AssetManager::freeFonts()
         UnloadFont(p.second);
     }
     std::cout << "Freed fonts!" << std::endl;
+}
+
+void AssetManager::freeShaders()
+{
+    for (const std::pair<std::string, Shader>& p : m_shaders)
+    {
+        std::cout << "Freed shader: `" << p.first << "`\n";
+        UnloadShader(p.second);
+    }
+    std::cout << "Freed shaders!" << std::endl;
 }
 
 bool AssetManager::textureExists(const std::string& name) const
@@ -92,5 +112,20 @@ Font* AssetManager::getFont(const std::string& name)
         return &m_fonts.find(name)->second;
     }
     std::cout << "ERROR: Could not find font with name `" << name << "`!\n";
+    return nullptr;
+}
+
+bool AssetManager::shaderExists(const std::string& name) const
+{
+    return m_shaders.find(name) != m_shaders.end();
+}
+
+Shader* AssetManager::getShader(const std::string& name)
+{
+    if (shaderExists(name))
+    {
+        return &m_shaders.find(name)->second;
+    }
+    std::cout << "ERROR: Could not find shader with name `" << name << "`!\n";
     return nullptr;
 }

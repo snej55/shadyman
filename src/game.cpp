@@ -96,10 +96,12 @@ void Game::run()
 
         BeginDrawing();
 
+        BeginShaderMode(*m_assets.getShader("screenShader"));
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
             m_destRect,
             Vector2{0, 0}, 0, WHITE);
+        EndShaderMode();
 
 #ifdef DEBUG_INFO_ENABLED
         drawFPS();
