@@ -63,14 +63,17 @@ void Blaster::free()
 
 void Blaster::render(const vec2<int>& scroll)
 {
+    m_anim->setFlipped(m_flipped);
+    m_anim->render({m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength), m_pos.y + m_offset.y}, scroll);
+}
+
+void Blaster::renderBullets(const vec2<int>& scroll)
+{
     // render bullets
     for (std::size_t i{0}; i < m_bullets.size(); ++i)
     {
         renderBullet(m_bullets[i], scroll);
     }
-
-    m_anim->setFlipped(m_flipped);
-    m_anim->render({m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength), m_pos.y + m_offset.y}, scroll);
 }
 
 void Blaster::fire()

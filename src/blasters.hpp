@@ -39,6 +39,7 @@ public:
     virtual void free();
 
     virtual void render(const vec2<int>& scroll);
+    virtual void renderBullets(const vec2<int>& scroll);
 
     virtual void fire();
     virtual void updateBullet(Bullet* bullet, float dt, World* world);
