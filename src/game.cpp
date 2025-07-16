@@ -107,6 +107,8 @@ void Game::run()
         drawFPS();
 #endif
 
+        drawUI();
+
         EndDrawing();
 
         m_dt = GetTime() - lastTime;
@@ -153,9 +155,32 @@ void Game::drawFPS()
     std::stringstream ss{};
     ss << "FPS: " << GetFPS() << "";
     DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 5}, 16, 0, WHITE);
-    ss.str("");
-    ss << "Window dimensions: " << m_width << " * " << m_height << "";
-    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 22}, 16, 0, WHITE);
+}
+
+void Game::drawUI()
+{
+    // draw bottom bar
+    DrawLineEx({0, m_height - 20 * CST::SCR_VRATIO}, {static_cast<float>(m_width), m_height - 20 * CST::SCR_VRATIO}, CST::SCR_VRATIO * 2.f, {255, 253, 240, 255});
+    DrawRectangle(0, m_height - 20 * CST::SCR_VRATIO, m_width, 20 * CST::SCR_VRATIO, {12, 19, 39, 0xFF});
+
+    // draw player health bar
+    m_playerHealth += (m_player.getHealth() - m_playerHealth) / 3.0f * m_dt; // update rendered health
+
+    // draw actual health
+    constexpr float healthBarWidth {104.f};
+    DrawRectangle(static_cast<int>(6.f * CST::SCR_VRATIO), static_cast<int>(m_height - 14 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
+        ColorLerp(Color{180, 35, 19, 255}, Color{87, 197, 43, 255}, m_playerHealth / m_player.getMaxHealth())
+    );
+    DrawRectangle(static_cast<int>(6.f * CST::SCR_VRATIO), static_cast<int>(m_height - 10 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
+        ColorLerp(Color{104, 24, 36, 255}, Color{17, 131, 55, 255}, m_playerHealth / m_player.getMaxHealth())
+    );
+
+    // draw second layer
+    Texture2D* healthBarTex = m_assets.getTexture("health_bar");
+    DrawTexturePro(*healthBarTex, Rectangle{0, 0, (float)healthBarTex->width, (float)healthBarTex->height},
+        {4.f * CST::SCR_VRATIO, m_height - 16 * CST::SCR_VRATIO, (float)healthBarTex->width * CST::SCR_VRATIO, (float)healthBarTex->height * CST::SCR_VRATIO},
+        {0.0f, 0.0f}, 0.0f, WHITE
+    );
 }
 
 void Game::handleControls()

@@ -28,6 +28,7 @@ void AssetManager::init()
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     addTexture("bullets/laser", "data/images/blasters/laser.png");
+    addTexture("health_bar", "data/images/health_bar.png");
     addFont("pixel", "data/fonts/PixelOperator8.ttf");
     addShader("screenShader", "data/shaders/screenShader.frag");
 

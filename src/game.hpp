@@ -62,15 +62,21 @@ private:
     Player m_player{{20.f, 20.f}, {7, 14}};
     Blaster* m_blaster{nullptr};
 
+    // random stuff
     std::string m_mapPath{"data/maps/0.json"};
 
+    // rendering + core
     int m_width{};
     int m_height{};
 
     vec2<float> m_scroll{0.0f, 0.0f};
 
+    // deltatime
     float m_dt{1.0f};
     float m_timer{0.0f};
+
+    // UI stuff
+    float m_playerHealth{0.0f};
 };
 
 #endif
