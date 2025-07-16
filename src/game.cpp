@@ -148,7 +148,7 @@ void Game::drawFPS()
 {
     float frameTime {GetFrameTime() * 1000.f};
     std::stringstream ss{};
-    ss << "Frame time: " << frameTime << " ms";
+    ss << "FPS: " << GetFPS() << "";
     DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
     ss.str("");
     ss << "Window dimensions: " << m_width << " * " << m_height << "";
