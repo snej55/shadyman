@@ -3,14 +3,15 @@
 Game for SoM game jam.
 
 ## TODO:
+ - [ ] UI panel
  - [ ] Melee weapon
  - [ ] Player health bar
- - [ ] Blobbo attack
+ - [X] Blobbo attack
  - [ ] Add direction to blobbos
  - [ ] Red screen border flash on damage
- - [ ] Player damage
- - [ ] Blaster fire rate
- - [ ] Enemy knock back
+ - [X] Player damage
+ - [X] Blaster fire rate
+ - [X] Enemy knock back
  - [ ] Shop
  - [ ] Screenshake + reverse screenshake? (player)
  - [ ] Pause
