@@ -20,5 +20,6 @@ Game for SoM game jam.
 
 ## Maybe?
  - [ ] Grass
- - [ ] Shaders
+ - [X] Shaders
+ - [ ] Lighting shaders
  - [ ] Health bar preview
