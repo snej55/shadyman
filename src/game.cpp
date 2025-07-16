@@ -2,6 +2,7 @@
 #include "constants.hpp"
 #include "util.hpp"
 
+#include <raylib.h>
 #include <sstream>
 #include <iostream>
 
