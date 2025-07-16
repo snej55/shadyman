@@ -5,6 +5,7 @@
 AssetManager::~AssetManager()
 {
     freeTextures();
+    freeFonts();
 }
 
 void AssetManager::init()
@@ -25,6 +26,7 @@ void AssetManager::init()
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     addTexture("bullets/laser", "data/images/blasters/laser.png");
+    addFont("pixel", "data/fonts/PixelOperator8.ttf");
 
     std::cout << "Loaded textures!\n";
 }
@@ -38,6 +40,11 @@ void AssetManager::addTexture(const std::string& name, const char* path)
     m_textures.insert(std::pair<std::string, Texture2D>{name, texture});
 }
 
+void AssetManager::addFont(const std::string& name, const char* path)
+{
+    m_fonts.insert(std::pair<std::string, Font>(name, LoadFont(path)));
+}
+
 void AssetManager::freeTextures()
 {
     for (const std::pair<std::string, Texture2D>& p : m_textures)
@@ -46,6 +53,16 @@ void AssetManager::freeTextures()
         UnloadTexture(p.second);
     }
     std::cout << "Freed textures!" << std::endl;
+}
+
+void AssetManager::freeFonts()
+{
+    for (const std::pair<std::string, Font>& p : m_fonts)
+    {
+        std::cout << "Freed font: `" << p.first << "`\n";
+        UnloadFont(p.second);
+    }
+    std::cout << "Freed fonts!" << std::endl;
 }
 
 bool AssetManager::textureExists(const std::string& name) const
@@ -60,5 +77,20 @@ Texture2D* AssetManager::getTexture(const std::string& name)
         return &m_textures.find(name)->second;
     }
     std::cout << "ERROR: Could not find texture with name `" << name << "`!\n";
+    return nullptr;
+}
+
+bool AssetManager::fontExists(const std::string& name) const
+{
+    return m_fonts.find(name) != m_fonts.end();
+}
+
+Font* AssetManager::getFont(const std::string& name)
+{
+    if (fontExists(name))
+    {
+        return &m_fonts.find(name)->second;
+    }
+    std::cout << "ERROR: Could not find font with name `" << name << "`!\n";
     return nullptr;
 }

@@ -37,6 +37,8 @@ public:
     void updateRenderBuffer(int width, int height);
     // render debug info
     void drawFPS();
+    // render ui
+    void drawUI();
 
     // handle user input
     void handleControls();

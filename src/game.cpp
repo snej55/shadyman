@@ -150,10 +150,10 @@ void Game::drawFPS()
     float frameTime {GetFrameTime() * 1000.f};
     std::stringstream ss{};
     ss << "FPS: " << GetFPS() << "";
-    DrawText(ss.str().c_str(), 5, 5, 10, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 5}, 16, 0, WHITE);
     ss.str("");
     ss << "Window dimensions: " << m_width << " * " << m_height << "";
-    DrawText(ss.str().c_str(), 5, 15, 10, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 22}, 16, 0, WHITE);
 }
 
 void Game::handleControls()
