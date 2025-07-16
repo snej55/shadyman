@@ -15,6 +15,8 @@ Game for SoM game jam.
  - [ ] Shop
  - [ ] Screenshake + reverse screenshake? (player)
  - [ ] Pause
+ - [ ] Death screen
+ - [ ] Menu screen
 
 ## Maybe?
  - [ ] Grass
