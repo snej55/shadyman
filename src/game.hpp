@@ -48,6 +48,8 @@ public:
     [[nodiscard]] Player* getPlayer() {return &m_player;}
 
     [[nodiscard]] float getDT() const {return m_dt;}
+    void setSlomo(const float val) {m_slomo = val;}
+    [[nodiscard]] float getSlomo() const {return m_slomo;}
 
 private:
     // render buffer
@@ -74,6 +76,7 @@ private:
     // deltatime
     float m_dt{1.0f};
     float m_timer{0.0f};
+    float m_slomo{1.0f};
 
     // UI stuff
     float m_playerHealth{0.0f};

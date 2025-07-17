@@ -112,10 +112,14 @@ void Game::run()
 
         EndDrawing();
 
+        // calculate deltatime
         m_dt = GetTime() - lastTime;
-        m_dt *= 60.f;
+        m_dt *= 60.f * m_slomo;
         m_dt = std::min(4.0f, m_dt);
         lastTime = GetTime();
+
+        // update slomo
+        m_slomo += (1.0f - m_slomo) * 0.05f * (m_dt / m_slomo);
     }
 }
 
