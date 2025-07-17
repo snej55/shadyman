@@ -13,7 +13,8 @@ Game for SoM game jam.
  - [X] Blaster fire rate
  - [X] Enemy knock back
  - [ ] Shop
- - [ ] Screenshake + reverse screenshake? (player)
+ - [X] Screenshake + reverse screenshake? (player)
+ - [X] Sparks
  - [ ] Pause
  - [ ] Death screen
  - [ ] Menu screen

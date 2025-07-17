@@ -60,7 +60,8 @@ void Game::update()
     m_scroll.x = std::max(static_cast<float>(CST::TILE_SIZE), std::min(m_scroll.x, static_cast<float>(CST::TILE_SIZE * CST::CHUNK_SIZE * CST::LEVEL_WIDTH)));
     m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
 
-    vec2<int> renderScroll {static_cast<int>(m_scroll.x + Util::random() * m_screenShake - m_screenShake / 2.f), static_cast<int>(m_scroll.y + Util::random() * m_screenShake - m_screenShake / 2.f)};
+    vec2<float> screenShakeOffset{Util::random() * m_screenShake - m_screenShake / 2.f, Util::random() * m_screenShake - m_screenShake / 2.f};
+    vec2<int> renderScroll {static_cast<int>(m_scroll.x + screenShakeOffset.x), static_cast<int>(m_scroll.y + screenShakeOffset.y)};
     m_screenShake = std::max(0.0f, m_screenShake - m_dt);
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
