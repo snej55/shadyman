@@ -133,6 +133,11 @@ EntityManager::~EntityManager()
     free();
 }
 
+void EntityManager::init(AssetManager* assets)
+{
+    m_sparkManager = new SparkManager{assets};
+}
+
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster)
 {
     const std::vector<Bullet*>& bullets {blaster->getBullets()};
@@ -156,11 +161,17 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 stats->bulletRange
             }, m_entities[i]->getRect()))
             {
+                // vfx
+                for (int i{0}; i < static_cast<int>(Util::random() * 10.f + 20.f); ++i)
+                {
+                    m_sparkManager->addSpark({bullet->pos.x + std::cos(bullet->angle) * stats->halfLength, bullet->pos.y + std::sin(bullet->angle) * stats->halfLength}, Util::random() * M_PI * 2.f, Util::random() * 2.f + 1.f);
+                }
                 // knockback enemy
                 m_entities[i]->setOffset({std::cos(bullet->angle) * stats->knockBack, std::sin(bullet->angle) * stats->knockBack});
                 // damage enemy and get rid of bullet
                 bullet->kill = true;
                 m_entities[i]->damage(stats->damage);
+
             }
         }
 
@@ -178,6 +189,8 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         return entity == nullptr;
     }), m_entities.end());
+
+    m_sparkManager->update(dt, scroll);
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
@@ -209,6 +222,10 @@ void EntityManager::free()
         m_entities[i] = nullptr;
     }
     m_entities.clear();
+    
+    // free vfx managers
+    delete m_sparkManager;
+    m_sparkManager = nullptr;
 }
 
 // --------- Blobbo --------- //

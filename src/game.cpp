@@ -24,12 +24,11 @@ void Game::init()
 
     m_player.loadAnim(&m_assets);
 
+    m_entityManager.init(&m_assets);
     m_entityManager.addEntity(EnemyType::BLOBBO, {50, 10}, &m_assets);
 
     m_blaster = new Blaster{&m_player, "default",  {0.f, 1.f}};
     m_blaster->init(&m_assets);
-
-    m_sparkManager = new SparkManager{&m_assets};
 
     std::cout << "Initialized!\n";
 }
@@ -73,9 +72,6 @@ void Game::update()
     m_blaster->renderBullets(renderScroll);
 
     m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster);
-
-    m_sparkManager->addSpark(m_player.getCenter(), Util::random() * M_PI * 2.f, Util::random() * 2.f + 1.f);
-    m_sparkManager->update(m_dt, renderScroll);
 
     // -------------------------- //
 
@@ -126,7 +122,6 @@ void Game::run()
 void Game::close()
 {
     delete m_blaster;
-    delete m_sparkManager;
     UnloadRenderTexture(m_targetBuffer);
     CloseWindow();
     std::cout << "Closed!" << std::endl;

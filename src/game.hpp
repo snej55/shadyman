@@ -8,7 +8,6 @@
 #include "player.hpp"
 #include "entities.hpp"
 #include "blasters.hpp"
-#include "sparks.hpp"
 
 #include <string>
 
@@ -62,7 +61,6 @@ private:
     EntityManager m_entityManager{};
     Player m_player{{20.f, 20.f}, {7, 14}};
     Blaster* m_blaster{nullptr};
-    SparkManager* m_sparkManager{nullptr};
 
     // random stuff
     std::string m_mapPath{"data/maps/0.json"};

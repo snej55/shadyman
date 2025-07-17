@@ -9,6 +9,7 @@
 #include "anim.hpp"
 #include "player.hpp"
 #include "blasters.hpp"
+#include "sparks.hpp"
 
 #include <string>
 
@@ -105,12 +106,19 @@ public:
     EntityManager();
     ~EntityManager();
 
+    void init(AssetManager* assets);
+
     void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster);
 
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
 
+    [[nodiscard]] SparkManager* getSparkManager() const {return m_sparkManager;}
+
 private:
     std::vector<Entity*> m_entities{};
+
+    // particle vfx managers
+    SparkManager* m_sparkManager{nullptr};
 
     void free();
 };

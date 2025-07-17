@@ -76,7 +76,7 @@ public:
     // returns kill
     bool updateSpark(Spark* spark, const float dt)
     {
-        constexpr float decay{0.1f};
+        constexpr float decay{0.2f};
 
         spark->pos.x += std::cos(spark->angle) * spark->speed * dt;
         spark->pos.y += std::sin(spark->angle) * spark->speed * dt;
