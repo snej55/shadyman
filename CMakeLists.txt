@@ -6,9 +6,9 @@ set(CMAKE_CPP_COMPILER g++)
 
 set(BIN_NAME main)
 
-set(SOURCES main.cpp src/game.hpp src/constants.hpp src/game.cpp src/tiles.hpp src/tiles.cpp src/vec2.hpp 
+set(SOURCES main.cpp src/game.hpp src/constants.hpp src/game.cpp src/tiles.hpp src/tiles.cpp src/vec2.hpp
 src/assets.hpp src/assets.cpp src/player.hpp src/player.cpp src/util.hpp src/anim.hpp src/entities.hpp src/entities.cpp
-src/blasters.hpp src/blasters.cpp)
+src/blasters.hpp src/blasters.cpp src/sparks.hpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 

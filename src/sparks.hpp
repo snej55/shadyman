@@ -8,6 +8,7 @@
 #include "util.hpp"  // for DrawTexturePoly
 
 #include <vector>
+#include <array>
 #include <cmath>
 #include <algorithm>
 
@@ -87,7 +88,22 @@ public:
     // render spark polygon
     void renderSpark(Spark* spark, const vec2<int>& scroll)
     {
-        // Util::DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointCount, Color tint)
+        constexpr float scale{1.0f}; // scale of spark
+        constexpr float width{0.5f}; // width between kite wings
+        constexpr float snout{0.75f}; // ratio between snout and tail
+        constexpr Color color {WHITE};
+
+        const float size{spark->speed * scale};
+        // offset for a diamond/kite shape
+        std::array<Vector2, 4> points {
+            Vector2{0.0f, 0.0f},
+            Vector2{std::cos(spark->angle - width * 0.5f) * size * snout, std::sin(spark->angle - width * 0.5f) * size * snout},
+            Vector2{std::cos(spark->angle) * size, std::sin(spark->angle) * size},
+            Vector2{std::cos(spark->angle + width * 0.5f) * size * snout, std::sin(spark->angle + width * 0.5f) * size * snout}
+        };
+
+        // draw spark polygon using blank particle texture
+        Util::DrawTexturePoly(*m_blank, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y)}, points.data(), m_texCoords.data(), 4, color);
     }
 
     [[nodiscard]] const std::vector<Spark*>& getSparks() const {return m_sparks;}
@@ -97,6 +113,12 @@ private:
     Texture2D* m_blank;
     // da sparx
     std::vector<Spark*> m_sparks{};
+    std::array<Vector2, 4> m_texCoords {
+        Vector2{0.0f, 0.0f},
+        Vector2{0.0f, 1.0f},
+        Vector2{1.0f, 1.0f},
+        Vector2{1.0f, 0.0f}
+    };
 };
 
 #endif
