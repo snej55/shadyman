@@ -27,7 +27,7 @@ public:
     // initialize animations or something
     virtual void init(AssetManager* assets);
     // handle physics
-    virtual void update(float dt, World* world, Player* player);
+    virtual void update(float dt, World* world, Player* player, float& screenShake);
     // draw entity
     virtual void render(const vec2<int>& scroll);
 
@@ -108,7 +108,7 @@ public:
 
     void init(AssetManager* assets);
 
-    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster);
+    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake);
 
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
 
@@ -130,7 +130,7 @@ public:
     ~Blobbo();
 
     virtual void init(AssetManager* assets);
-    virtual void update(float dt, World* world, Player* player);
+    virtual void update(float dt, World* world, Player* player, float& screenShake);
     virtual void render(const vec2<int>& scroll);
 
     void handleAnimations(float dt);

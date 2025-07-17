@@ -72,6 +72,7 @@ private:
     int m_height{};
 
     vec2<float> m_scroll{0.0f, 0.0f};
+    float m_screenShake{0.0f};
 
     // deltatime
     float m_dt{1.0f};

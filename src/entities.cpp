@@ -17,7 +17,7 @@ void Entity::init(AssetManager* assets)
 }
 
 // handle physics
-void Entity::update(const float dt, World* world, Player* player)
+void Entity::update(const float dt, World* world, Player* player, float& screenShake)
 {
     constexpr float gravity {0.15f};
     constexpr float friction {0.75f};
@@ -138,7 +138,7 @@ void EntityManager::init(AssetManager* assets)
     m_sparkManager = new SparkManager{assets};
 }
 
-void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster)
+void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake)
 {
     const std::vector<Bullet*>& bullets {blaster->getBullets()};
     const BlasterStats* stats {&blaster->stats};
@@ -148,7 +148,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         m_entities[i]->setWandering(i > numAttackers);
         m_entities[i]->setAttacking(i < numAttackers);
-        m_entities[i]->update(dt, world, player);
+        m_entities[i]->update(dt, world, player, screenShake);
 
         // handle bullet collisions
         for (Bullet* bullet : bullets)
@@ -172,6 +172,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 bullet->kill = true;
                 m_entities[i]->damage(stats->damage);
 
+                screenShake = std::max(screenShake, 8.f);
             }
         }
 
@@ -258,7 +259,7 @@ void Blobbo::init(AssetManager* assets)
     m_speed = Util::random() * 0.3f + 0.1f;
 }
 
-void Blobbo::update(const float dt, World* world, Player* player)
+void Blobbo::update(const float dt, World* world, Player* player, float& screenShake)
 {
     // handle animations
     handleAnimations(dt);
@@ -282,7 +283,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
         }
         if (CheckCollisionRecs(player->getRect(), getRect()))
         {
-            player->damage(m_danger);
+            player->damage(m_danger, screenShake);
         }
     } else {
         if (m_walk > m_walkTarget)
@@ -322,7 +323,7 @@ void Blobbo::update(const float dt, World* world, Player* player)
     }
 
     // update physics
-    Entity::update(dt, world, player);
+    Entity::update(dt, world, player, screenShake);
 }
 
 void Blobbo::render(const vec2<int>& scroll)

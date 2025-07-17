@@ -208,11 +208,12 @@ void Player::free()
     std::cout << "Freed animations!\n";
 }
 
-void Player::damage(float amount)
+void Player::damage(float amount, float& screenShake)
 {
     if (m_recovery > m_recoveryTime)
     {
         m_health -= amount;
         m_recovery = 0.0f;
+        screenShake = std::max(screenShake, 12.f);
     }
 }

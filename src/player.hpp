@@ -70,7 +70,7 @@ public:
     void setMaxHealth(const float val) {m_maxHealth = val;}
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
 
-    void damage(float amount);
+    void damage(float amount, float& screenShake);
     [[nodiscard]] bool getRecovered() const {return m_recovery > m_recoveryTime;}
     [[nodiscard]] float getRecovery() const {return m_recovery;}
     [[nodiscard]] float getRecoverTime() const {return m_recoveryTime;}
@@ -101,8 +101,8 @@ private:
     bool m_flipped{false};
     bool m_grounded{false};
 
-    float m_health{50.f};
-    float m_maxHealth{50.f};
+    float m_health{200.f};
+    float m_maxHealth{200.f};
 
     float m_recovery{99.f};
     const float m_recoveryTime{10.f};
