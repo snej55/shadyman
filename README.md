@@ -3,7 +3,7 @@
 Game for SoM game jam.
 
 ## TODO:
- - [ ] UI panel
+ - [X] UI panel
  - [ ] Melee weapon
  - [X] Player health bar
  - [X] Blobbo attack
