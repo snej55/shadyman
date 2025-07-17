@@ -88,22 +88,47 @@ public:
     // render spark polygon
     void renderSpark(Spark* spark, const vec2<int>& scroll)
     {
-        constexpr float scale{1.0f}; // scale of spark
+        constexpr float scale{3.0f}; // scale of spark
         constexpr float width{0.5f}; // width between kite wings
         constexpr float snout{0.75f}; // ratio between snout and tail
         constexpr Color color {WHITE};
 
         const float size{spark->speed * scale};
         // offset for a diamond/kite shape
-        std::array<Vector2, 4> points {
+        std::array<Vector2, 5> points {
             Vector2{0.0f, 0.0f},
             Vector2{std::cos(spark->angle - width * 0.5f) * size * snout, std::sin(spark->angle - width * 0.5f) * size * snout},
             Vector2{std::cos(spark->angle) * size, std::sin(spark->angle) * size},
-            Vector2{std::cos(spark->angle + width * 0.5f) * size * snout, std::sin(spark->angle + width * 0.5f) * size * snout}
+            Vector2{std::cos(spark->angle + width * 0.5f) * size * snout, std::sin(spark->angle + width * 0.5f) * size * snout},
+            Vector2{0.0f, 0.0f}
         };
 
+        rlBegin(RL_TRIANGLES);
+        rlSetTexture(m_blank->id);
+
+        rlColor4ub(color.r, color.g, color.b, color.a);
+
+        rlTexCoord2f(0.5f, 0.5f);
+
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * 0.5f) * size * snout,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * 0.5f) * size * snout);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle + width * 0.5f) * size * snout,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * 0.5f) * size * snout);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
+ 
+        rlEnd();
+        rlSetTexture(0);
+
+        // DrawTexturePro(*m_blank, {0.0f, 0.0f, 1.0f, 1.0f}, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y), size, size}, {0.0f, 0.0f}, 0.0f, RED);
         // draw spark polygon using blank particle texture
-        Util::DrawTexturePoly(*m_blank, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y)}, points.data(), m_texCoords.data(), 4, color);
+        // DrawCircle(static_cast<int>(spark->pos.x), static_cast<int>(spark->pos.y), spark->speed, color);
+        Util::DrawTexturePoly(*m_blank, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y)}, points.data(), m_texCoords.data(), 5, RED);
     }
 
     [[nodiscard]] const std::vector<Spark*>& getSparks() const {return m_sparks;}
@@ -113,11 +138,12 @@ private:
     Texture2D* m_blank;
     // da sparx
     std::vector<Spark*> m_sparks{};
-    std::array<Vector2, 4> m_texCoords {
+    std::array<Vector2, 5> m_texCoords {
         Vector2{0.0f, 0.0f},
         Vector2{0.0f, 1.0f},
         Vector2{1.0f, 1.0f},
-        Vector2{1.0f, 0.0f}
+        Vector2{1.0f, 0.0f},
+        Vector2{0.0f, 0.0f}
     };
 };
 

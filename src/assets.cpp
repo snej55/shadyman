@@ -43,8 +43,7 @@ void AssetManager::init()
 
 void AssetManager::addTexture(const std::string& name, const char* path)
 {
-    Image image {LoadImage(path)};
-    Texture2D texture {LoadTextureFromImage(image)};
+    Texture2D texture {LoadTexture(path)};
     // NOTE: Fixes weird texture wrapping bug in spritesheet animations
     SetTextureWrap(texture, TEXTURE_WRAP_CLAMP);
     m_textures.insert(std::pair<std::string, Texture2D>{name, texture});
