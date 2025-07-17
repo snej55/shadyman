@@ -5,7 +5,7 @@ Game for SoM game jam.
 ## TODO:
  - [ ] UI panel
  - [ ] Melee weapon
- - [ ] Player health bar
+ - [X] Player health bar
  - [X] Blobbo attack
  - [ ] Add direction to blobbos
  - [ ] Red screen border flash on damage
