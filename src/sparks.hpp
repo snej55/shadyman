@@ -94,15 +94,7 @@ public:
         constexpr Color color {WHITE};
 
         const float size{spark->speed * scale};
-        // offset for a diamond/kite shape
-        std::array<Vector2, 5> points {
-            Vector2{0.0f, 0.0f},
-            Vector2{std::cos(spark->angle - width * 0.5f) * size * snout, std::sin(spark->angle - width * 0.5f) * size * snout},
-            Vector2{std::cos(spark->angle) * size, std::sin(spark->angle) * size},
-            Vector2{std::cos(spark->angle + width * 0.5f) * size * snout, std::sin(spark->angle + width * 0.5f) * size * snout},
-            Vector2{0.0f, 0.0f}
-        };
-
+        
         // weird polygon rendering
         rlSetTexture(m_blank->id);
         rlBegin(RL_TRIANGLES);
@@ -112,13 +104,13 @@ public:
         rlTexCoord2f(0.5f, 0.5f);
 
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * 0.5f) * size * snout,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * 0.5f) * size * snout);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * M_PI) * size * snout,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * M_PI) * size * snout);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle + width * 0.5f) * size * snout,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * 0.5f) * size * snout);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle + width * M_PI) * size * snout,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * M_PI) * size * snout);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
