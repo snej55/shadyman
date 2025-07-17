@@ -103,8 +103,9 @@ public:
             Vector2{0.0f, 0.0f}
         };
 
-        rlBegin(RL_TRIANGLES);
+        // weird polygon rendering
         rlSetTexture(m_blank->id);
+        rlBegin(RL_TRIANGLES);
 
         rlColor4ub(color.r, color.g, color.b, color.a);
 
@@ -124,11 +125,6 @@ public:
  
         rlEnd();
         rlSetTexture(0);
-
-        // DrawTexturePro(*m_blank, {0.0f, 0.0f, 1.0f, 1.0f}, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y), size, size}, {0.0f, 0.0f}, 0.0f, RED);
-        // draw spark polygon using blank particle texture
-        // DrawCircle(static_cast<int>(spark->pos.x), static_cast<int>(spark->pos.y), spark->speed, color);
-        Util::DrawTexturePoly(*m_blank, {spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y)}, points.data(), m_texCoords.data(), 5, RED);
     }
 
     [[nodiscard]] const std::vector<Spark*>& getSparks() const {return m_sparks;}
@@ -138,13 +134,6 @@ private:
     Texture2D* m_blank;
     // da sparx
     std::vector<Spark*> m_sparks{};
-    std::array<Vector2, 5> m_texCoords {
-        Vector2{0.0f, 0.0f},
-        Vector2{0.0f, 1.0f},
-        Vector2{1.0f, 1.0f},
-        Vector2{1.0f, 0.0f},
-        Vector2{0.0f, 0.0f}
-    };
 };
 
 #endif
