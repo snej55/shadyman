@@ -13,24 +13,30 @@ AssetManager::~AssetManager()
 void AssetManager::init()
 {
     // load all da textures
+    // tiles
     addTexture("grass", "data/images/tiles/grass.png");
     addTexture("sand", "data/images/tiles/sand.png");
     addTexture("decor", "data/images/tiles/decor.png");
+    // player
     addTexture("player/idle", "data/images/player/v2/idle.png");
     addTexture("player/run", "data/images/player/v2/run.png");
     addTexture("player/jump", "data/images/player/v2/jump.png");
     addTexture("player/land", "data/images/player/v2/land.png");
     addTexture("player/damage", "data/images/player/v2/damage.png");
+    // blobbo
     addTexture("blobbo/attack", "data/images/blobbo/attack.png");
     addTexture("blobbo/idle", "data/images/blobbo/idle.png");
     addTexture("blobbo/hurt", "data/images/blobbo/hurt.png");
     addTexture("blobbo/run", "data/images/blobbo/run.png");
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
+    // blasters
     addTexture("blasters/default", "data/images/blasters/blaster.png");
+    // bullets
     addTexture("bullets/laser", "data/images/blasters/laser.png");
-    addTexture("health_bar", "data/images/health_bar.png");
-    addFont("pixel", "data/fonts/PixelOperator8.ttf");
-    addShader("screenShader", "data/shaders/screenShader.frag");
+    addTexture("health_bar", "data/images/health_bar.png"); // player health bar
+    addTexture("blank", "data/images/blank.png"); // white blank texture for particles
+    addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
+    addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
 
     std::cout << "Loaded textures!\n";
 }

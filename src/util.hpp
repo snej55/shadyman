@@ -5,6 +5,10 @@
 #include <cstdlib>
 #include <cmath>
 
+#include <raylib.h>
+#include <rlgl.h>
+#include <raymath.h>
+
 #include "./vec2.hpp"
 
 namespace Util {
@@ -83,6 +87,34 @@ namespace Util {
             }
         }
         std::cout << "}\n";
+    }
+
+    // Credit: https://www.raylib.com/examples/textures/loader.html?name=textures_polygon
+    // Draw textured polygon, defined by vertex and texture coordinates
+    // NOTE: Polygon center must have straight line path to all points
+    // without crossing perimeter, points must be in anticlockwise order
+    inline void DrawTexturePoly(Texture2D texture, Vector2 center, Vector2 *points, Vector2 *texcoords, int pointCount, Color tint)
+    {
+        rlBegin(RL_TRIANGLES);
+
+        rlSetTexture(texture.id);
+
+            rlColor4ub(tint.r, tint.g, tint.b, tint.a);
+
+            for (int i = 0; i < pointCount - 1; i++)
+            {
+                rlTexCoord2f(0.5f, 0.5f);
+                rlVertex2f(center.x, center.y);
+
+                rlTexCoord2f(texcoords[i].x, texcoords[i].y);
+                rlVertex2f(points[i].x + center.x, points[i].y + center.y);
+
+                rlTexCoord2f(texcoords[i + 1].x, texcoords[i + 1].y);
+                rlVertex2f(points[i + 1].x + center.x, points[i + 1].y + center.y);
+            }
+        rlEnd();
+
+        rlSetTexture(0);
     }
 }
 
