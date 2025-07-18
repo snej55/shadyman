@@ -61,7 +61,8 @@ void Game::update()
     m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
 
     vec2<float> screenShakeOffset{Util::random() * m_screenShake - m_screenShake / 2.f, Util::random() * m_screenShake - m_screenShake / 2.f};
-    vec2<int> renderScroll {static_cast<int>(m_scroll.x + screenShakeOffset.x), static_cast<int>(m_scroll.y + screenShakeOffset.y)};
+    constexpr float screenShakeScale {0.5f};
+    vec2<int> renderScroll {static_cast<int>(m_scroll.x + screenShakeOffset.x * screenShakeScale), static_cast<int>(m_scroll.y + screenShakeOffset.y * screenShakeScale)};
     m_screenShake = std::max(0.0f, m_screenShake - m_dt);
     m_world.render(renderScroll, m_width, m_height, &m_assets);
 
@@ -161,7 +162,8 @@ void Game::drawFPS()
     float frameTime {GetFrameTime() * 1000.f};
     std::stringstream ss{};
     ss << "FPS: " << GetFPS() << "";
-    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 5}, 16, 0, WHITE);
+
+    DrawText(ss.str().c_str(), 5, 5, 20, WHITE);
 }
 
 void Game::drawUI()
