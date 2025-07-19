@@ -6,6 +6,54 @@
 #include "assets.hpp"
 #include "vec2.hpp"
 
+class Button
+{
+public:
+    Button(vec2<float> pos, vec2<int> dimensions, Texture2D* tex, Texture2D* hoverTex)
+     : m_pos{pos}, m_dimensions{dimensions}, m_tex{tex}, m_hoverTex{hoverTex}
+    {
+    }
+
+    ~Button() = default;
+
+    void update(const float scale)
+    {
+        Vector2 mousePos = GetMousePosition();
+        mousePos /= scale;
+        m_hover = CheckCollisionPointRec(mousePos, getRect());
+    }
+
+    void render(vec2<int> scroll = {0, 0})
+    {
+        DrawTexture(m_hover ? *m_hoverTex : *m_tex, static_cast<int>(m_pos.x) - scroll.x, static_cast<int>(m_pos.y) - scroll.y, WHITE);
+    }
+
+    [[nodiscard]] Rectangle getRect() const
+    {
+        return Rectangle{m_pos.x, m_pos.y, static_cast<float>(m_dimensions.x), static_cast<float>(m_dimensions.y)};
+    }
+
+    // getters & setters
+    void setPosX(const float val) {m_pos.x = val;}
+    void setPosY(const float val) {m_pos.y = val;}
+    [[nodiscard]] vec2<float> getPos() const {return m_pos;}
+
+    [[nodiscard]] vec2<int> getDimensions() const {return m_dimensions;}
+    [[nodiscard]] Texture2D* getTex() const {return m_tex;}
+    [[nodiscard]] Texture2D* getHoverTex() const {return m_hoverTex;}
+
+    [[nodiscard]] bool getHover() const {return m_hover;}
+
+private:
+    vec2<float> m_pos;
+    vec2<int> m_dimensions;
+    Texture2D* m_tex;
+    Texture2D* m_hoverTex;
+
+    bool m_hover{false};
+};
+
+
 enum class TickState
 {
     TICK,

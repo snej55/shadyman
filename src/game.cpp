@@ -83,6 +83,7 @@ bool Game::menu()
                 0.0f,
                 WHITE
             );
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to exit controls menu", {10.f, height - 20.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * controlsFade))});
 
             if (showSettings)
             {
@@ -98,9 +99,8 @@ bool Game::menu()
             screenShakeTick.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
             DrawTextEx(*m_assets.getFont("pixel"), "Screen scale: ", {10.f, 25.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             scaleSelect.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to exit settings", {10.f, height - 20.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
         }
-
-
         
         // end rendering to screen buffer
         EndTextureMode();

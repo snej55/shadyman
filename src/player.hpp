@@ -101,8 +101,8 @@ private:
     bool m_flipped{false};
     bool m_grounded{false};
 
-    float m_health{200.f};
-    float m_maxHealth{200.f};
+    float m_health{50.f};
+    float m_maxHealth{50.f};
 
     float m_recovery{99.f};
     const float m_recoveryTime{10.f};
