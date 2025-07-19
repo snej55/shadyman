@@ -274,15 +274,49 @@ void Game::run()
 
 bool Game::death()
 {
+    double lastTime {GetTime()};
     while (!WindowShouldClose())
     {
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+        BeginTextureMode(m_targetBuffer);
+        // render to screen buffer
+
         ClearBackground(BLACK);
 
-
+        if (!IsWindowResized())
+        {
+            // Draw UI
+            const float width {static_cast<float>(m_width) / CST::SCR_VRATIO};
+            const float height {static_cast<float>(m_height) / CST::SCR_VRATIO};
+    
+            const float padding {10.f};
+            DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
+            DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
+        
+            DrawTextEx(*m_assets.getFont("pixel"), "You died.", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to return to menu", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Or press [ESC] to exit the game.", {width * 0.1f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+        }
+        
+        // end rendering to screen buffer
+        EndTextureMode();
+        
+        BeginDrawing();
+        
+        BeginShaderMode(*m_assets.getShader("screenShader"));
+        DrawTexturePro(m_targetBuffer.texture,
+            m_srcRect,
+            m_destRect,
+            Vector2{0, 0}, 0, WHITE);
+        EndShaderMode();
+        BeginDrawing();
+        
         EndDrawing();
+        checkScreenResize();
+
+        if (IsKeyPressed(KEY_SPACE))
+        {
+            return false;
+        }
     }
     return true;
 }
