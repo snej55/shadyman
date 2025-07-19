@@ -33,8 +33,11 @@ void AssetManager::init()
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     // bullets
     addTexture("bullets/laser", "data/images/blasters/laser.png");
+    // random stuff
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
+    addTexture("controls", "data/images/ui/controls.png");
+
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
 
