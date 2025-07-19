@@ -1,8 +1,6 @@
 #include "game.hpp"
 #include "constants.hpp"
 #include "util.hpp"
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
 
 #include <raylib.h>
 #include <sstream>
@@ -37,26 +35,29 @@ void Game::init()
 
 bool Game::menu()
 {
-    bool showMessageBox = false;
-
-    GuiLoadStyle("data/styles/style_dark.rgs");
     while (!WindowShouldClose())
     {
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
+
+        BeginTextureMode(m_targetBuffer);
+        // render to screen buffer
+
         ClearBackground(BLACK);
 
-        if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+        // end rendering to screen buffer
+        EndTextureMode();
 
-        if (showMessageBox)
-        {
-            int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
-                "#191#Message Box", "Hi! This is a message!", "Nice;Cool");
+        BeginDrawing();
 
-            if (result >= 0) return false;
-        }
-
+        BeginShaderMode(*m_assets.getShader("screenShader"));
+        DrawTexturePro(m_targetBuffer.texture,
+            m_srcRect,
+            m_destRect,
+            Vector2{0, 0}, 0, WHITE);
+        EndShaderMode();
+        BeginDrawing();
+        
         EndDrawing();
     }
     return true;
@@ -163,9 +164,6 @@ void Game::run()
 
 bool Game::death()
 {
-    bool showMessageBox = false;
-
-    GuiLoadStyle("data/styles/style_dark.rgs");
     while (!WindowShouldClose())
     {
         // Draw
@@ -173,15 +171,6 @@ bool Game::death()
         BeginDrawing();
         ClearBackground(BLACK);
 
-        if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
-
-        if (showMessageBox)
-        {
-            int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
-                "#191#Message Box", "You died!", "Nice;Cool");
-
-            if (result >= 0) return false;
-        }
 
         EndDrawing();
     }
@@ -225,7 +214,8 @@ void Game::drawFPS()
     std::stringstream ss{};
     ss << "FPS: " << GetFPS() << "";
 
-    DrawText(ss.str().c_str(), 5, 5, 20, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {5, 5}, 20, 0, WHITE);
+    // DrawText(ss.str().c_str(), 5, 5, 20, WHITE);
 }
 
 void Game::drawUI()
