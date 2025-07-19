@@ -9,8 +9,8 @@
 class Button
 {
 public:
-    Button(vec2<float> pos, vec2<int> dimensions, Texture2D* tex, Texture2D* hoverTex)
-     : m_pos{pos}, m_dimensions{dimensions}, m_tex{tex}, m_hoverTex{hoverTex}
+    Button(vec2<float> pos, vec2<int> dimensions, Texture2D* tex)
+     : m_pos{pos}, m_dimensions{dimensions}, m_tex{tex}
     {
     }
 
@@ -25,7 +25,11 @@ public:
 
     void render(vec2<int> scroll = {0, 0})
     {
-        DrawTexture(m_hover ? *m_hoverTex : *m_tex, static_cast<int>(m_pos.x) - scroll.x, static_cast<int>(m_pos.y) - scroll.y, WHITE);
+        DrawTexture(*m_tex, static_cast<int>(m_pos.x) - scroll.x, static_cast<int>(m_pos.y) - scroll.y, WHITE);
+        if (m_hover)
+        {
+            DrawRectangle(static_cast<int>(m_pos.x) - scroll.x, static_cast<int>(m_pos.y) - scroll.y, m_dimensions.x, m_dimensions.y, {255, 255, 255, 100});
+        }
     }
 
     [[nodiscard]] Rectangle getRect() const
@@ -40,7 +44,6 @@ public:
 
     [[nodiscard]] vec2<int> getDimensions() const {return m_dimensions;}
     [[nodiscard]] Texture2D* getTex() const {return m_tex;}
-    [[nodiscard]] Texture2D* getHoverTex() const {return m_hoverTex;}
 
     [[nodiscard]] bool getHover() const {return m_hover;}
 
@@ -48,7 +51,6 @@ private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;
     Texture2D* m_tex;
-    Texture2D* m_hoverTex;
 
     bool m_hover{false};
 };
