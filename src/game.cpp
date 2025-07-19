@@ -329,6 +329,13 @@ void Game::close()
     std::cout << "Closed!" << std::endl;
 }
 
+void Game::reset()
+{
+    m_player.setHealth(m_player.getMaxHealth());
+    m_entityManager.free();
+    m_entityManager.init(&m_assets);
+}
+
 // ------- Other stuff ------- //
 
 void Game::checkScreenResize()

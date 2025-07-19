@@ -35,6 +35,9 @@ public:
 
     void close();
 
+    // reset everything
+    void reset();
+
     // other stuff
 
     // check if screen has been resized

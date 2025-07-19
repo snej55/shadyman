@@ -108,6 +108,8 @@ public:
 
     void init(AssetManager* assets);
 
+    void free();
+    
     void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake);
 
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
@@ -120,7 +122,6 @@ private:
     // particle vfx managers
     SparkManager* m_sparkManager{nullptr};
 
-    void free();
 };
 
 class Blobbo : public Entity

@@ -12,6 +12,7 @@ int main()
         exit = game.menu();
         game.run();
         exit = game.death();
+        game.reset();
     }
 
     game.close();
