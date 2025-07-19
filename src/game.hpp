@@ -49,8 +49,11 @@ public:
     // render ui
     void drawUI();
 
+    void shop();
+
     // handle user input
     void handleControls();
+
 
     [[nodiscard]] World* getWorld() {return &m_world;}
     [[nodiscard]] AssetManager* getAssets() {return &m_assets;}
@@ -91,6 +94,9 @@ private:
 
     bool m_paused{false};
     float m_lastPaused{0.0f};
+
+    bool m_shop{false};
+    float m_shopFade{0.0f};
 
     // UI stuff
     float m_playerHealth{0.0f};

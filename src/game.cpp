@@ -169,7 +169,6 @@ bool Game::menu()
 void Game::update()
 {
     // ------ Update stuff ------ //
-    handleControls();
 
     m_player.update(m_dt, &m_world);
     m_blaster->update(m_dt, &m_world);
@@ -226,6 +225,7 @@ void Game::run()
 
     while (!WindowShouldClose())
     {
+        m_paused = m_shop || m_paused;
         m_lastPaused += m_dt;
         m_coinAnim += m_coinAnimSpeed * m_dt;
         if (m_coinAnim >= 6.f)
@@ -243,23 +243,31 @@ void Game::run()
                 update();
                 if (m_lastPaused < 60.f)
                 {
+                    std::cout << "hi\n";
                     Texture2D* playTex {m_assets.getTexture("pause")};
                     DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
                 }
             } else {
                 checkScreenResize();
             }
+            handleControls();
         } else {
-            if (IsWindowResized())
+            if (!m_shop)
             {
-                update();
-            }
-            m_lastPaused = 0.0f;
-            Texture2D* playTex {m_assets.getTexture("play")};
-            DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
-            if (IsKeyPressed(KEY_P))
-            {
-                m_paused = !m_paused;
+                if (IsWindowResized())
+                {
+                    update();
+                }
+                m_lastPaused = 0.0f;
+                Texture2D* playTex {m_assets.getTexture("play")};
+                DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
+                if (IsKeyPressed(KEY_P))
+                {
+                    if (m_paused)
+                    {
+                        m_paused = false;
+                    }
+                }
             }
         }
 
@@ -279,7 +287,16 @@ void Game::run()
         drawFPS();
 #endif
 
-        drawUI();
+        if (!m_shop)
+            drawUI();
+
+        if (m_shop)
+        {
+            shop();
+            m_shopFade += (1.0 - m_shopFade) * 0.25f * m_dt;
+        } else {
+            m_shopFade += (0.0 - m_shopFade) * 0.25f * m_dt;
+        }
 
         EndDrawing();
 
@@ -449,6 +466,34 @@ void Game::drawUI()
     // hurt flash
     DrawRectangle(-(m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
     DrawRectangle(m_width + (m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (shopButton.getHover())
+        {
+            m_shop = true;
+        }
+    }
+}
+
+void Game::shop()
+{
+    DrawRectangle(0, 0, m_width, m_height, {21, 10, 31, static_cast<unsigned char>(static_cast<int>(m_shopFade * 255.f))});
+    DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to close the shop", {10.f * CST::SCR_VRATIO, m_height - 13.f * CST::SCR_VRATIO}, 24, 0, WHITE);
+    
+    // render coin anim
+    DrawTexturePro(*m_assets.getTexture("coin"), {7.f * std::floor(m_coinAnim), 0.0f, 7.f, 7.f}, {m_width * 0.5f - 10.f * CST::SCR_VRATIO, 5.f * CST::SCR_VRATIO, 7.f * CST::SCR_VRATIO, 7.f * CST::SCR_VRATIO}, {0.0f, 0.0f}, 0.0f, WHITE);
+    std::stringstream ss{};
+    const float coinVel = (m_coins - m_coinCounter) / 4.f * m_dt;
+    m_coinCounter += coinVel;
+    m_coinAnimSpeed = 0.2f + coinVel;
+    ss << "x" << std::floor(m_coinCounter);
+    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {m_width * 0.5f, 6.f * CST::SCR_VRATIO}, 24, 0, WHITE);
+
+    if (IsKeyPressed(KEY_S))
+    {
+        m_shop = false;
+    }
 }
 
 void Game::handleControls()
@@ -472,7 +517,11 @@ void Game::handleControls()
 
     if (IsKeyPressed(KEY_P))
     {
-        m_paused = !m_paused;
+        if (m_paused == false)
+        {
+            m_paused = true;
+            update();
+        }
     }
 
     m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
