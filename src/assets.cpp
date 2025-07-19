@@ -31,8 +31,12 @@ void AssetManager::init()
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
     // blasters
     addTexture("blasters/default", "data/images/blasters/blaster.png");
+    addTexture("blasters/fire_blaster", "data/images/blasters/fire_blaster.png");
+    addTexture("blasters/cannon", "data/images/blasters/cannon.png");
     // bullets
     addTexture("bullets/laser", "data/images/blasters/laser.png");
+    addTexture("bullets/fire_bullet.png", "data/images/blasters/fire_bullet.png");
+    addTexture("bullets/ball", "data/images/blasters/bal.png");
     // random stuff + UI
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
@@ -43,6 +47,8 @@ void AssetManager::init()
     addTexture("tick_empty_hover", "data/images/ui/tick_empty_hover.png");
     addTexture("scale", "data/images/ui/scale.png");
     addTexture("shop", "data/images/ui/shop.png");
+    addTexture("play", "data/images/ui/play.png");
+    addTexture("pause", "data/images/ui/pause.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
