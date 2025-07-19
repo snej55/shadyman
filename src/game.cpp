@@ -39,6 +39,7 @@ bool Game::menu()
     bool showControls{false};
     float controlsFade{0.0f};
     bool showSettings{false};
+    float settingsFade{0.0f};
 
     double lastTime {GetTime()};
     while (!WindowShouldClose())
@@ -58,6 +59,7 @@ bool Game::menu()
             DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
             DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
         
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to show settings", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to show controls", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to start", {width * 0.1f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
         
@@ -77,6 +79,16 @@ bool Game::menu()
                 0.0f,
                 WHITE
             );
+
+            if (showSettings)
+            {
+                settingsFade += (1.0 - settingsFade) * 0.25 * m_dt;
+            } else {
+                settingsFade += (0.0 - settingsFade) * 0.25 * m_dt;
+            }
+
+            DrawRectangle(0, 0, width, height, {27, 24, 83, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
+            DrawTextEx(*m_assets.getFont("pixel"), "Screenshake enabled: ", {10.f, 10.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
         }
 
 
