@@ -401,6 +401,17 @@ void Game::drawUI()
         {0.0f, 0.0f}, 0.0f, WHITE
     );
 
+    Texture2D* shopTex {m_assets.getTexture("shop")};
+    DrawTexturePro(*shopTex, Rectangle{0, 0, 23, 12}, {4.f * CST::SCR_VRATIO, m_height - 16.f * CST::SCR_VRATIO, 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO}, {0, 0}, 0, WHITE);
+
+    Button shopButton{{4.f * CST::SCR_VRATIO, m_height - 16.f * CST::SCR_VRATIO}, {static_cast<int>(23 * CST::SCR_VRATIO), static_cast<int>(12 * CST::SCR_VRATIO)}, m_assets.getTexture("shop")};
+    shopButton.update(1.f);
+    if (shopButton.getHover())
+    {
+        DrawRectangle(4.f * CST::SCR_VRATIO, m_height - 16.f * CST::SCR_VRATIO, 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO, {255, 255, 255, 100});
+    }
+
+    // hurt flash
     DrawRectangle(-(m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
     DrawRectangle(m_width + (m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
 }

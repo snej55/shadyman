@@ -42,6 +42,7 @@ void AssetManager::init()
     addTexture("tick_hover", "data/images/ui/tick_hover.png");
     addTexture("tick_empty_hover", "data/images/ui/tick_empty_hover.png");
     addTexture("scale", "data/images/ui/scale.png");
+    addTexture("shop", "data/images/ui/shop.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
