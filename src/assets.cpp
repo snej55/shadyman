@@ -49,6 +49,7 @@ void AssetManager::init()
     addTexture("shop", "data/images/ui/shop.png");
     addTexture("play", "data/images/ui/play.png");
     addTexture("pause", "data/images/ui/pause.png");
+    addTexture("coin", "data/images/ui/coin.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
