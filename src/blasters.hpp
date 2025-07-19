@@ -95,4 +95,51 @@ protected:
     float m_timer{0.0f};
 };
 
+// upgraded regular blaster
+class FireBlaster : public Blaster
+{
+public:
+    FireBlaster(Player* player, const std::string& name, const vec2<float>& offset)
+     : Blaster{player, name, offset}
+    {
+    }
+
+    void init(AssetManager* assets)
+    {
+        m_anim = new Anim{12, 5, 3, 0.5f, true, assets->getTexture("blasters/fire_blaster")};
+        m_anim->setOrigin({6.f, 2.5f});
+        m_bulletAnim = new Anim{8, 3, 1, 0.1, true, assets->getTexture("bullets/fire_bullet")};
+        m_bulletAnim->setOrigin({4.f, 1.5f});
+    }
+
+    BlasterStats stats
+    {
+        8.f, // speed
+        10.f, // rate
+        7.f, // armLength
+        4.f, // halfLength
+        6.f, // damage
+        12.f, // knockBack
+        1.7f, // recoil
+        3.f, // bulletRange
+    };
+};
+
+class Cannon : public Blaster
+{
+public:
+    Cannon(Player* player, const std::string& name, const vec2<float>& offset)
+     : Blaster{player, name, offset}
+    {
+    }
+
+    void init(AssetManager* assets)
+    {
+        m_anim = new Anim{12, 5, 1, 0.5f, true, assets->getTexture("blasters/cannon")};
+        m_anim->setOrigin({6.f, 2.5f});
+        m_bulletAnim = new Anim{6, 6, 1, 0.1, true, assets->getTexture("bullets/ball")};
+        m_bulletAnim->setOrigin({4.f, 1.5f});
+    }
+};
+
 #endif

@@ -35,8 +35,8 @@ void AssetManager::init()
     addTexture("blasters/cannon", "data/images/blasters/cannon.png");
     // bullets
     addTexture("bullets/laser", "data/images/blasters/laser.png");
-    addTexture("bullets/fire_bullet.png", "data/images/blasters/fire_bullet.png");
-    addTexture("bullets/ball", "data/images/blasters/bal.png");
+    addTexture("bullets/fire_bullet", "data/images/blasters/fire_bullet.png");
+    addTexture("bullets/ball", "data/images/blasters/ball.png");
     // random stuff + UI
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
