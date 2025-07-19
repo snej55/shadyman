@@ -144,6 +144,8 @@ bool Game::menu()
                 CST::SCR_VRATIO = scaleSelect.getScale();
                 std::cout << scaleSelect.getScale() << " " << CST::SCR_VRATIO << '\n';
                 updateRenderBuffer(GetScreenWidth(), GetScreenHeight());
+                m_lastPaused = 0.0f;
+                m_paused = false;
                 return false;
             }
         }
@@ -226,15 +228,36 @@ void Game::run()
 
     while (!WindowShouldClose())
     {
+        m_lastPaused += m_dt;
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
 
-        if (!IsWindowResized())
+        if (!m_paused)
         {
-            // update components and do rendering stuff
-            update();
+            if (!IsWindowResized())
+            {
+                // update components and do rendering stuff
+                update();
+                if (m_lastPaused < 60.f)
+                {
+                    Texture2D* playTex {m_assets.getTexture("pause")};
+                    DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
+                }
+            } else {
+                checkScreenResize();
+            }
         } else {
-            checkScreenResize();
+            if (IsWindowResized())
+            {
+                update();
+            }
+            m_lastPaused = 0.0f;
+            Texture2D* playTex {m_assets.getTexture("play")};
+            DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
+            if (IsKeyPressed(KEY_P))
+            {
+                m_paused = !m_paused;
+            }
         }
 
         // end rendering to screen buffer
@@ -433,6 +456,11 @@ void Game::handleControls()
         {
             m_blaster->fire();
         }
+    }
+
+    if (IsKeyPressed(KEY_P))
+    {
+        m_paused = !m_paused;
     }
 
     m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));

@@ -89,6 +89,9 @@ private:
     float m_timer{0.0f};
     float m_slomo{1.0f};
 
+    bool m_paused{false};
+    float m_lastPaused{0.0f};
+
     // UI stuff
     float m_playerHealth{0.0f};
 };
