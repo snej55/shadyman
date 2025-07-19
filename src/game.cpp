@@ -99,7 +99,7 @@ bool Game::menu()
             screenShakeTick.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
             DrawTextEx(*m_assets.getFont("pixel"), "Screen scale: ", {10.f, 25.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             scaleSelect.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to exit settings", {10.f, height - 20.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to exit settings menu", {10.f, height - 20.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
         }
         
         // end rendering to screen buffer
@@ -200,6 +200,7 @@ void Game::update()
     vec2<int> renderScroll {static_cast<int>(m_scroll.x + screenShakeOffset.x * screenShakeScale), static_cast<int>(m_scroll.y + screenShakeOffset.y * screenShakeScale)};
     m_screenShake = std::max(0.0f, m_screenShake - m_dt);
     m_world.render(renderScroll, m_width, m_height, &m_assets);
+    DrawRectangle(0, 0, m_width, m_height, {180, 35, 19, static_cast<unsigned char>(static_cast<int>((1.f - std::min(1.f, m_player.getRecovery() / m_player.getRecoverTime())) * 100.f))});
 
     m_player.draw(renderScroll);
 
@@ -210,6 +211,7 @@ void Game::update()
     m_blaster->renderBullets(renderScroll);
 
     m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster, m_screenShake);
+
 
     // -------------------------- //
 
@@ -290,7 +292,7 @@ bool Game::death()
     
             const float padding {10.f};
             DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
-            DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Game Over", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
         
             DrawTextEx(*m_assets.getFont("pixel"), "You died.", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to return to menu", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
@@ -332,6 +334,7 @@ void Game::close()
 void Game::reset()
 {
     m_player.setHealth(m_player.getMaxHealth());
+    m_player.setRecovery(999.f);
     m_entityManager.free();
     m_entityManager.init(&m_assets);
 }
@@ -381,19 +384,25 @@ void Game::drawUI()
 
     // draw actual health
     constexpr float healthBarWidth {104.f};
-    DrawRectangle(static_cast<int>(6.f * CST::SCR_VRATIO), static_cast<int>(m_height - 14 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
+    DrawRectangle(static_cast<int>((float)m_width / 2.f - healthBarWidth * CST::SCR_VRATIO * 0.5f), static_cast<int>(6 * CST::SCR_VRATIO), static_cast<int>(healthBarWidth * CST::SCR_VRATIO), static_cast<int>(8.f * CST::SCR_VRATIO),
+        {21, 10, 31, 255}
+    );
+    DrawRectangle(static_cast<int>((float)m_width / 2.f - healthBarWidth * CST::SCR_VRATIO * 0.5f), static_cast<int>(6 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
         ColorLerp(Color{180, 35, 19, 255}, Color{87, 197, 43, 255}, m_playerHealth / m_player.getMaxHealth())
     );
-    DrawRectangle(static_cast<int>(6.f * CST::SCR_VRATIO), static_cast<int>(m_height - 10 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
+    DrawRectangle(static_cast<int>((float)m_width / 2.f - healthBarWidth * CST::SCR_VRATIO * 0.5f), static_cast<int>(10 * CST::SCR_VRATIO), static_cast<int>(m_playerHealth / m_player.getMaxHealth() * healthBarWidth * CST::SCR_VRATIO), static_cast<int>(4.f * CST::SCR_VRATIO),
         ColorLerp(Color{104, 24, 36, 255}, Color{17, 131, 55, 255}, m_playerHealth / m_player.getMaxHealth())
     );
 
     // draw second layer
     Texture2D* healthBarTex = m_assets.getTexture("health_bar");
     DrawTexturePro(*healthBarTex, Rectangle{0, 0, (float)healthBarTex->width, (float)healthBarTex->height},
-        {4.f * CST::SCR_VRATIO, m_height - 16 * CST::SCR_VRATIO, (float)healthBarTex->width * CST::SCR_VRATIO, (float)healthBarTex->height * CST::SCR_VRATIO},
+        {(float)m_width / 2.f - (float)healthBarTex->width * CST::SCR_VRATIO * 0.5f, 4 * CST::SCR_VRATIO, (float)healthBarTex->width * CST::SCR_VRATIO, (float)healthBarTex->height * CST::SCR_VRATIO},
         {0.0f, 0.0f}, 0.0f, WHITE
     );
+
+    DrawRectangle(-(m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
+    DrawRectangle(m_width + (m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});
 }
 
 void Game::handleControls()

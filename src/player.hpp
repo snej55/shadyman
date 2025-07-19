@@ -71,6 +71,7 @@ public:
     [[nodiscard]] float getMaxHealth() const {return m_maxHealth;}
 
     void damage(float amount, float& screenShake);
+    void setRecovery(const float amount) {m_recovery = amount;}
     [[nodiscard]] bool getRecovered() const {return m_recovery > m_recoveryTime;}
     [[nodiscard]] float getRecovery() const {return m_recovery;}
     [[nodiscard]] float getRecoverTime() const {return m_recoveryTime;}
