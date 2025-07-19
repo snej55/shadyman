@@ -94,6 +94,11 @@ private:
 
     // UI stuff
     float m_playerHealth{0.0f};
+
+    float m_coins{0.0f};
+    float m_coinAnim{0.0f};
+    float m_coinAnimSpeed{0.2f};
+    float m_coinCounter{0.0f};
 };
 
 #endif

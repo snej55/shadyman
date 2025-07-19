@@ -169,7 +169,6 @@ bool Game::menu()
 void Game::update()
 {
     // ------ Update stuff ------ //
-
     handleControls();
 
     m_player.update(m_dt, &m_world);
@@ -212,8 +211,7 @@ void Game::update()
     }
     m_blaster->renderBullets(renderScroll);
 
-    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster, m_screenShake);
-
+    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster, m_screenShake, m_coins);
 
     // -------------------------- //
 
@@ -229,6 +227,11 @@ void Game::run()
     while (!WindowShouldClose())
     {
         m_lastPaused += m_dt;
+        m_coinAnim += m_coinAnimSpeed * m_dt;
+        if (m_coinAnim >= 6.f)
+        {
+            m_coinAnim = 0.0f;
+        }
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
 
@@ -400,7 +403,7 @@ void Game::drawUI()
 {
     // draw bottom bar
     DrawLineEx({0, m_height - 20 * CST::SCR_VRATIO}, {static_cast<float>(m_width), m_height - 20 * CST::SCR_VRATIO}, CST::SCR_VRATIO * 2.f, {255, 253, 240, 255});
-    DrawRectangle(0, m_height - 20 * CST::SCR_VRATIO, m_width, 20 * CST::SCR_VRATIO, {12, 19, 39, 0xFF});
+    DrawRectangle(0, m_height - 20 * CST::SCR_VRATIO, m_width, 20 * CST::SCR_VRATIO, {12, 19, 39, 200});
 
     // draw player health bar
     m_playerHealth += (m_player.getHealth() - m_playerHealth) / 3.0f * m_dt; // update rendered health
@@ -433,6 +436,15 @@ void Game::drawUI()
     {
         DrawRectangle(4.f * CST::SCR_VRATIO, m_height - 16.f * CST::SCR_VRATIO, 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO, {255, 255, 255, 100});
     }
+
+    // render coin anim
+    DrawTexturePro(*m_assets.getTexture("coin"), {7.f * std::floor(m_coinAnim), 0.0f, 7.f, 7.f}, {m_width - 45.f * CST::SCR_VRATIO, m_height - 14.f * CST::SCR_VRATIO, 7.f * CST::SCR_VRATIO, 7.f * CST::SCR_VRATIO}, {0.0f, 0.0f}, 0.0f, WHITE);
+    std::stringstream ss{};
+    const float coinVel = (m_coins - m_coinCounter) / 4.f * m_dt;
+    m_coinCounter += coinVel;
+    m_coinAnimSpeed = 0.2f + coinVel;
+    ss << "x" << std::floor(m_coinCounter);
+    DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {m_width - 38.f * CST::SCR_VRATIO, m_height - 13.f * CST::SCR_VRATIO}, 24, 0, WHITE);
 
     // hurt flash
     DrawRectangle(-(m_player.getRecovery() - m_player.getRecoverTime()) - 25, 0, 50, m_height, {180, 35, 19, 150});

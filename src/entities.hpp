@@ -109,8 +109,8 @@ public:
     void init(AssetManager* assets);
 
     void free();
-    
-    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake);
+
+    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins);
 
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
 

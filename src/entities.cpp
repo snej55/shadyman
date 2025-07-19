@@ -138,7 +138,7 @@ void EntityManager::init(AssetManager* assets)
     m_sparkManager = new SparkManager{assets};
 }
 
-void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake)
+void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins)
 {
     const std::vector<Bullet*>& bullets {blaster->getBullets()};
     const BlasterStats* stats {&blaster->stats};
@@ -180,6 +180,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
         {
             delete m_entities[i];
             m_entities[i] = nullptr;
+            coins += Util::random() * 10.f + 30.f;
         } else {
             m_entities[i]->render(scroll);
         }
