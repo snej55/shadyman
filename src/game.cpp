@@ -37,13 +37,21 @@ bool Game::menu()
 {
     while (!WindowShouldClose())
     {
-        // Draw
-        //----------------------------------------------------------------------------------
-
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
 
         ClearBackground(BLACK);
+
+        // Draw UI
+        const float width {static_cast<float>(m_width) / CST::SCR_VRATIO};
+        const float height {static_cast<float>(m_height) / CST::SCR_VRATIO};
+
+        const float padding {10.f};
+        DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
+        DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
+
+
+        checkScreenResize();
 
         // end rendering to screen buffer
         EndTextureMode();
