@@ -1,6 +1,8 @@
 #include "game.hpp"
 #include "constants.hpp"
 #include "util.hpp"
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 
 #include <raylib.h>
 #include <sstream>
@@ -31,6 +33,33 @@ void Game::init()
     m_blaster->init(&m_assets);
 
     std::cout << "Initialized!\n";
+}
+
+bool Game::menu()
+{
+    bool showMessageBox = false;
+
+    GuiLoadStyle("data/styles/style_dark.rgs");
+    while (!WindowShouldClose())
+    {
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+
+        if (showMessageBox)
+        {
+            int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
+                "#191#Message Box", "Hi! This is a message!", "Nice;Cool");
+
+            if (result >= 0) return false;
+        }
+
+        EndDrawing();
+    }
+    return true;
 }
 
 void Game::update()
@@ -123,7 +152,40 @@ void Game::run()
 
         // update slomo
         m_slomo += (1.0f - m_slomo) * 0.05f * (m_dt / m_slomo);
+
+        // check if player died
+        if (m_player.getHealth() <= 0.0f)
+        {
+            return;
+        }
     }
+}
+
+bool Game::death()
+{
+    bool showMessageBox = false;
+
+    GuiLoadStyle("data/styles/style_dark.rgs");
+    while (!WindowShouldClose())
+    {
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+        ClearBackground(BLACK);
+
+        if (GuiButton((Rectangle){ 24, 24, 120, 30 }, "#191#Show Message")) showMessageBox = true;
+
+        if (showMessageBox)
+        {
+            int result = GuiMessageBox((Rectangle){ 85, 70, 250, 100 },
+                "#191#Message Box", "You died!", "Nice;Cool");
+
+            if (result >= 0) return false;
+        }
+
+        EndDrawing();
+    }
+    return true;
 }
 
 void Game::close()

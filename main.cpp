@@ -5,7 +5,15 @@ int main()
     Game game{};
     
     game.init();
-    game.run();
+
+    bool exit{false};
+    while (!exit)
+    {
+        exit = game.menu();
+        game.run();
+        exit = game.death();
+    }
+
     game.close();
 
     return 0;

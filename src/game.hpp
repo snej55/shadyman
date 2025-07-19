@@ -22,10 +22,16 @@ public:
     // core functions
     void init();
 
+    // menu
+    bool menu();
+
     // update components
     void update();
 
     void run();
+
+    // death screen
+    bool death();
 
     void close();
 
