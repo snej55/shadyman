@@ -101,13 +101,12 @@ bool Game::menu()
         }
 
 
-        checkScreenResize();
-
+        
         // end rendering to screen buffer
         EndTextureMode();
-
+        
         BeginDrawing();
-
+        
         BeginShaderMode(*m_assets.getShader("screenShader"));
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
@@ -117,13 +116,13 @@ bool Game::menu()
         BeginDrawing();
         
         EndDrawing();
-
+        
         // calculate deltatime
         m_dt = GetTime() - lastTime;
         m_dt *= 60.f * m_slomo;
         m_dt = std::min(4.0f, m_dt);
         lastTime = GetTime();
-
+        
         // handle controls
         if (IsKeyPressed(KEY_C))
         {
@@ -144,11 +143,11 @@ bool Game::menu()
                 m_screenShakeEnabled = screenShakeTick.getSelected();
                 CST::SCR_VRATIO = scaleSelect.getScale();
                 std::cout << scaleSelect.getScale() << " " << CST::SCR_VRATIO << '\n';
-                updateRenderBuffer(CST::SCR_WIDTH, CST::SCR_HEIGHT);
+                updateRenderBuffer(GetScreenWidth(), GetScreenHeight());
                 return false;
             }
         }
-
+        
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             if (showSettings)
@@ -160,6 +159,7 @@ bool Game::menu()
                 scaleSelect.click();
             }
         }
+        checkScreenResize();
     }
     return true;
 }
@@ -231,6 +231,8 @@ void Game::run()
         {
             // update components and do rendering stuff
             update();
+        } else {
+            checkScreenResize();
         }
 
         // end rendering to screen buffer
@@ -300,6 +302,7 @@ void Game::checkScreenResize()
     // if window has been resized, update buffer
     if (m_width != GetScreenWidth() || m_height != GetScreenHeight())
     {
+        std::cout << "Resizing render buffer...\n";
         updateRenderBuffer(GetScreenWidth(), GetScreenHeight());
     }
     m_width = GetScreenWidth();
