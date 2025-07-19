@@ -79,6 +79,7 @@ private:
 
     vec2<float> m_scroll{0.0f, 0.0f};
     float m_screenShake{0.0f};
+    bool m_screenShakeEnabled{true};
 
     // deltatime
     float m_dt{1.0f};

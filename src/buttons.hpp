@@ -90,7 +90,7 @@ private:
     vec2<float> m_pos;
 
     TickState m_state{TickState::TICK};
-    bool m_selected{false};
+    bool m_selected{true};
     bool m_hover{false};
 };
 

@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "constants.hpp"
 #include "util.hpp"
+#include "buttons.hpp"
 
 #include <raylib.h>
 #include <sstream>
@@ -41,6 +42,8 @@ bool Game::menu()
     bool showSettings{false};
     float settingsFade{0.0f};
 
+    Tick screenShakeTick{{150.f, 5.f}};
+
     double lastTime {GetTime()};
     while (!WindowShouldClose())
     {
@@ -59,8 +62,8 @@ bool Game::menu()
             DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
             DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
         
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to show settings", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to show controls", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to toggle settings", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to toggle controls", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to start", {width * 0.1f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
         
             if (showControls)
@@ -89,6 +92,8 @@ bool Game::menu()
 
             DrawRectangle(0, 0, width, height, {27, 24, 83, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             DrawTextEx(*m_assets.getFont("pixel"), "Screenshake enabled: ", {10.f, 10.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
+            screenShakeTick.update(CST::SCR_VRATIO);
+            screenShakeTick.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
         }
 
 
@@ -135,6 +140,18 @@ bool Game::menu()
                 return false;
             }
         }
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            if (showSettings)
+            {
+                if (screenShakeTick.getHover())
+                {
+                    screenShakeTick.setSelected(!screenShakeTick.getSelected());
+                }
+            }
+        }
+        m_screenShakeEnabled = screenShakeTick.getSelected();
     }
     return true;
 }
@@ -167,6 +184,10 @@ void Game::update()
     m_scroll.y = std::max(0.0f, std::min(m_scroll.y, static_cast<float>(CST::TILE_SIZE * CST::LEVEL_WIDTH * CST::LEVEL_HEIGHT)));
 
     vec2<float> screenShakeOffset{Util::random() * m_screenShake - m_screenShake / 2.f, Util::random() * m_screenShake - m_screenShake / 2.f};
+    if (!m_screenShakeEnabled)
+    {
+        screenShakeOffset = {0.0f, 0.0f};
+    }
     constexpr float screenShakeScale {0.5f};
     vec2<int> renderScroll {static_cast<int>(m_scroll.x + screenShakeOffset.x * screenShakeScale), static_cast<int>(m_scroll.y + screenShakeOffset.y * screenShakeScale)};
     m_screenShake = std::max(0.0f, m_screenShake - m_dt);
