@@ -225,7 +225,6 @@ void Game::run()
 
     while (!WindowShouldClose())
     {
-        m_paused = m_shop || m_paused;
         m_lastPaused += m_dt;
         m_coinAnim += m_coinAnimSpeed * m_dt;
         if (m_coinAnim >= 6.f)
@@ -235,7 +234,7 @@ void Game::run()
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
 
-        if (!m_paused)
+        if (!m_paused && !m_shop)
         {
             if (!IsWindowResized())
             {
@@ -243,7 +242,6 @@ void Game::run()
                 update();
                 if (m_lastPaused < 60.f)
                 {
-                    std::cout << "hi\n";
                     Texture2D* playTex {m_assets.getTexture("pause")};
                     DrawTexture(*playTex, static_cast<int>(static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - (float)playTex->width * 0.5f), static_cast<int>(static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - (float)playTex->height * 0.5f), WHITE);
                 }
@@ -494,6 +492,8 @@ void Game::shop()
     {
         m_shop = false;
     }
+
+    checkScreenResize();
 }
 
 void Game::handleControls()
