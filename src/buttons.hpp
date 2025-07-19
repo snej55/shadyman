@@ -94,4 +94,61 @@ private:
     bool m_hover{false};
 };
 
+class Scale
+{
+public:
+    Scale(vec2<float> pos)
+     : m_pos{pos}
+    {
+    }
+
+    ~Scale() = default;
+
+    void update(const float scale)
+    {
+        vec2<float> mousePos {GetMousePosition().x, GetMousePosition().y};
+        mousePos.x /= scale;
+        mousePos.y /= scale;
+        m_mousePos = mousePos;
+    }
+
+    void render(AssetManager* assets, vec2<int> scroll = {0, 0})
+    {
+        for (int i{0}; i < 4; ++i)
+        {
+            DrawTexturePro(*assets->getTexture("scale"), {12.f * i, 0, 12.f, 12.f}, {m_pos.x - static_cast<float>(scroll.x) + i * (12.f + m_spacing), m_pos.y - static_cast<float>(scroll.y), 12.f, 12.f}, {0.f, 0.f}, 0.f, WHITE);
+            if (CheckCollisionPointRec({m_mousePos.x, m_mousePos.y}, getRect(i)) || static_cast<int>(m_scale) == i + 1)
+            {
+                DrawRectangle(m_pos.x - static_cast<float>(scroll.x) + i * (12.f + m_spacing), m_pos.y - static_cast<float>(scroll.y), 12.f, 12.f, {255, 255, 255, 100});
+            }
+        }
+    }
+
+    [[nodiscard]] Rectangle getRect(const int num)
+    {
+        return Rectangle{m_pos.x + num * (12.f + m_spacing), m_pos.y, 12.f, 12.f};
+    };
+
+    void click()
+    {
+        for (int i{0}; i < 4; ++i)
+        {
+            if (CheckCollisionPointRec({m_mousePos.x, m_mousePos.y}, getRect(i)))
+            {
+                m_scale = static_cast<float>(i + 1);
+            }
+        }
+    }
+
+    [[nodiscard]] float getScale() const {return m_scale;}
+
+private:
+    vec2<float> m_pos;
+    float m_scale{4.f};
+
+    vec2<float> m_mousePos{};
+
+    const float m_spacing{2.f};
+};
+
 #endif

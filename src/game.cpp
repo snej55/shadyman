@@ -43,6 +43,7 @@ bool Game::menu()
     float settingsFade{0.0f};
 
     Tick screenShakeTick{{150.f, 5.f}};
+    Scale scaleSelect{{100.f, 22.f}};
 
     double lastTime {GetTime()};
     while (!WindowShouldClose())
@@ -93,7 +94,10 @@ bool Game::menu()
             DrawRectangle(0, 0, width, height, {27, 24, 83, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             DrawTextEx(*m_assets.getFont("pixel"), "Screenshake enabled: ", {10.f, 10.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             screenShakeTick.update(CST::SCR_VRATIO);
+            scaleSelect.update(CST::SCR_VRATIO);
             screenShakeTick.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
+            DrawTextEx(*m_assets.getFont("pixel"), "Screen scale: ", {10.f, 25.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
+            scaleSelect.render(&m_assets, {0, static_cast<int>(height * (1.0 - settingsFade))});
         }
 
 
@@ -137,6 +141,10 @@ bool Game::menu()
         {
             if (!showControls && !showSettings)
             {
+                m_screenShakeEnabled = screenShakeTick.getSelected();
+                CST::SCR_VRATIO = scaleSelect.getScale();
+                std::cout << scaleSelect.getScale() << " " << CST::SCR_VRATIO << '\n';
+                updateRenderBuffer(CST::SCR_WIDTH, CST::SCR_HEIGHT);
                 return false;
             }
         }
@@ -149,9 +157,9 @@ bool Game::menu()
                 {
                     screenShakeTick.setSelected(!screenShakeTick.getSelected());
                 }
+                scaleSelect.click();
             }
         }
-        m_screenShakeEnabled = screenShakeTick.getSelected();
     }
     return true;
 }

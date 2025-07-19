@@ -37,11 +37,11 @@ void AssetManager::init()
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
     addTexture("controls", "data/images/ui/controls.png");
-    // ticks
     addTexture("tick", "data/images/ui/tick.png");
     addTexture("tick_empty", "data/images/ui/tick_empty.png");
     addTexture("tick_hover", "data/images/ui/tick_hover.png");
     addTexture("tick_empty_hover", "data/images/ui/tick_empty_hover.png");
+    addTexture("scale", "data/images/ui/scale.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
