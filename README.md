@@ -1,26 +1,13 @@
 ## Shady Man
 
-Game for SoM game jam.
+Submission for the Summer of Making game jam 2025, organized by hackclub - theme was "waves". Play as a shady rabbit who fights off waves of suspicious enemies (Slimes? Squids? Blobbos?), whilst upgrading his weaponry. 
 
-## TODO:
- - [X] UI panel
- - [ ] Melee weapon
- - [X] Player health bar
- - [X] Blobbo attack
- - [ ] Add direction to blobbos
- - [ ] Red screen border flash on damage
- - [X] Player damage
- - [X] Blaster fire rate
- - [X] Enemy knock back
- - [ ] Shop
- - [X] Screenshake + reverse screenshake? (player)
- - [X] Sparks
- - [ ] Pause
- - [ ] Death screen ✅
- - [ ] Menu screen ✅
+How to play:
 
-## Maybe?
- - [ ] Grass
- - [X] Shaders
- - [ ] Lighting shaders
- - [ ] Health bar preview
+First look at the controls below. Playing is simple shoot, enemies to gain coins, and spend the coins in the shop to get better weapons, to shoot more enemies, etc. And try not to die to much!
+
+Controls:
+
+ - WASD / Arrow keys to move
+ - X / Space bar to shoot
+ - P to pause
