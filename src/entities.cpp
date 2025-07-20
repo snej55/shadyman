@@ -195,7 +195,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
         {
             for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 20.f); ++i)
             {
-                m_sparkManager->addSpark(center, Util::random() * M_PI * 2.f, Util::random() * 2.f + 1.f);
+                m_sparkManager->addSpark(center, Util::random() * M_PI * 2.f, Util::random() * 3.f + 1.f);
             }
             for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 10.f); ++i)
             {
