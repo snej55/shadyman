@@ -12,6 +12,8 @@ First look at the controls below. Playing is simple shoot, enemies to gain coins
  - X / Space bar to shoot
  - P to pause
 
+---
+
 ### Technical details:
 
 This game was made from scratch using Raylib and C++ (with pygame-ce for the level editor).
