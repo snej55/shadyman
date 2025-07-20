@@ -152,8 +152,8 @@ void ShockwaveManager::update(const float dt, const vec2<int> scroll)
     {
         Shockwave* s{m_shockwaves[i]};
 
-        constexpr float outerSpeed{0.2f};
-        constexpr float innerSpeed{0.1f};
+        constexpr float outerSpeed{2.f};
+        constexpr float innerSpeed{1.5f};
 
         s->outerRadius += outerSpeed * dt;
         s->innerRadius += innerSpeed * dt;

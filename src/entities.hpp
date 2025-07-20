@@ -124,6 +124,7 @@ private:
     SparkManager* m_sparkManager{nullptr};
     KnockbackManager m_knockback{};
     SmokeManager m_smoke{};
+    ShockwaveManager m_shockwaves{};
 };
 
 class Blobbo : public Entity

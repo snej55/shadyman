@@ -210,6 +210,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 const float intensity{Util::random() * 3.f + 1.f};
                 m_smoke.addSmoke(center, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
             }
+            m_shockwaves.addShockwave(center, 24.f);
             delete m_entities[i];
             m_entities[i] = nullptr;
             coins += Util::random() * 10.f + 30.f;
@@ -227,6 +228,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     m_sparkManager->update(dt, scroll);
     m_knockback.update(dt, scroll, world);
     m_smoke.update(dt, scroll);
+    m_shockwaves.update(dt, scroll);
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
