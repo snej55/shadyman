@@ -21,9 +21,10 @@ void KnockbackManager::update(const float dt, const vec2<int>& scroll, World* wo
     {
         Knockback* p {m_particles[i]};
 
-        constexpr float bounce{0.7f};
+        constexpr float bounce{0.6f};
         constexpr float friction{0.99f};
-        constexpr float decay{0.1f};
+        constexpr float decay{0.02f};
+        constexpr float gravity{0.16f};
 
         p->pos.x += p->vel.x * dt;
         Tile* tile {world->getTileAt(p->pos.x, p->pos.y)};
@@ -38,6 +39,7 @@ void KnockbackManager::update(const float dt, const vec2<int>& scroll, World* wo
         }
 
         p->pos.y += p->vel.y * dt;
+        p->vel.y += gravity * dt;
         tile = world->getTileAt(p->pos.x, p->pos.y);
         if (tile != nullptr)
         {

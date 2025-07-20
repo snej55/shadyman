@@ -10,6 +10,7 @@
 #include "player.hpp"
 #include "blasters.hpp"
 #include "sparks.hpp"
+#include "particles.hpp"
 
 #include <string>
 
@@ -121,7 +122,7 @@ private:
 
     // particle vfx managers
     SparkManager* m_sparkManager{nullptr};
-
+    KnockbackManager m_knockback{};
 };
 
 class Blobbo : public Entity

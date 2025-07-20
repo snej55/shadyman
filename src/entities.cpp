@@ -166,6 +166,13 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 {
                     m_sparkManager->addSpark({bullet->pos.x + std::cos(bullet->angle) * stats->halfLength, bullet->pos.y + std::sin(bullet->angle) * stats->halfLength}, Util::random() * M_PI * 2.f, Util::random() * 2.f + 1.f);
                 }
+                for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 10.f); ++i)
+                {
+                    const float angle{Util::random() * M_PI * 2.f};
+                    const float intensity{Util::random() * 3.f + 2.f};
+                    constexpr std::array<Color, 3> colors{Color{58, 92, 133, 255}, Color{17, 131, 55, 255}, Color{151, 219, 210, 255}};
+                    m_knockback.addParticle({bullet->pos.x + std::cos(bullet->angle) * stats->halfLength, bullet->pos.y + std::sin(bullet->angle) * stats->halfLength}, {std::cos(angle) * intensity, std::sin(angle) * intensity}, Util::pickRandom<Color, 3>(colors.data()));
+                }
                 // knockback enemy
                 m_entities[i]->setOffset({std::cos(bullet->angle) * stats->knockBack, std::sin(bullet->angle) * stats->knockBack});
                 // damage enemy and get rid of bullet
@@ -193,6 +200,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     }), m_entities.end());
 
     m_sparkManager->update(dt, scroll);
+    m_knockback.update(dt, scroll, world);
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
