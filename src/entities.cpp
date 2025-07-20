@@ -23,6 +23,8 @@ void Entity::update(const float dt, World* world, Player* player, float& screenS
     constexpr float friction {0.75f};
     constexpr float offsetDecay {0.3f};
 
+    m_timer += dt;
+
     // air time counter
     m_falling += dt;
     // recover counter
@@ -204,6 +206,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
 
                 screenShake = std::max(screenShake, 8.f);
                 slomo = std::min(slomo, 0.9f);
+                m_lights.emplace_back(new EntityLight{40.f, 0.5f, m_entities[i]->getCenter()});
             }
         }
 
@@ -241,6 +244,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
             coins += Util::random() * 10.f + 30.f;
             slomo = std::min(slomo, 0.5f);
             screenShake = std::max(screenShake, 16.f);
+            m_lights.emplace_back(new EntityLight{50.f, 0.1f, center});
         } else {
             m_entities[i]->render(scroll);
         }
@@ -251,18 +255,43 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         return entity == nullptr;
     }), m_entities.end());
+
+    for (std::size_t i{0}; i < m_lights.size(); ++i)
+    {
+        EntityLight* l{m_lights[i]};
+        l->scale -= l->decay * dt;
+        if (l->scale <= 0.0f)
+        {
+            delete m_lights[i];
+            m_lights[i] = nullptr;
+        }
+    }
+
+    m_lights.erase(std::remove_if(m_lights.begin(), m_lights.end(), [](EntityLight* l)
+    {
+        return l == nullptr;
+    }), m_lights.end());
 }
 
 void EntityManager::renderLighting(const vec2<int>& scroll)
 {
+    BeginBlendMode(BLEND_ADD_COLORS);
     for (std::size_t i{0}; i < m_entities.size(); ++i)
     {
-        BeginBlendMode(BLEND_ADD_COLORS);
         DrawTexturePro(*m_lightTex, {0, 0, static_cast<float>(m_lightTex->width), static_cast<float>(m_lightTex->height)},
-            {m_entities[i]->getCenter().x - static_cast<float>(scroll.x) - 50.f, m_entities[i]->getCenter().y - static_cast<float>(scroll.y) - 50.f, 100.f, 100.f}, {0, 0}, 0, WHITE
+            {m_entities[i]->getCenter().x - static_cast<float>(scroll.x) - std::min(50.f, m_entities[i]->getTimer()), m_entities[i]->getCenter().y - static_cast<float>(scroll.y) - std::min(50.f, m_entities[i]->getTimer()), std::min(50.f, m_entities[i]->getTimer()) * 2, std::min(50.f, m_entities[i]->getTimer()) * 2}, {0, 0}, 0, WHITE
         );
-        EndBlendMode();
     }
+    
+    for (std::size_t i{0}; i < m_lights.size(); ++i)
+    {
+        EntityLight* l{m_lights[i]};
+        DrawTexturePro(*m_lightTex, {0, 0, static_cast<float>(m_lightTex->width), static_cast<float>(m_lightTex->height)},
+            {l->pos.x - static_cast<float>(scroll.x) - l->scale, l->pos.y - static_cast<float>(scroll.y) - l->scale, l->scale * 2, l->scale * 2}, {0, 0}, 0, WHITE
+        );
+        
+    }
+    EndBlendMode();
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
@@ -302,6 +331,12 @@ void EntityManager::free()
     m_flameManager = nullptr;
     delete m_cinderManager;
     m_cinderManager = nullptr;
+
+    for (std::size_t l{0}; l < m_lights.size(); ++l)
+    {
+        delete m_lights[l];
+    }
+    m_lights.clear();
 }
 
 // --------- Blobbo --------- //

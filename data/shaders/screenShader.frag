@@ -42,12 +42,12 @@ void main()
     vec4 color = texture(texture0, vec2(fragTexCoord.x, fragTexCoord.y)) * colDiffuse * fragColor;
     color.rgb += fog * 0.1;
 
-    vec4 lighting = texture(lighting, vec2(fragTexCoord.x, fragTexCoord.y));
+    vec4 lighting = texture(lighting, fract(vec2(fragTexCoord.x + fog.r * 0.01, fragTexCoord.y + fog.r * 0.005)));
 
     if (lighting.r > 0.6)
     {
         lighting.rgb = vec3(1.0);
-    } else if (lighting.r > 0.3)
+    } else if (lighting.r > 0.05)
     {
         lighting.rgb = vec3(0.6);
     } else {

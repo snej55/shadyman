@@ -78,6 +78,7 @@ public:
     [[nodiscard]] vec2<float> getOffset() {return m_offset;}
 
     [[nodiscard]] float getDanger() const {return m_danger;}
+    [[nodiscard]] float getTimer() const {return m_timer;}
 
 protected:
     vec2<float> m_pos;
@@ -99,6 +100,14 @@ protected:
     vec2<float> m_offset{0.f, 0.f};
 
     const float m_danger{3.0f}; // amount of damage enemy does
+    float m_timer{0.0f};
+};
+
+struct EntityLight
+{
+    float scale;
+    float decay;
+    vec2<float> pos;
 };
 
 class EntityManager
@@ -130,6 +139,8 @@ private:
     SmokeManager m_smoke{};
     ShockwaveManager m_shockwaves{};
     Texture2D* m_lightTex{nullptr};
+
+    std::vector<EntityLight*> m_lights{};
 };
 
 class Blobbo : public Entity
