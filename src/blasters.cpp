@@ -109,6 +109,10 @@ void Blaster::updateBullet(Bullet* bullet, const float dt, World* world)
     {
         if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
         {
+            for (std::size_t i{0}; i < static_cast<int>(Util::random() * 5.f + 2.f); ++i)
+            {
+                m_sparkManager->addSpark({bullet->pos.x + std::cos(bullet->angle) * stats.halfLength, bullet->pos.y + std::sin(bullet->angle) * stats.halfLength}, -bullet->angle + Util::random() - 0.5f, Util::random() * 1.f + 0.5f);
+            }
             bullet->kill = true;
         }
     }
