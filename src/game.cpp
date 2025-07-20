@@ -62,18 +62,18 @@ bool Game::menu()
             const float padding {10.f};
             DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
             DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
-        
+            
             DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to toggle settings", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to toggle controls", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to start", {width * 0.1f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
-        
+            
             if (showControls)
             {
                 controlsFade += (1.0 - controlsFade) * 0.25 * m_dt;
             } else {
                 controlsFade += (0.0 - controlsFade) * 0.25 * m_dt;
             }
-
+            
             DrawRectangle(0, 0, width, height, {41, 25, 69, static_cast<unsigned char>(static_cast<int>(255.f * controlsFade))});
             Texture2D* controlsTex{m_assets.getTexture("controls")};
             DrawTexturePro(*controlsTex, 
@@ -84,14 +84,14 @@ bool Game::menu()
                 WHITE
             );
             DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to exit controls menu", {10.f, height - 20.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * controlsFade))});
-
+            
             if (showSettings)
             {
                 settingsFade += (1.0 - settingsFade) * 0.25 * m_dt;
             } else {
                 settingsFade += (0.0 - settingsFade) * 0.25 * m_dt;
             }
-
+            
             DrawRectangle(0, 0, width, height, {27, 24, 83, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             DrawTextEx(*m_assets.getFont("pixel"), "Screenshake enabled: ", {10.f, 10.f}, 8, 0, {255, 255, 255, static_cast<unsigned char>(static_cast<int>(255.f * settingsFade))});
             screenShakeTick.update(CST::SCR_VRATIO);
@@ -111,7 +111,7 @@ bool Game::menu()
             m_srcRect,
             m_destRect,
             Vector2{0, 0}, 0, WHITE);
-        BeginDrawing();
+        DrawTextEx(*m_assets.getFont("pixel"), "A game by @snej55", {20, (float)m_height - 30}, 24, 0, WHITE);
         
         EndDrawing();
         
@@ -394,6 +394,11 @@ void Game::reset()
     m_entityManager.free();
     m_entityManager.init(&m_assets);
     m_darkness = 1.0f;
+    m_coins = 0.0f;
+    delete m_blaster;
+    m_blaster = new Blaster{&m_player, "default",  {0.f, 1.f}};
+    m_blaster->init(&m_assets);
+    m_currentBlaster = "Default";
 }
 
 // ------- Other stuff ------- //

@@ -78,7 +78,8 @@ private:
     World m_world{};
     AssetManager m_assets{};
     EntityManager m_entityManager{};
-    Player m_player{{20.f, 20.f}, {7, 14}};
+    const vec2<float> m_spawnPos{200.f, -20.f};
+    Player m_player{m_spawnPos, {7, 14}};
     Blaster* m_blaster{nullptr};
     std::string m_currentBlaster{"default"};
 
