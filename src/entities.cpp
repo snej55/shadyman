@@ -142,6 +142,13 @@ void EntityManager::init(AssetManager* assets)
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo)
 {
+    m_smoke.update(dt, scroll);
+    m_sparkManager->update(dt, scroll);
+    m_knockback.update(dt, scroll, world);
+    m_cinderManager->update(dt, scroll, world);
+    m_flameManager->update(dt, scroll);
+    m_shockwaves.update(dt, scroll);
+
     const std::vector<Bullet*>& bullets {blaster->getBullets()};
     const BlasterStats* stats {&blaster->stats};
 
@@ -243,13 +250,6 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         return entity == nullptr;
     }), m_entities.end());
-
-    m_smoke.update(dt, scroll);
-    m_sparkManager->update(dt, scroll);
-    m_knockback.update(dt, scroll, world);
-    m_cinderManager->update(dt, scroll, world);
-    m_flameManager->update(dt, scroll);
-    m_shockwaves.update(dt, scroll);
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)

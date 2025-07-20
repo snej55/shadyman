@@ -88,7 +88,7 @@ public:
     // render spark polygon
     void renderSpark(Spark* spark, const vec2<int>& scroll)
     {
-        constexpr float scale{3.0f}; // scale of spark
+        constexpr float scale{2.0f}; // scale of spark
         constexpr float width{0.3f}; // width between kite wings
         constexpr float snout{0.75f}; // ratio between snout and tail
         constexpr Color color {WHITE};
@@ -104,15 +104,15 @@ public:
         rlTexCoord2f(0.5f, 0.5f);
 
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * M_PI) * size * snout,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * M_PI) * size * snout);
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * M_PI) * size,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * M_PI) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size * scale,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size * scale);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle + width * M_PI) * size * snout,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * M_PI) * size * snout);
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle + width * M_PI) * size,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * M_PI) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size * scale,
+                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size * scale);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
  
         rlEnd();
