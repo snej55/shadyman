@@ -29,6 +29,14 @@ struct BlasterStats
     float bulletRange; // bullet rect size
 };
 
+enum class Blasters
+{
+    DEFAULT,
+    FIRE_BLASTER,
+    CANNON,
+    NONE
+};
+
 class Blaster
 {
 public:

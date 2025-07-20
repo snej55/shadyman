@@ -51,6 +51,8 @@ public:
 
     void shop();
 
+    void buyBlaster(Blasters blasterType);
+
     // handle user input
     void handleControls();
 

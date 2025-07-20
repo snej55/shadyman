@@ -29,7 +29,7 @@ void Game::init()
     m_entityManager.init(&m_assets);
     m_entityManager.addEntity(EnemyType::BLOBBO, {50, 10}, &m_assets);
 
-    m_blaster = new Cannon{&m_player, "default",  {0.f, 1.f}};
+    m_blaster = new Blaster{&m_player, "default",  {0.f, 1.f}};
     m_blaster->init(&m_assets);
 
     std::cout << "Initialized!\n";
@@ -488,11 +488,12 @@ void Game::shop()
     DrawTextEx(*m_assets.getFont("pixel"), ss.str().c_str(), {m_width * 0.5f, 6.f * CST::SCR_VRATIO}, 24, 0, WHITE);
     
     constexpr float scr_width {1200.f};
-    DrawRectangleRounded({20.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO}, 0.1f, 40.f, {175, 93, 35, 255});
     Texture2D* thumb {m_assets.getTexture("thumbnails/blaster")};
     constexpr float padding{10.f};
+    constexpr float spacing{150.f};
     const float width{scr_width * 0.5f - 40.f * CST::SCR_VRATIO - padding * CST::SCR_VRATIO * 2.f};
     const float height{width / (float)thumb->width * (float)thumb->height};
+    DrawRectangleRounded({20.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO}, 0.1f, 40.f, {175, 93, 35, 255});
     DrawTexturePro(*thumb, {0, 0, (float)thumb->width, (float)thumb->height}, {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO, width, height}, {0.0f, 0.0f}, 0.0f, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Default blaster (boring): ", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 5.f * CST::SCR_VRATIO}, 16, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Damage: 4,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 10.f * CST::SCR_VRATIO}, 16, 0, WHITE);
@@ -518,6 +519,58 @@ void Game::shop()
     {
         DrawRectangle(scr_width * 0.5f - 43.f * CST::SCR_VRATIO + CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO + CST::SCR_VRATIO, static_cast<int>(23.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, static_cast<int>(12.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, {255, 255, 255, 100});
     }
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (m_coins > 720.f)
+        {
+            if (defaultButton.getHover())
+            {
+                buyBlaster(Blasters::DEFAULT);
+            }
+        }
+    }
+
+    m_shopScroll -= spacing;
+    thumb = m_assets.getTexture("thumbnails/fire_blaster");
+    DrawRectangleRounded({20.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO}, 0.1f, 40.f, {175, 93, 35, 255});
+    DrawTexturePro(*thumb, {0, 0, (float)thumb->width, (float)thumb->height}, {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO, width, height}, {0.0f, 0.0f}, 0.0f, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Fire blaster: ", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 5.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Damage: 8,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 10.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Knockback: Strong,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 15.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Rate: Fast, Recoil: weak", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 20.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Recoil: weak", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 25.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Bidirectional shooting", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 30.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Just the default: upgraded.", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 40.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Price: $1200", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 45.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+
+    if (m_coins > 1200.f)
+    {
+        tex = m_assets.getTexture("buy");
+    } else {
+        tex = m_assets.getTexture("nope");
+    }
+    DrawTexturePro(*tex, {0, 0, 23.f, 12.f}, {std::floor(scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO), std::floor(scr_width * 0.5f - 28.f * CST::SCR_VRATIO), 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO}, {0.0f, 0.0f}, 0.0f, WHITE);
+
+    Button fireButton{{scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO}, {static_cast<int>(23.f * CST::SCR_VRATIO), static_cast<int>(12.f * CST::SCR_VRATIO)}, m_assets.getTexture("nope")};
+    fireButton.update(1.f);
+    if (fireButton.getHover())
+    {
+        DrawRectangle(scr_width * 0.5f - 43.f * CST::SCR_VRATIO + CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO + CST::SCR_VRATIO, static_cast<int>(23.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, static_cast<int>(12.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, {255, 255, 255, 100});
+    }
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (m_coins > 1200.f)
+        {
+            if (fireButton.getHover())
+            {
+                buyBlaster(Blasters::FIRE_BLASTER);
+            }
+        }
+    }
+
+    m_shopScroll += spacing;
     
     DrawTextEx(*m_assets.getFont("pixel"), ("Current blaster: " + m_currentBlaster).c_str(), {10.f * CST::SCR_VRATIO, m_height - 21.f * CST::SCR_VRATIO}, 24, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to close the shop", {10.f * CST::SCR_VRATIO, m_height - 13.f * CST::SCR_VRATIO}, 24, 0, WHITE);
@@ -528,6 +581,51 @@ void Game::shop()
     }
     
     checkScreenResize();
+}
+
+void Game::buyBlaster(Blasters blasterType)
+{
+    switch (blasterType)
+    {
+        case Blasters::DEFAULT:
+            if (m_coins >= 720.f)
+            {
+                delete m_blaster;
+                m_blaster = new Blaster{&m_player, "default",  {0.f, 1.f}};
+                m_blaster->init(&m_assets);
+                m_coins -= 720.f;
+                m_currentBlaster = "Default";
+            } else {
+                std::cout << "ERROR: Not enough coins!\n";
+            }
+            return;
+        case Blasters::FIRE_BLASTER:
+            if (m_coins >= 1200.f)
+            {
+                delete m_blaster;
+                m_blaster = new FireBlaster{&m_player, "default",  {0.f, 1.f}};
+                m_blaster->init(&m_assets);
+                m_coins -= 1200.f;
+                m_currentBlaster = "Fire blaster";
+            } else {
+                std::cout << "ERROR: Not enough coins!\n";
+            }
+            return;
+        case Blasters::CANNON:
+            if (m_coins >= 1700.f)
+            {
+                delete m_blaster;
+                m_blaster = new Cannon{&m_player, "default",  {0.f, 1.f}};
+                m_blaster->init(&m_assets);
+                m_coins -= 1700.f;
+                m_currentBlaster = "Cannon";
+            } else {
+                std::cout << "ERROR: Not enough coins!\n";
+            }
+            return;
+        default:
+            std::cout << "You have " << m_coins << " coins!\n";
+    }
 }
 
 void Game::handleControls()
