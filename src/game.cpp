@@ -618,6 +618,9 @@ void Game::shop()
     {
         m_shop = false;
     }
+
+    constexpr float scrollSpeed{-20.f};
+    m_shopScroll = std::max(0.0f, std::min(spacing * 2.f, m_shopScroll + GetMouseWheelMove() * scrollSpeed));
     
     checkScreenResize();
 }
