@@ -211,7 +211,7 @@ void Game::update()
     }
     m_blaster->renderBullets(renderScroll);
 
-    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster, m_screenShake, m_coins);
+    m_entityManager.update(m_dt, &m_world, &m_player, renderScroll, m_blaster, m_screenShake, m_coins, m_slomo);
 
     // -------------------------- //
 

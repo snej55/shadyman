@@ -137,9 +137,10 @@ void EntityManager::init(AssetManager* assets)
 {
     m_sparkManager = new SparkManager{assets};
     m_flameManager = new FlameManager{assets};
+    m_cinderManager = new CinderManager{assets};
 }
 
-void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins)
+void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo)
 {
     const std::vector<Bullet*>& bullets {blaster->getBullets()};
     const BlasterStats* stats {&blaster->stats};
@@ -194,6 +195,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 m_entities[i]->damage(stats->damage);
 
                 screenShake = std::max(screenShake, 8.f);
+                slomo = std::min(slomo, 0.9f);
             }
         }
 
@@ -217,11 +219,20 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 const float intensity{Util::random() * 3.f + 1.f};
                 m_smoke.addSmoke(center, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
             }
+            for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 20.f); ++i)
+            {
+                const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
+                const float intensity{Util::random() * 2.f + 1.f};
+                constexpr std::array<Color, 5> colors{Color{255, 253, 240, 255}, Color{248, 153, 58, 255}, Color{180, 35, 19, 255}, Color{244, 104, 11, 255}, Color{254, 181, 139, 255}};
+                m_cinderManager->addParticle(center, {std::cos(angle) * intensity * 0.5f, std::sin(angle) * intensity * 1.5f}, Util::pickRandom<Color, 5>(colors.data()));
+            }
             m_shockwaves.addShockwave(center, 24.f);
             m_flameManager->explode(center, 1.f);
             delete m_entities[i];
             m_entities[i] = nullptr;
             coins += Util::random() * 10.f + 30.f;
+            slomo = std::min(slomo, 0.5f);
+            screenShake = std::max(screenShake, 16.f);
         } else {
             m_entities[i]->render(scroll);
         }
@@ -236,6 +247,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     m_smoke.update(dt, scroll);
     m_sparkManager->update(dt, scroll);
     m_knockback.update(dt, scroll, world);
+    m_cinderManager->update(dt, scroll, world);
     m_flameManager->update(dt, scroll);
     m_shockwaves.update(dt, scroll);
 }
@@ -275,6 +287,8 @@ void EntityManager::free()
     m_sparkManager = nullptr;
     delete m_flameManager;
     m_flameManager = nullptr;
+    delete m_cinderManager;
+    m_cinderManager = nullptr;
 }
 
 // --------- Blobbo --------- //

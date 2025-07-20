@@ -273,7 +273,7 @@ void CinderManager::update(const float dt, const vec2<int> scroll, World* world)
 
         constexpr float bounce{0.7f};
         constexpr float friction{0.99f};
-        constexpr float decay{0.02f};
+        constexpr float decay{0.1f};
         constexpr float gravity{0.1f};
 
         p->pos.x += p->vel.x * dt;
@@ -317,39 +317,35 @@ void CinderManager::update(const float dt, const vec2<int> scroll, World* world)
 void CinderManager::renderCinder(Cinder* cinder, const vec2<int> scroll)
 {
     constexpr float scale{3.0f}; // scale of cinder
-    constexpr float width{0.3f}; // width between kite wings
+    constexpr float width{0.2f}; // width between kite wings
     constexpr float snout{0.75f}; // ratio between snout and tail
-    constexpr Color color {WHITE};
-
-    const float size {Vector2Length({cinder->vel.x, cinder->vel.y})};
 
     const float angle {std::atan2(cinder->vel.y, cinder->vel.x)};
+
+    BeginBlendMode(BLEND_ADD_COLORS);
 
     // weird polygon rendering
     rlSetTexture(m_blank->id);
     rlBegin(RL_TRIANGLES);
 
-    rlColor4ub(color.r, color.g, color.b, static_cast<unsigned char>(static_cast<int>(cinder->size / m_startSize * 255.f)));
+    rlColor4ub(cinder->color.r, cinder->color.g, cinder->color.b, static_cast<unsigned char>(static_cast<int>(cinder->size / m_startSize * 250.f)));
 
     rlTexCoord2f(0.5f, 0.5f);
 
     rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
-    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle - width * M_PI) * size * snout,
-                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle - width * M_PI) * size * snout);
-    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle) * size,
-                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle) * size);
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) - std::cos(angle + M_PI * 0.5f), cinder->pos.y - static_cast<float>(scroll.y) - std::sin(angle + M_PI * 0.5f));
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) - cinder->vel.x * 3.f, cinder->pos.y - static_cast<float>(scroll.y) - cinder->vel.y * 3.f);
     rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
-    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle + width * M_PI) * size * snout,
-                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle + width * M_PI) * size * snout);
-    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle) * size,
-                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle) * size);
-    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) - std::cos(angle + M_PI * -0.5f), cinder->pos.y - static_cast<float>(scroll.y) - std::sin(angle + M_PI * -0.5f));
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) - cinder->vel.x * 3.f, cinder->pos.y - static_cast<float>(scroll.y) - cinder->vel.y * 3.f);
 
     rlEnd();
     rlSetTexture(0);
+
+    EndBlendMode();
 }
 
-void CinderManager::addParticle(vec2<float> pos, vec2<float> vel)
+void CinderManager::addParticle(vec2<float> pos, vec2<float> vel, const Color color)
 {
-    m_particles.emplace_back(new Cinder{pos, vel, m_startSize - Util::random()});
+    m_particles.emplace_back(new Cinder{pos, vel, m_startSize - Util::random(), color});
 }

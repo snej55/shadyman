@@ -111,7 +111,7 @@ public:
 
     void free();
 
-    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins);
+    void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo);
 
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
 
@@ -123,6 +123,7 @@ private:
     // particle vfx managers
     SparkManager* m_sparkManager{nullptr};
     FlameManager* m_flameManager{nullptr};
+    CinderManager* m_cinderManager{nullptr};
     KnockbackManager m_knockback{};
     SmokeManager m_smoke{};
     ShockwaveManager m_shockwaves{};

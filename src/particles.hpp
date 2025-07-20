@@ -113,6 +113,7 @@ struct Cinder
     vec2<float> pos;
     vec2<float> vel;
     float size;
+    Color color;
 };
 
 class CinderManager
@@ -127,7 +128,7 @@ public:
 
     void renderCinder(Cinder* cinder, vec2<int> scroll);
 
-    void addParticle(vec2<float> pos, vec2<float> vel);
+    void addParticle(vec2<float> pos, vec2<float> vel, Color color);
 
 private:
     Texture2D* m_blank;
