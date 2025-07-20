@@ -604,7 +604,7 @@ void Game::shop()
         {
             if (cannonButton.getHover())
             {
-                buyBlaster(Blasters::FIRE_BLASTER);
+                buyBlaster(Blasters::CANNON);
             }
         }
     }
@@ -620,7 +620,16 @@ void Game::shop()
     }
 
     constexpr float scrollSpeed{-20.f};
-    m_shopScroll = std::max(0.0f, std::min(spacing * 2.f, m_shopScroll + GetMouseWheelMove() * scrollSpeed));
+    m_shopScroll = std::max(0.0f, std::min(spacing * static_cast<float>(static_cast<int>(Blasters::NONE) - 1), m_shopScroll + GetMouseWheelMove() * scrollSpeed));
+
+    if (IsKeyDown(KEY_LEFT))
+    {
+        m_shopScroll = std::max(0.0f, std::min(spacing * static_cast<float>(static_cast<int>(Blasters::NONE) - 1), m_shopScroll + scrollSpeed * 0.5f * m_dt));
+    }
+    if (IsKeyDown(KEY_RIGHT))
+    {
+        m_shopScroll = std::max(0.0f, std::min(spacing * static_cast<float>(static_cast<int>(Blasters::NONE) - 1), m_shopScroll - scrollSpeed * 0.5f * m_dt));
+    }
     
     checkScreenResize();
 }
