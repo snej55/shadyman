@@ -73,3 +73,61 @@ void KnockbackManager::addParticle(vec2<float> pos, vec2<float> vel, Color color
         color
     });
 }
+
+SmokeManager::~SmokeManager()
+{
+    free();
+}
+
+void SmokeManager::free()
+{
+    for (std::size_t i{0}; i < std::size(m_smoke); ++i)
+    {
+        delete m_smoke[i];
+    }
+    m_smoke.clear();
+}
+
+void SmokeManager::update(const float dt, const vec2<int> scroll)
+{
+    for (std::size_t i{0}; i < std::size(m_smoke); ++i)
+    {
+        constexpr float decay{0.1f};
+        constexpr float friction{0.97f};
+        Smoke* smoke {m_smoke[i]};
+
+        smoke->pos.x += smoke->vel.x * dt;
+        smoke->pos.y += smoke->vel.y * dt;
+
+        smoke->vel.x += (smoke->vel.x * friction - smoke->vel.x) * dt;
+        smoke->vel.y += (smoke->vel.y * friction - smoke->vel.y) * dt;
+
+        smoke->angle += (smoke->targetAngle - smoke->angle) * 0.1f * dt;
+
+        smoke->size -= decay * dt;
+        if (smoke->size <= 0.0f)
+        {
+            delete m_smoke[i];
+            m_smoke[i] = nullptr;
+        } else {
+            // render smoke
+            const float size{m_startSize - smoke->size};
+            DrawRectanglePro({smoke->pos.x, smoke->pos.y, size, size}, {size * 0.5f, size * 0.5f}, smoke->angle, {37, 49, 94, static_cast<unsigned char>(static_cast<int>(smoke->size / m_startSize * 250.f))});
+        }
+    }
+
+    m_smoke.erase(std::remove_if(m_smoke.begin(), m_smoke.end(), [](Smoke* s){return s == nullptr;}), m_smoke.end());
+}
+
+void SmokeManager::addSmoke(const vec2<float> pos, const vec2<float> vel)
+{
+    const float angle{Util::random() * M_PI * 2.f};
+    m_smoke.emplace_back(new Smoke
+    {
+        pos,
+        vel,
+        angle + 540.f,
+        angle,
+        m_startSize - Util::random()
+    });
+}

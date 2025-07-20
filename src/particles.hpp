@@ -33,4 +33,29 @@ private:
     const float m_startSize{8.f};
 };
 
+struct Smoke
+{
+    vec2<float> pos;
+    vec2<float> vel;
+    float targetAngle;
+    float angle;
+    float size;
+};
+
+class SmokeManager
+{
+public:
+    SmokeManager() = default;
+    ~SmokeManager();
+
+    void free();
+    void update(float dt, vec2<int> scroll);
+
+    void addSmoke(vec2<float> pos, vec2<float> vel);
+
+private:
+    std::vector<Smoke*> m_smoke{};
+    const float m_startSize{10.f};
+};
+
 #endif
