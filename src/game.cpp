@@ -271,10 +271,13 @@ void Game::run()
         // end rendering to screen buffer
         EndTextureMode();
 
+        renderLights();
+
         BeginDrawing();
 
         Texture2D* tex {m_assets.getTexture("noise")};
         BeginShaderMode(*m_assets.getShader("screenShader"));
+        SetShaderValueTexture(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "lighting"), m_lightingBuffer.texture);
         SetShaderValueTexture(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "noise"), *tex);
         SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "width"), &m_width, SHADER_UNIFORM_INT);
         SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "height"), &m_height, SHADER_UNIFORM_INT);
@@ -373,6 +376,7 @@ void Game::close()
 {
     delete m_blaster;
     UnloadRenderTexture(m_targetBuffer);
+    UnloadRenderTexture(m_lightingBuffer);
     CloseWindow();
     std::cout << "Closed!" << std::endl;
 }
@@ -405,6 +409,8 @@ void Game::updateRenderBuffer(const int width, const int height)
     m_targetBuffer = LoadRenderTexture(static_cast<float>(width) / CST::SCR_VRATIO, static_cast<float>(height) / CST::SCR_VRATIO);
     m_srcRect = {0.0f, 0.0f, static_cast<float>(m_targetBuffer.texture.width), -static_cast<float>(m_targetBuffer.texture.height)};
     m_destRect = {-CST::SCR_VRATIO, -CST::SCR_VRATIO, GetScreenWidth() + (CST::SCR_VRATIO * 2), GetScreenHeight() + (CST::SCR_VRATIO * 2)};
+    UnloadRenderTexture(m_lightingBuffer);
+    m_lightingBuffer = LoadRenderTexture(static_cast<float>(width) / CST::SCR_VRATIO, static_cast<float>(height) / CST::SCR_VRATIO);
 
     std::cout << "Resized render buffer to: " << width << " * " << height << '\n';
 }
@@ -715,4 +721,18 @@ void Game::handleControls()
     m_player.getController()->setControl(C_RIGHT, IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D));
     m_player.getController()->setControl(C_LEFT, IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A));
     m_player.getController()->setControl(C_DOWN, IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S));
+}
+
+void Game::renderLights()
+{
+    BeginTextureMode(m_lightingBuffer);
+
+    ClearBackground(BLACK);
+
+    Texture2D* tex {m_assets.getTexture("light")};
+    DrawTexturePro(*tex, {0, 0, static_cast<float>(tex->width), static_cast<float>(tex->height)}, {m_player.getCenter().x - 100.f - m_scroll.x, m_player.getCenter().y - 100.f - m_scroll.y, 200.f, 200.f}, {0.0f, 0.0f}, 0.0f, WHITE);
+
+    m_entityManager.renderLighting({static_cast<int>(m_scroll.x), static_cast<int>(m_scroll.y)});
+
+    EndTextureMode();
 }

@@ -113,6 +113,8 @@ public:
 
     void update(float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo);
 
+    void renderLighting(const vec2<int>& scroll);
+
     void addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets);
 
     [[nodiscard]] SparkManager* getSparkManager() const {return m_sparkManager;}
@@ -127,6 +129,7 @@ private:
     KnockbackManager m_knockback{};
     SmokeManager m_smoke{};
     ShockwaveManager m_shockwaves{};
+    Texture2D* m_lightTex{nullptr};
 };
 
 class Blobbo : public Entity

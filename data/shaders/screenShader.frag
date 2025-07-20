@@ -9,6 +9,8 @@ in vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 
+uniform sampler2D lighting;
+
 uniform sampler2D noise;
 uniform int width;
 uniform int height;
@@ -39,6 +41,20 @@ void main()
 
     vec4 color = texture(texture0, vec2(fragTexCoord.x, fragTexCoord.y)) * colDiffuse * fragColor;
     color.rgb += fog * 0.1;
+
+    vec4 lighting = texture(lighting, vec2(fragTexCoord.x, fragTexCoord.y));
+
+    if (lighting.r > 0.6)
+    {
+        lighting.rgb = vec3(1.0);
+    } else if (lighting.r > 0.3)
+    {
+        lighting.rgb = vec3(0.6);
+    } else {
+        lighting.rgb = vec3(0.5);
+    }
+
+    color.rgb = color.rgb * 0.2 + color.rgb * lighting.rgb;
 
     // output color
     finalColor = color;

@@ -56,6 +56,8 @@ public:
     // handle user input
     void handleControls();
 
+    void renderLights();
+
 
     [[nodiscard]] World* getWorld() {return &m_world;}
     [[nodiscard]] AssetManager* getAssets() {return &m_assets;}
@@ -68,6 +70,7 @@ public:
 private:
     // render buffer
     RenderTexture2D m_targetBuffer{};
+    RenderTexture2D m_lightingBuffer{};
     Rectangle m_srcRect{};
     Rectangle m_destRect{};
 

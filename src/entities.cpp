@@ -138,6 +138,7 @@ void EntityManager::init(AssetManager* assets)
     m_sparkManager = new SparkManager{assets};
     m_flameManager = new FlameManager{assets};
     m_cinderManager = new CinderManager{assets};
+    m_lightTex = assets->getTexture("light");
 }
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo)
@@ -250,6 +251,18 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         return entity == nullptr;
     }), m_entities.end());
+}
+
+void EntityManager::renderLighting(const vec2<int>& scroll)
+{
+    for (std::size_t i{0}; i < m_entities.size(); ++i)
+    {
+        BeginBlendMode(BLEND_ADD_COLORS);
+        DrawTexturePro(*m_lightTex, {0, 0, static_cast<float>(m_lightTex->width), static_cast<float>(m_lightTex->height)},
+            {m_entities[i]->getCenter().x - static_cast<float>(scroll.x) - 50.f, m_entities[i]->getCenter().y - static_cast<float>(scroll.y) - 50.f, 100.f, 100.f}, {0, 0}, 0, WHITE
+        );
+        EndBlendMode();
+    }
 }
 
 void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManager* assets)
