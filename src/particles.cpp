@@ -245,3 +245,111 @@ void FlameManager::explode(vec2<float> pos, float intensity)
         m_flames.emplace_back(new Flame{pos, {std::cos(angle) * 5.f, std::sin(angle) * 5.f}, anim});
     }
 }
+
+CinderManager::CinderManager(AssetManager* assets)
+ : m_blank{assets->getTexture("blank")}
+{
+}
+
+CinderManager::~CinderManager()
+{
+    free();
+}
+
+void CinderManager::free()
+{
+    for (std::size_t i{0}; i < std::size(m_particles); ++i)
+    {
+        delete m_particles[i];
+    }
+    m_particles.clear();
+}
+
+void CinderManager::update(const float dt, const vec2<int> scroll, World* world)
+{
+    for (std::size_t i{0}; i < m_particles.size(); ++i)
+    {
+        Cinder* p {m_particles[i]};
+
+        constexpr float bounce{0.7f};
+        constexpr float friction{0.99f};
+        constexpr float decay{0.02f};
+        constexpr float gravity{0.1f};
+
+        p->pos.x += p->vel.x * dt;
+        Tile* tile {world->getTileAt(p->pos.x, p->pos.y)};
+        if (tile != nullptr)
+        {
+            if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
+            {
+                p->pos.x -= p->vel.x * dt;
+                p->vel.x *= -bounce;
+                p->vel.y *= friction;
+            }
+        }
+
+        p->pos.y += p->vel.y * dt;
+        p->vel.y += gravity * dt;
+        tile = world->getTileAt(p->pos.x, p->pos.y);
+        if (tile != nullptr)
+        {
+            if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
+            {
+                p->pos.y -= p->vel.y * dt;
+                p->vel.y *= -bounce;
+                p->vel.x *= friction;
+            }
+        }
+
+        p->size -= decay;
+        if (p->size <= 0.0f)
+        {
+            delete p;
+            m_particles[i] = nullptr;
+        } else {
+            renderCinder(p, scroll);
+        }
+    }
+
+    m_particles.erase(std::remove_if(m_particles.begin(), m_particles.end(), [](Cinder* p){return p == nullptr;}), m_particles.end());
+}
+
+void CinderManager::renderCinder(Cinder* cinder, const vec2<int> scroll)
+{
+    constexpr float scale{3.0f}; // scale of cinder
+    constexpr float width{0.3f}; // width between kite wings
+    constexpr float snout{0.75f}; // ratio between snout and tail
+    constexpr Color color {WHITE};
+
+    const float size {Vector2Length({cinder->vel.x, cinder->vel.y})};
+
+    const float angle {std::atan2(cinder->vel.y, cinder->vel.x)};
+
+    // weird polygon rendering
+    rlSetTexture(m_blank->id);
+    rlBegin(RL_TRIANGLES);
+
+    rlColor4ub(color.r, color.g, color.b, static_cast<unsigned char>(static_cast<int>(cinder->size / m_startSize * 255.f)));
+
+    rlTexCoord2f(0.5f, 0.5f);
+
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle - width * M_PI) * size * snout,
+                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle - width * M_PI) * size * snout);
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle) * size,
+                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle) * size);
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle + width * M_PI) * size * snout,
+                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle + width * M_PI) * size * snout);
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x) + std::cos(angle) * size,
+                cinder->pos.y - static_cast<float>(scroll.y) + std::sin(angle) * size);
+    rlVertex2f(cinder->pos.x - static_cast<float>(scroll.x), cinder->pos.y - static_cast<float>(scroll.y));
+
+    rlEnd();
+    rlSetTexture(0);
+}
+
+void CinderManager::addParticle(vec2<float> pos, vec2<float> vel)
+{
+    m_particles.emplace_back(new Cinder{pos, vel, m_startSize - Util::random()});
+}

@@ -166,24 +166,24 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 const vec2<float> bulletPos {bullet->pos.x + std::cos(bullet->angle) * stats->halfLength, bullet->pos.y + std::sin(bullet->angle) * stats->halfLength};
                 for (int i{0}; i < static_cast<int>(Util::random() * 10.f + 20.f); ++i)
                 {
-                    m_sparkManager->addSpark(bulletPos, Util::random() * M_PI * 2.f, Util::random() * 2.f + 1.f);
+                    m_sparkManager->addSpark(bulletPos, Util::random() * static_cast<float>(M_PI) * 2.f, Util::random() * 2.f + 1.f);
                 }
                 for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 10.f); ++i)
                 {
-                    const float angle{Util::random() * M_PI * 2.f};
+                    const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
                     const float intensity{Util::random() * 3.f + 2.f};
                     constexpr std::array<Color, 3> colors{Color{58, 92, 133, 255}, Color{17, 131, 55, 255}, Color{151, 219, 210, 255}};
                     m_knockback.addParticle(bulletPos, {std::cos(angle) * intensity, std::sin(angle) * intensity}, Util::pickRandom<Color, 3>(colors.data()));
                 }
                 for (int i{0}; i < static_cast<int>(Util::random() * 16.f + 10.f); ++i)
                 {
-                    const float angle{Util::random() * M_PI * 2.f};
+                    const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
                     const float intensity{Util::random() * 2.f + 1.f};
                     m_smoke.addSmoke(bulletPos, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
                 }
                 for (int i{0}; i < static_cast<int>(Util::random() * 16.f + 10.f); ++i)
                 {
-                    const float angle{Util::random() * M_PI * 2.f};
+                    const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
                     const float intensity{Util::random() * 2.f + 2.f};
                     m_smoke.addSmoke(bulletPos, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
                 }
@@ -202,18 +202,18 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
         {
             for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 20.f); ++i)
             {
-                m_sparkManager->addSpark(center, Util::random() * M_PI * 2.f, Util::random() * 3.f + 1.f);
+                m_sparkManager->addSpark(center, Util::random() * static_cast<float>(M_PI) * 2.f, Util::random() * 3.f + 1.f);
             }
             for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 10.f); ++i)
             {
-                const float angle{Util::random() * M_PI * 2.f};
+                const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
                 const float intensity{Util::random() * 6.f + 4.f};
                 constexpr std::array<Color, 3> colors{Color{58, 92, 133, 255}, Color{17, 131, 55, 255}, Color{151, 219, 210, 255}};
                 m_knockback.addParticle(center, {std::cos(angle) * intensity, std::sin(angle) * intensity * 3.f}, Util::pickRandom<Color, 3>(colors.data()));
             }
             for (int i{0}; i < static_cast<int>(Util::random() * 20.f + 17.f); ++i)
             {
-                const float angle{Util::random() * M_PI * 2.f};
+                const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
                 const float intensity{Util::random() * 3.f + 1.f};
                 m_smoke.addSmoke(center, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
             }

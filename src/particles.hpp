@@ -108,4 +108,31 @@ private:
     std::vector<Flame*> m_flames{};
 };
 
+struct Cinder
+{
+    vec2<float> pos;
+    vec2<float> vel;
+    float size;
+};
+
+class CinderManager
+{
+public:
+    CinderManager(AssetManager* assets);
+    ~CinderManager();
+
+    void free();
+
+    void update(float dt, vec2<int> scroll, World* world);
+
+    void renderCinder(Cinder* cinder, vec2<int> scroll);
+
+    void addParticle(vec2<float> pos, vec2<float> vel);
+
+private:
+    Texture2D* m_blank;
+    std::vector<Cinder*> m_particles{};
+    const float m_startSize{8.f};
+};
+
 #endif
