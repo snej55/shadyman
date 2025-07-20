@@ -183,7 +183,8 @@ void Game::update()
     // -------------------------- //
     // ------ do rendering ------  //
 
-    ClearBackground({30, 70, 118, 0xFF});
+    ClearBackground({20, 60, 108, 0xFF});
+    // ClearBackground(BLACK);
 
     m_scroll.x += std::floor((m_player.getPos().x - static_cast<float>(m_width) / CST::SCR_VRATIO / 2.f - m_scroll.x) / 6) * m_dt;
     m_scroll.y += std::floor((m_player.getPos().y - static_cast<float>(m_height) / CST::SCR_VRATIO / 2.f - m_scroll.y) / 10) * m_dt;

@@ -123,6 +123,7 @@ private:
     // particle vfx managers
     SparkManager* m_sparkManager{nullptr};
     KnockbackManager m_knockback{};
+    SmokeManager m_smoke{};
 };
 
 class Blobbo : public Entity
