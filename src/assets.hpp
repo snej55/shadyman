@@ -16,10 +16,12 @@ public:
     void addTexture(const std::string& name, const char* path);
     void addFont(const std::string& name, const char* path);
     void addShader(const std::string& name, const char* fspath);
+    void addSound(const std::string& name, const char* path);
 
     void freeTextures();
     void freeFonts();
     void freeShaders();
+    void freeSounds();
 
     bool textureExists(const std::string& name) const;
     Texture2D* getTexture(const std::string& name);
@@ -30,10 +32,14 @@ public:
     bool shaderExists(const std::string& name) const;
     Shader* getShader(const std::string& name);
 
+    bool soundExists(const std::string& name) const;
+    Sound* getSound(const std::string& name);
+
 private:
     std::map<std::string, Texture2D> m_textures{};
     std::map<std::string, Font> m_fonts{};
     std::map<std::string, Shader> m_shaders{};
+    std::map<std::string, Sound> m_sounds{};
 };
 
 #endif

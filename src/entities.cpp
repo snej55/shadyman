@@ -141,6 +141,7 @@ void EntityManager::init(AssetManager* assets)
     m_flameManager = new FlameManager{assets};
     m_cinderManager = new CinderManager{assets};
     m_lightTex = assets->getTexture("light");
+    m_assets = assets;
 }
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins, float& slomo)
@@ -160,7 +161,12 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
     {
         m_entities[i]->setWandering(i > numAttackers);
         m_entities[i]->setAttacking(i < numAttackers);
+        float health {player->getHealth()};
         m_entities[i]->update(dt, world, player, screenShake);
+        if (player->getHealth() < health)
+        {
+            PlaySound(*m_assets->getSound("player_hit"));
+        }
 
         // handle bullet collisions
         for (Bullet* bullet : bullets)
@@ -207,6 +213,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 screenShake = std::max(screenShake, 8.f);
                 slomo = std::min(slomo, 0.9f);
                 m_lights.emplace_back(new EntityLight{40.f, 0.5f, m_entities[i]->getCenter()});
+                PlaySound(*m_assets->getSound("hit"));
             }
         }
 
@@ -245,6 +252,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
             slomo = std::min(slomo, 0.5f);
             screenShake = std::max(screenShake, 16.f);
             m_lights.emplace_back(new EntityLight{50.f, 0.1f, center});
+            PlaySound(*m_assets->getSound("explosion"));
         } else {
             m_entities[i]->render(scroll);
         }

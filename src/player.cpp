@@ -38,7 +38,7 @@ void Player::update(const float dt, World* world)
     m_falling += dt;
     m_jumping += dt;
     m_recovery += dt;
-    m_health = std::min(m_maxHealth, m_health + 0.005f * dt);
+    m_health = std::min(m_maxHealth, m_health + 0.01f * dt);
 
     // x velocity
     if (m_controller.getControl(C_RIGHT))

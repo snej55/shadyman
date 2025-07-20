@@ -137,18 +137,21 @@ bool Game::menu()
         {
             if (!showSettings)
             {
+                PlaySound(*m_assets.getSound("button"));
                 showControls = !showControls;
             }
         } else if (IsKeyPressed(KEY_S))
         {
             if (!showControls)
             {
+                PlaySound(*m_assets.getSound("button"));
                 showSettings = !showSettings;
             }
         } else if (IsKeyPressed(KEY_SPACE))
         {
             if (!showControls && !showSettings)
             {
+                PlaySound(*m_assets.getSound("button"));
                 m_screenShakeEnabled = screenShakeTick.getSelected();
                 CST::SCR_VRATIO = scaleSelect.getScale();
                 std::cout << scaleSelect.getScale() << " " << CST::SCR_VRATIO << '\n';
@@ -165,6 +168,7 @@ bool Game::menu()
             {
                 if (screenShakeTick.getHover())
                 {
+                    PlaySound(*m_assets.getSound("button"));
                     screenShakeTick.setSelected(!screenShakeTick.getSelected());
                 }
                 scaleSelect.click();
@@ -183,7 +187,7 @@ void Game::update()
     m_blaster->update(m_dt, &m_world);
 
     m_gameTime += m_dt;
-    m_interval = std::max(1.f, m_interval - 0.002f * m_dt);
+    m_interval = std::max(1.f, m_interval - 0.005f * m_dt);
     m_distance = std::min(650.f, m_distance + 0.02f * m_dt);
 
     m_timer += m_dt;
@@ -342,6 +346,10 @@ void Game::run()
         // check if player died
         if (m_player.getHealth() <= 0.0f)
         {
+            if (m_darkness == 1.0f)
+            {
+                PlaySound(*m_assets.getSound("boom"));
+            }
             SetMusicVolume(m_music, m_darkness);
             m_darkness -= 0.01f * m_dt;
         }
@@ -519,6 +527,7 @@ void Game::drawUI()
     {
         if (shopButton.getHover())
         {
+            PlaySound(*m_assets.getSound("button"));
             m_shop = true;
         }
     }
@@ -744,6 +753,7 @@ void Game::shop()
 
     if (IsKeyPressed(KEY_S))
     {
+        PlaySound(*m_assets.getSound("button"));
         m_shop = false;
         m_shopScroll = 0.0f;
     }
@@ -775,6 +785,7 @@ void Game::buyBlaster(Blasters blasterType)
                 m_blaster->init(&m_assets);
                 m_coins -= 720.f;
                 m_currentBlaster = "Default";
+                PlaySound(*m_assets.getSound("button"));
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }
@@ -787,6 +798,7 @@ void Game::buyBlaster(Blasters blasterType)
                 m_blaster->init(&m_assets);
                 m_coins -= 1200.f;
                 m_currentBlaster = "Fire blaster";
+                PlaySound(*m_assets.getSound("button"));
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }
@@ -799,6 +811,7 @@ void Game::buyBlaster(Blasters blasterType)
                 m_blaster->init(&m_assets);
                 m_coins -= 1700.f;
                 m_currentBlaster = "Cannon";
+                PlaySound(*m_assets.getSound("button"));
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }
@@ -811,6 +824,7 @@ void Game::buyBlaster(Blasters blasterType)
                 m_blaster->init(&m_assets);
                 m_coins -= 5000.f;
                 m_currentBlaster = "Big Modda";
+                PlaySound(*m_assets.getSound("button"));
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }
@@ -823,6 +837,7 @@ void Game::buyBlaster(Blasters blasterType)
                 m_blaster->init(&m_assets);
                 m_coins -= 10000.f;
                 m_currentBlaster = "Exterminator";
+                PlaySound(*m_assets.getSound("button"));
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }

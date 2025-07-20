@@ -139,6 +139,7 @@ private:
     SmokeManager m_smoke{};
     ShockwaveManager m_shockwaves{};
     Texture2D* m_lightTex{nullptr};
+    AssetManager* m_assets{nullptr};
 
     std::vector<EntityLight*> m_lights{};
 };

@@ -8,6 +8,7 @@ AssetManager::~AssetManager()
     freeTextures();
     freeFonts();
     freeShaders();
+    freeSounds();
 }
 
 void AssetManager::init()
@@ -68,6 +69,13 @@ void AssetManager::init()
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader
 
+    // sounds
+    addSound("boom", "data/audio/sfx/boom.wav");
+    addSound("button", "data/audio/sfx/button.wav");
+    addSound("hit", "data/audio/sfx/hit.wav");
+    addSound("explosion", "data/audio/sfx/explosion.wav");
+    addSound("player_hit", "data/audio/sfx/player_hit.wav");
+
     std::cout << "Loaded textures!\n";
 }
 
@@ -89,6 +97,11 @@ void AssetManager::addFont(const std::string& name, const char* path)
 void AssetManager::addShader(const std::string& name, const char* fspath)
 {
     m_shaders.insert(std::pair<std::string, Shader>(name, LoadShader(0, fspath)));
+}
+
+void AssetManager::addSound(const std::string& name, const char* path)
+{
+    m_sounds.insert(std::pair<std::string, Sound>(name, LoadSound(path)));
 }
 
 void AssetManager::freeTextures()
@@ -119,6 +132,16 @@ void AssetManager::freeShaders()
         UnloadShader(p.second);
     }
     std::cout << "Freed shaders!" << std::endl;
+}
+
+void AssetManager::freeSounds()
+{
+    for (const std::pair<std::string, Sound>& p : m_sounds)
+    {
+        std::cout << "Freed sound: `" << p.first << "`\n";
+        UnloadSound(p.second);
+    }
+    std::cout << "Freed sounds!" << std::endl;
 }
 
 bool AssetManager::textureExists(const std::string& name) const
@@ -165,3 +188,19 @@ Shader* AssetManager::getShader(const std::string& name)
     std::cout << "ERROR: Could not find shader with name `" << name << "`!\n";
     return nullptr;
 }
+
+bool AssetManager::soundExists(const std::string& name) const
+{
+    return m_sounds.find(name) != m_sounds.end();
+}
+
+Sound* AssetManager::getSound(const std::string& name)
+{
+    if (soundExists(name))
+    {
+        return &m_sounds.find(name)->second;
+    }
+    std::cout << "ERROR: Could not find sound with name `" << name << "`!\n";
+    return nullptr;
+}
+
