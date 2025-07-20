@@ -81,6 +81,8 @@ public:
     void setOffset(const vec2<float>& val) {m_offset = val;}
     [[nodiscard]] vec2<float> getOffset() {return m_offset;}
 
+    void setPos(const vec2<float> pos) {m_pos = pos;}
+
 private:
     vec2<float> m_pos;
     vec2<int> m_dimensions;

@@ -78,7 +78,7 @@ private:
     World m_world{};
     AssetManager m_assets{};
     EntityManager m_entityManager{};
-    const vec2<float> m_spawnPos{200.f, -20.f};
+    const vec2<float> m_spawnPos{594.f, -20.f};
     Player m_player{m_spawnPos, {7, 14}};
     Blaster* m_blaster{nullptr};
     std::string m_currentBlaster{"default"};
@@ -114,6 +114,10 @@ private:
     float m_coinAnimSpeed{0.2f};
     float m_coinCounter{0.0f};
     float m_darkness{1.0f};
+
+    float m_gameTime{0.0f};
+    float m_distance{50.f};
+    float m_interval{30.f};
 };
 
 #endif

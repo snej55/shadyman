@@ -63,9 +63,9 @@ bool Game::menu()
             DrawRectangleRounded({width * 0.25f - padding, height * 0.1f - padding, width * 0.5f + padding * 2.f, height * 0.4f + padding * 2.f}, 0.1f, 30, GRAY);
             DrawTextEx(*m_assets.getFont("pixel"), "Shady Man", {width * 0.25f, height * 0.1f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 8.f), 0, WHITE);
             
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to toggle settings", {width * 0.1f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to toggle controls", {width * 0.1f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
-            DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to start", {width * 0.1f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to toggle settings menu", {width * 0.05f, height * 0.6f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [c] to toggle controls menu", {width * 0.05f, height * 0.7f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
+            DrawTextEx(*m_assets.getFont("pixel"), "Press [space] to start", {width * 0.05f, height * 0.8f}, static_cast<int>((width * 0.5) / ((float)CST::SCR_WIDTH * 0.25f / CST::SCR_VRATIO) * 4.f), 0, WHITE);
             
             if (showControls)
             {
@@ -171,11 +171,16 @@ void Game::update()
     m_player.update(m_dt, &m_world);
     m_blaster->update(m_dt, &m_world);
 
+    m_gameTime += m_dt;
+    m_interval = std::max(1.f, m_interval - 0.001f * m_dt);
+    m_distance = std::min(594.f, m_distance + 0.02f * m_dt);
+
     m_timer += m_dt;
-    if (m_timer > 30.f)
+    if (m_timer > m_interval)
     {
         m_timer = 0.0f;
-        m_entityManager.addEntity(EnemyType::BLOBBO, {Util::random() * 200.f + 10.f, 10}, &m_assets);
+        m_entityManager.addEntity(EnemyType::BLOBBO, {Util::random() * m_distance + 10.f, -10}, &m_assets);
+        m_entityManager.addEntity(EnemyType::BLOBBO, {1188 - Util::random() * m_distance, -10}, &m_assets);
     }
 
     // -------------------------- //
@@ -391,6 +396,7 @@ void Game::reset()
 {
     m_player.setHealth(m_player.getMaxHealth());
     m_player.setRecovery(999.f);
+    m_player.setPos(m_spawnPos);
     m_entityManager.free();
     m_entityManager.init(&m_assets);
     m_darkness = 1.0f;
