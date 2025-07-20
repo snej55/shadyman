@@ -180,3 +180,57 @@ void ShockwaveManager::addShockwave(const vec2<float> center, const float target
         targetRadius
     });
 }
+
+FlameManager::FlameManager(AssetManager* assets)
+ : m_flameTex{assets->getTexture("flame")}
+{
+}
+
+FlameManager::~FlameManager()
+{
+    free();
+}
+
+void FlameManager::free()
+{
+    for (std::size_t i{0}; i < std::size(m_flames); ++i)
+    {
+        delete m_flames[i]->anim;
+        delete m_flames[i];
+    }
+
+    m_flames.clear();
+}
+
+void FlameManager::update(const float dt, const vec2<int> scroll)
+{
+    for (std::size_t i{0}; i < std::size(m_flames); ++i)
+    {
+        Flame* f{m_flames[i]};
+        f->pos.x += f->vel.x * dt;
+        f->pos.y += f->vel.y * dt;
+
+        f->anim->tick(dt);
+
+        if (f->anim->getFinished())
+        {
+            delete f->anim;
+            delete f;
+            f = nullptr;
+        } else {
+            f->anim->render(f->pos, scroll);
+        }
+    }
+}
+
+void FlameManager::explode(vec2<float> pos, float intensity)
+{
+    for (std::size_t i{0}; i < static_cast<int>(Util::random() * 10.f * intensity + 10.f * intensity); ++i)
+    {
+        const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
+        const float dist{Util::random() * 5.f * intensity};
+        Anim* anim {new Anim{5, 5, 9, 0.2f, false, m_flameTex}};
+        anim->setFrame(Util::random() < 0.5f ? 0.f : 1.f); // randomize it a bit
+        m_flames.push_back(new Flame{{pos.x + std::cos(angle) * dist, pos.y + std::sin(angle) * dist}, {0.0f, 0.9f}, anim});
+    }
+}

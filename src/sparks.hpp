@@ -89,7 +89,7 @@ public:
     void renderSpark(Spark* spark, const vec2<int>& scroll)
     {
         constexpr float scale{3.0f}; // scale of spark
-        constexpr float width{0.5f}; // width between kite wings
+        constexpr float width{0.3f}; // width between kite wings
         constexpr float snout{0.75f}; // ratio between snout and tail
         constexpr Color color {WHITE};
 

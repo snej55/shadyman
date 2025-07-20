@@ -40,6 +40,7 @@ void AssetManager::init()
     // random stuff + UI
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
+    addTexture("flame", "data/images/particles/flame.png");
     addTexture("controls", "data/images/ui/controls.png");
     addTexture("tick", "data/images/ui/tick.png");
     addTexture("tick_empty", "data/images/ui/tick_empty.png");

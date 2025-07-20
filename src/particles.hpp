@@ -5,6 +5,8 @@
 
 #include "vec2.hpp"
 #include "tiles.hpp"
+#include "anim.hpp"
+#include "assets.hpp"
 
 #include <vector>
 
@@ -67,7 +69,7 @@ struct Shockwave
     float outerRadius{0.0f};
 };
 
-struct ShockwaveManager
+class ShockwaveManager
 {
 public:
     ShockwaveManager() = default;
@@ -80,6 +82,30 @@ public:
 
 private:
     std::vector<Shockwave*> m_shockwaves{};
+};
+
+struct Flame
+{
+    vec2<float> pos;
+    vec2<float> vel;
+    Anim* anim;
+};
+
+class FlameManager
+{
+public:
+    FlameManager(AssetManager* assets);
+    ~FlameManager();
+
+    void free();
+    void update(float dt, vec2<int> scroll);
+
+    void explode(vec2<float> pos, float intensity);
+
+private:
+    Texture2D* m_flameTex;
+
+    std::vector<Flame*> m_flames{};
 };
 
 #endif
