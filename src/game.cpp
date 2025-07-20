@@ -172,8 +172,8 @@ void Game::update()
     m_blaster->update(m_dt, &m_world);
 
     m_gameTime += m_dt;
-    m_interval = std::max(1.f, m_interval - 0.001f * m_dt);
-    m_distance = std::min(594.f, m_distance + 0.02f * m_dt);
+    m_interval = std::max(1.f, m_interval - 0.002f * m_dt);
+    m_distance = std::min(650.f, m_distance + 0.04f * m_dt);
 
     m_timer += m_dt;
     if (m_timer > m_interval)
