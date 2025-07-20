@@ -112,6 +112,7 @@ private:
     float m_coinAnim{0.0f};
     float m_coinAnimSpeed{0.2f};
     float m_coinCounter{0.0f};
+    float m_darkness{1.0f};
 };
 
 #endif

@@ -17,6 +17,7 @@ uniform int height;
 uniform float time;
 uniform float scrollx;
 uniform float scrolly;
+uniform float darkness;
 
 // color output
 out vec4 finalColor;
@@ -57,5 +58,5 @@ void main()
     color.rgb = color.rgb * 0.2 + color.rgb * lighting.rgb;
 
     // output color
-    finalColor = color;
+    finalColor = color * darkness;
 }

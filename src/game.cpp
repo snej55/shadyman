@@ -285,6 +285,7 @@ void Game::run()
         SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "time"), &time, SHADER_UNIFORM_FLOAT);
         SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "scrollx"), &m_scroll.x, SHADER_UNIFORM_FLOAT);
         SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "scrolly"), &m_scroll.y, SHADER_UNIFORM_FLOAT);
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "darkness"), &m_darkness, SHADER_UNIFORM_FLOAT);
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
             m_destRect,
@@ -319,6 +320,11 @@ void Game::run()
 
         // check if player died
         if (m_player.getHealth() <= 0.0f)
+        {
+            m_darkness -= 0.01f * m_dt;
+        }
+
+        if (m_darkness <= 0.0f)
         {
             return;
         }
@@ -387,6 +393,7 @@ void Game::reset()
     m_player.setRecovery(999.f);
     m_entityManager.free();
     m_entityManager.init(&m_assets);
+    m_darkness = 1.0f;
 }
 
 // ------- Other stuff ------- //
