@@ -118,6 +118,9 @@ private:
     float m_gameTime{0.0f};
     float m_distance{50.f};
     float m_interval{120.f};
+
+    // Music
+    Music m_music{};
 };
 
 #endif

@@ -16,6 +16,9 @@ void Game::init()
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     SetWindowMinSize(CST::SCR_WIDTH, CST::SCR_HEIGHT);
 
+    // initialize audio device
+    InitAudioDevice();
+
     SetTargetFPS(60);
 
     // load components
@@ -32,11 +35,19 @@ void Game::init()
     m_blaster = new Blaster{&m_player, "default",  {0.f, 1.f}};
     m_blaster->init(&m_assets);
 
+    m_music = LoadMusicStream("data/audio/music/groove.wav");
+    if (!IsMusicValid(m_music))
+    {
+        std::cout << "ERROR: Failed to load music stream!\n";
+    }
+    PauseMusicStream(m_music);
+
     std::cout << "Initialized!\n";
 }
 
 bool Game::menu()
 {
+    PauseMusicStream(m_music);
     bool showControls{false};
     float controlsFade{0.0f};
     bool showSettings{false};
@@ -227,8 +238,10 @@ void Game::run()
 
     double lastTime {GetTime()};
 
+    PlayMusicStream(m_music);
     while (!WindowShouldClose())
     {
+        UpdateMusicStream(m_music);
         m_lastPaused += m_dt;
         m_coinAnim += m_coinAnimSpeed * m_dt;
         if (m_coinAnim >= 6.f)
@@ -267,6 +280,7 @@ void Game::run()
                 {
                     if (m_paused)
                     {
+                        PlayMusicStream(m_music);
                         m_paused = false;
                     }
                 }
@@ -306,9 +320,11 @@ void Game::run()
 
         if (m_shop)
         {
+            SetMusicVolume(m_music, 0.2f);
             shop();
             m_shopFade += (1.0 - m_shopFade) * 0.25f * m_dt;
         } else {
+            SetMusicVolume(m_music, m_darkness);
             m_shopFade += (0.0 - m_shopFade) * 0.25f * m_dt;
         }
 
@@ -326,11 +342,13 @@ void Game::run()
         // check if player died
         if (m_player.getHealth() <= 0.0f)
         {
+            SetMusicVolume(m_music, m_darkness);
             m_darkness -= 0.01f * m_dt;
         }
-
+        
         if (m_darkness <= 0.0f)
         {
+            PauseMusicStream(m_music);
             return;
         }
     }
@@ -338,6 +356,7 @@ void Game::run()
 
 bool Game::death()
 {
+    PauseMusicStream(m_music);
     double lastTime {GetTime()};
     while (!WindowShouldClose())
     {
@@ -388,6 +407,8 @@ void Game::close()
     delete m_blaster;
     UnloadRenderTexture(m_targetBuffer);
     UnloadRenderTexture(m_lightingBuffer);
+    UnloadMusicStream(m_music);
+    CloseAudioDevice();
     CloseWindow();
     std::cout << "Closed!" << std::endl;
 }
@@ -832,6 +853,7 @@ void Game::handleControls()
     {
         if (m_paused == false)
         {
+            PauseMusicStream(m_music);
             m_paused = true;
             update();
         }
