@@ -56,6 +56,7 @@ void AssetManager::init()
     addTexture("thumbnails/cannon", "data/images/blasters/thumbnails/cannon.png");
     addTexture("buy", "data/images/ui/buy.png");
     addTexture("nope", "data/images/ui/nope.png");
+    addTexture("noise", "data/images/noise.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader

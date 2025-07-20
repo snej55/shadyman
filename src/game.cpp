@@ -107,12 +107,10 @@ bool Game::menu()
         
         BeginDrawing();
         
-        BeginShaderMode(*m_assets.getShader("screenShader"));
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
             m_destRect,
             Vector2{0, 0}, 0, WHITE);
-        EndShaderMode();
         BeginDrawing();
         
         EndDrawing();
@@ -275,7 +273,15 @@ void Game::run()
 
         BeginDrawing();
 
+        Texture2D* tex {m_assets.getTexture("noise")};
         BeginShaderMode(*m_assets.getShader("screenShader"));
+        SetShaderValueTexture(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "noise"), *tex);
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "width"), &m_width, SHADER_UNIFORM_INT);
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "height"), &m_height, SHADER_UNIFORM_INT);
+        float time {static_cast<float>(GetTime())};
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "time"), &time, SHADER_UNIFORM_FLOAT);
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "scrollx"), &m_scroll.x, SHADER_UNIFORM_FLOAT);
+        SetShaderValue(*m_assets.getShader("screenShader"), GetShaderLocation(*m_assets.getShader("screenShader"), "scrolly"), &m_scroll.y, SHADER_UNIFORM_FLOAT);
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
             m_destRect,
@@ -346,12 +352,10 @@ bool Game::death()
         
         BeginDrawing();
         
-        BeginShaderMode(*m_assets.getShader("screenShader"));
         DrawTexturePro(m_targetBuffer.texture,
             m_srcRect,
             m_destRect,
             Vector2{0, 0}, 0, WHITE);
-        EndShaderMode();
         BeginDrawing();
         
         EndDrawing();
