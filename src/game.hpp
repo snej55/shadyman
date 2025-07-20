@@ -75,6 +75,7 @@ private:
     EntityManager m_entityManager{};
     Player m_player{{20.f, 20.f}, {7, 14}};
     Blaster* m_blaster{nullptr};
+    std::string m_currentBlaster{"default"};
 
     // random stuff
     std::string m_mapPath{"data/maps/0.json"};
@@ -97,6 +98,7 @@ private:
 
     bool m_shop{false};
     float m_shopFade{0.0f};
+    float m_shopScroll{0.0f};
 
     // UI stuff
     float m_playerHealth{0.0f};

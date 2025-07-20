@@ -50,6 +50,11 @@ void AssetManager::init()
     addTexture("play", "data/images/ui/play.png");
     addTexture("pause", "data/images/ui/pause.png");
     addTexture("coin", "data/images/ui/coin.png");
+    addTexture("thumbnails/blaster", "data/images/blasters/thumbnails/blaster.png");
+    addTexture("thumbnails/fire_blaster", "data/images/blasters/thumbnails/fire_blaster.png");
+    addTexture("thumbnails/cannon", "data/images/blasters/thumbnails/cannon.png");
+    addTexture("buy", "data/images/ui/buy.png");
+    addTexture("nope", "data/images/ui/nope.png");
 
     addFont("pixel", "data/fonts/PixelOperator8.ttf"); // custom font
     addShader("screenShader", "data/shaders/screenShader.frag"); // post processing shader

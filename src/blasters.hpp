@@ -67,11 +67,11 @@ public:
     BlasterStats stats
     {
         5.f, // speed
-        7.f, // rate
+        9.f, // rate
         7.f, // armLength
         4.f, // halfLength
         4.f, // damage
-        5.f, // knockBack
+        3.f, // knockBack
         1.7f, // recoil
         2.f, // bulletRange
     };
