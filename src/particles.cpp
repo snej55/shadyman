@@ -214,13 +214,16 @@ void FlameManager::update(const float dt, const vec2<int> scroll)
 
         if (f->anim->getFinished())
         {
-            delete f->anim;
-            delete f;
-            f = nullptr;
+            delete m_flames[i]->anim;
+            m_flames[i]->anim = nullptr;
+            delete m_flames[i];
+            m_flames[i] = nullptr;
         } else {
             f->anim->render(f->pos, scroll);
         }
     }
+
+    m_flames.erase(std::remove_if(m_flames.begin(), m_flames.end(), [](Flame* f){return f == nullptr;}), m_flames.end());
 }
 
 void FlameManager::explode(vec2<float> pos, float intensity)
@@ -228,16 +231,16 @@ void FlameManager::explode(vec2<float> pos, float intensity)
     for (std::size_t i{0}; i < static_cast<int>(Util::random() * 10.f * intensity + 10.f * intensity); ++i)
     {
         const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
-        const float dist{Util::random() * 5.f * intensity};
-        Anim* anim {new Anim{5, 5, 9, 0.2f, false, m_flameTex}};
+        const float dist{Util::random() * 12.f * intensity};
+        Anim* anim {new Anim{5, 5, 9, 0.4f, false, m_flameTex}};
         anim->setFrame(Util::random() < 0.5f ? 0.f : 1.f); // randomize it a bit
-        m_flames.emplace_back(new Flame{{pos.x + std::cos(angle) * dist, pos.y + std::sin(angle) * dist}, {0.0f, 0.9f}, anim});
+        m_flames.emplace_back(new Flame{{pos.x + std::cos(angle) * dist, pos.y + std::sin(angle) * dist}, {0.0f, -0.9f}, anim});
     }
 
     for (std::size_t i{0}; i < static_cast<int>(Util::random() * 5.f * intensity + 5.f * intensity); ++i)
     {
         const float angle{Util::random() * static_cast<float>(M_PI) * 2.f};
-        Anim* anim {new Anim{5, 5, 9, 0.4f, false, m_flameTex}};
+        Anim* anim {new Anim{5, 5, 9, 1.f, false, m_flameTex}};
         anim->setFrame(Util::random() < 0.5f ? 0.f : 1.f); // randomize it a bit
         m_flames.emplace_back(new Flame{pos, {std::cos(angle) * 5.f, std::sin(angle) * 5.f}, anim});
     }

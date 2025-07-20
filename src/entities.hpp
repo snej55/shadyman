@@ -122,6 +122,7 @@ private:
 
     // particle vfx managers
     SparkManager* m_sparkManager{nullptr};
+    FlameManager* m_flameManager{nullptr};
     KnockbackManager m_knockback{};
     SmokeManager m_smoke{};
     ShockwaveManager m_shockwaves{};

@@ -136,6 +136,7 @@ EntityManager::~EntityManager()
 void EntityManager::init(AssetManager* assets)
 {
     m_sparkManager = new SparkManager{assets};
+    m_flameManager = new FlameManager{assets};
 }
 
 void EntityManager::update(const float dt, World* world, Player* player, const vec2<int>& scroll, Blaster* blaster, float& screenShake, float& coins)
@@ -217,6 +218,7 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
                 m_smoke.addSmoke(center, {std::cos(angle) * intensity, std::sin(angle) * intensity - 1.f});
             }
             m_shockwaves.addShockwave(center, 24.f);
+            m_flameManager->explode(center, 1.f);
             delete m_entities[i];
             m_entities[i] = nullptr;
             coins += Util::random() * 10.f + 30.f;
@@ -231,9 +233,10 @@ void EntityManager::update(const float dt, World* world, Player* player, const v
         return entity == nullptr;
     }), m_entities.end());
 
+    m_smoke.update(dt, scroll);
     m_sparkManager->update(dt, scroll);
     m_knockback.update(dt, scroll, world);
-    m_smoke.update(dt, scroll);
+    m_flameManager->update(dt, scroll);
     m_shockwaves.update(dt, scroll);
 }
 
@@ -270,6 +273,8 @@ void EntityManager::free()
     // free vfx managers
     delete m_sparkManager;
     m_sparkManager = nullptr;
+    delete m_flameManager;
+    m_flameManager = nullptr;
 }
 
 // --------- Blobbo --------- //
