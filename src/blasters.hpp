@@ -5,6 +5,7 @@
 #include "player.hpp"
 #include "assets.hpp"
 #include "util.hpp"
+#include "sparks.hpp"
 
 #include <string>
 #include <string_view>
@@ -87,6 +88,8 @@ public:
 protected:
     Player* m_player;
     std::string m_name;
+
+    SparkManager* m_sparkManager{nullptr};
 
     vec2<float> m_offset;
     vec2<float> m_pos{};

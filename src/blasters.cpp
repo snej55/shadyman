@@ -19,6 +19,7 @@ void Blaster::init(AssetManager* assets)
     m_anim->setOrigin({6.f, 2.5f});
     m_bulletAnim = new Anim{8, 1, 1, 0.1, true, assets->getTexture("bullets/laser")};
     m_bulletAnim->setOrigin({4.f, 0.5f});
+    m_sparkManager = new SparkManager{assets};
 }
 
 void Blaster::update(const float dt, World* world)
@@ -59,10 +60,12 @@ void Blaster::free()
     m_anim = nullptr;
     delete m_bulletAnim;
     m_bulletAnim = nullptr;
+    delete m_sparkManager;
 }
 
 void Blaster::render(const vec2<int>& scroll)
 {
+    m_sparkManager->update(1.f, scroll);
     m_anim->setFlipped(m_flipped);
     m_anim->render({m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength), m_pos.y + m_offset.y}, scroll);
 }
@@ -80,14 +83,19 @@ void Blaster::fire()
 {
     if (m_timer > stats.rate)
     {
+        float angle = m_flipped ? PI : 0.f;
         m_bullets.emplace_back(new Bullet{{
             m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, // pos
             m_pos.y + m_offset.y},
             stats.speed, // speed
-            m_flipped ? PI : 0.f}); // angle
+            angle}); // angle
         // reset timer
         m_timer = 0.0f;
         m_player->setOffset({-std::cos(m_angle) * stats.recoil, -std::sin(m_angle) * stats.recoil});
+        for (std::size_t i{0}; i < static_cast<int>(Util::random() * 5.f + 2.f); ++i)
+        {
+            m_sparkManager->addSpark({m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, m_pos.y + m_offset.y}, angle + Util::random() - 0.5f, Util::random() * 1.f + 0.5f);
+        }
     }
 }
 

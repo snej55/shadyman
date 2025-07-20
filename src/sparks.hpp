@@ -104,8 +104,8 @@ public:
         rlTexCoord2f(0.5f, 0.5f);
 
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle - width * M_PI) * size,
-                   spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle - width * M_PI) * size);
+        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) - std::cos(spark->angle - width * M_PI) * size,
+                   spark->pos.y - static_cast<float>(scroll.y) - std::sin(spark->angle - width * M_PI) * size);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size * scale,
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size * scale);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
@@ -113,7 +113,6 @@ public:
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * M_PI) * size);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size * scale,
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size * scale);
-        rlVertex2f(spark->pos.x - static_cast<float>(scroll.x), spark->pos.y - static_cast<float>(scroll.y));
  
         rlEnd();
         rlSetTexture(0);
