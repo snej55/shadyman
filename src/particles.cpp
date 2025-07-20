@@ -131,3 +131,52 @@ void SmokeManager::addSmoke(const vec2<float> pos, const vec2<float> vel)
         m_startSize - Util::random()
     });
 }
+
+ShockwaveManager::~ShockwaveManager()
+{
+    free();
+}
+
+void ShockwaveManager::free()
+{
+    for (std::size_t i{0}; i < std::size(m_shockwaves); ++i)
+    {
+        delete m_shockwaves[i];
+    }
+    m_shockwaves.clear();
+}
+
+void ShockwaveManager::update(const float dt, const vec2<int> scroll)
+{
+    for (std::size_t i{0}; i < std::size(m_shockwaves); ++i)
+    {
+        Shockwave* s{m_shockwaves[i]};
+
+        constexpr float outerSpeed{0.2f};
+        constexpr float innerSpeed{0.1f};
+
+        s->outerRadius += outerSpeed * dt;
+        s->innerRadius += innerSpeed * dt;
+
+        if (s->innerRadius >= s->targetRadius)
+        {
+            delete s;
+            m_shockwaves[i] = nullptr;
+        } else {
+            s->outerRadius = std::min(s->targetRadius, s->outerRadius);
+            s->innerRadius = std::min(s->innerRadius, s->targetRadius);
+    
+            DrawRing({s->center.x - (float)scroll.x, s->center.y - (float)scroll.y}, s->innerRadius, s->outerRadius, 0.0f, 360.f, 60, {255, 253, 240, 255});
+        }
+    }
+
+    m_shockwaves.erase(std::remove_if(m_shockwaves.begin(), m_shockwaves.end(), [](Shockwave* s){return s == nullptr;}), m_shockwaves.end());
+}
+
+void ShockwaveManager::addShockwave(const vec2<float> center, const float targetRadius)
+{
+    m_shockwaves.emplace_back(new Shockwave{
+        center,
+        targetRadius
+    });
+}

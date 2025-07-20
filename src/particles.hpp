@@ -58,4 +58,28 @@ private:
     const float m_startSize{10.f};
 };
 
+struct Shockwave
+{
+    vec2<float> center;
+    float targetRadius;
+
+    float innerRadius{0.0f};
+    float outerRadius{0.0f};
+};
+
+struct ShockwaveManager
+{
+public:
+    ShockwaveManager() = default;
+    ~ShockwaveManager();
+
+    void free();
+    void update(float dt, vec2<int> scroll);
+
+    void addShockwave(vec2<float> pos, float targetRadius);
+
+private:
+    std::vector<Shockwave*> m_shockwaves{};
+};
+
 #endif
