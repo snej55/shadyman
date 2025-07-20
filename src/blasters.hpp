@@ -16,6 +16,7 @@ struct Bullet
     float speed;
     float angle;
     bool kill{false};
+    float timer{0.0f};
 };
 
 struct BlasterStats
@@ -122,6 +123,7 @@ public:
         m_anim->setOrigin({6.f, 2.5f});
         m_bulletAnim = new Anim{8, 3, 1, 0.1, true, assets->getTexture("bullets/fire_bullet")};
         m_bulletAnim->setOrigin({4.f, 1.5f});
+        m_sparkManager = new SparkManager{assets};
     }
 
     BlasterStats stats
@@ -151,6 +153,7 @@ public:
         m_anim->setOrigin({6.f, 2.5f});
         m_bulletAnim = new Anim{6, 6, 1, 0.1, true, assets->getTexture("bullets/ball")};
         m_bulletAnim->setOrigin({3.f, 3.f});
+        m_sparkManager = new SparkManager{assets};
     }
 
     BlasterStats stats
@@ -178,6 +181,12 @@ public:
                 bullet->kill = true;
             }
         }
+
+        bullet->timer += dt;
+        if (bullet->timer > 600.f)
+        {
+            bullet->kill = true;
+        }
     }
 
     void renderBullet(Bullet* bullet, const vec2<int>& scroll)
@@ -189,7 +198,7 @@ public:
             && 0.f - stats.halfLength * 2.f < bullet->pos.y - static_cast<float>(scroll.y)
             && bullet->pos.y - static_cast<float>(scroll.y) < static_cast<float>(GetScreenHeight()) / CST::SCR_VRATIO + stats.halfLength * 2.f)
         {
-            m_bulletAnim->setFlipped(std::cos(bullet->angle) < 0.0f);
+            // m_bulletAnim->setFlipped(std::cos(bullet->angle) < 0.0f);
             m_bulletAnim->render({bullet->pos.x, bullet->pos.y}, scroll);
         }
     }

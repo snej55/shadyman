@@ -116,6 +116,12 @@ void Blaster::updateBullet(Bullet* bullet, const float dt, World* world)
             bullet->kill = true;
         }
     }
+
+    bullet->timer += dt;
+    if (bullet->timer > 600.f)
+    {
+        bullet->kill = true;
+    }
 }
 
 void Blaster::renderBullet(Bullet* bullet, const vec2<int>& scroll)
