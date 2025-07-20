@@ -4,6 +4,7 @@
 #include "vec2.hpp"
 #include "player.hpp"
 #include "assets.hpp"
+#include "util.hpp"
 
 #include <string>
 #include <string_view>
@@ -115,7 +116,7 @@ public:
     BlasterStats stats
     {
         8.f, // speed
-        10.f, // rate
+        3.f, // rate
         7.f, // armLength
         4.f, // halfLength
         6.f, // damage
@@ -138,8 +139,50 @@ public:
         m_anim = new Anim{12, 5, 1, 0.5f, true, assets->getTexture("blasters/cannon")};
         m_anim->setOrigin({6.f, 2.5f});
         m_bulletAnim = new Anim{6, 6, 1, 0.1, true, assets->getTexture("bullets/ball")};
-        m_bulletAnim->setOrigin({4.f, 1.5f});
+        m_bulletAnim->setOrigin({3.f, 3.f});
     }
+
+    BlasterStats stats
+    {
+        6.f, // speed
+        5.f, // rate
+        7.f, // armLength
+        3.f, // halfLength
+        11.f, // damage
+        70.f, // knockBack
+        1.7f, // recoil
+        4.f, // bulletRange
+    };
+
+    void updateBullet(Bullet* bullet, const float dt, World* world)
+    {
+        bullet->pos.x += std::cos(bullet->angle) * bullet->speed * dt;
+        bullet->pos.y += std::sin(bullet->angle) * bullet->speed * dt;
+        Tile* tile {world->getTileAt(bullet->pos.x + std::cos(bullet->angle) * stats.halfLength,
+                                    bullet->pos.y + std::sin(bullet->angle) * stats.halfLength)};
+        if (tile != nullptr)
+        {
+            if (Util::elementIn<TileType, std::size(SOLID_TILES)>(tile->type, SOLID_TILES.data()))
+            {
+                bullet->kill = true;
+            }
+        }
+    }
+
+    void renderBullet(Bullet* bullet, const vec2<int>& scroll)
+    {
+        // only render bullet if it's on the screen
+        m_bulletAnim->setAngle(m_bulletAnim->getAngle() + 3.f);
+        if (0.f - stats.halfLength * 2.f < bullet->pos.x - static_cast<float>(scroll.x)
+            && bullet->pos.x - static_cast<float>(scroll.x) < static_cast<float>(GetScreenWidth()) / CST::SCR_VRATIO + stats.halfLength * 2.f
+            && 0.f - stats.halfLength * 2.f < bullet->pos.y - static_cast<float>(scroll.y)
+            && bullet->pos.y - static_cast<float>(scroll.y) < static_cast<float>(GetScreenHeight()) / CST::SCR_VRATIO + stats.halfLength * 2.f)
+        {
+            m_bulletAnim->setFlipped(std::cos(bullet->angle) < 0.0f);
+            m_bulletAnim->render({bullet->pos.x, bullet->pos.y}, scroll);
+        }
+    }
+
 };
 
 #endif

@@ -29,7 +29,7 @@ void Game::init()
     m_entityManager.init(&m_assets);
     m_entityManager.addEntity(EnemyType::BLOBBO, {50, 10}, &m_assets);
 
-    m_blaster = new FireBlaster{&m_player, "default",  {0.f, 1.f}};
+    m_blaster = new Cannon{&m_player, "default",  {0.f, 1.f}};
     m_blaster->init(&m_assets);
 
     std::cout << "Initialized!\n";
