@@ -92,7 +92,7 @@ void SmokeManager::update(const float dt, const vec2<int> scroll)
 {
     for (std::size_t i{0}; i < std::size(m_smoke); ++i)
     {
-        constexpr float decay{0.1f};
+        constexpr float decay{0.12f};
         constexpr float friction{0.9f};
         Smoke* smoke {m_smoke[i]};
 
