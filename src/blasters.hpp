@@ -36,6 +36,8 @@ enum class Blasters
     DEFAULT,
     FIRE_BLASTER,
     CANNON,
+    BIG_MODDA,
+    EXTERMINATOR,
     NONE
 };
 
@@ -80,7 +82,7 @@ public:
         9.f, // rate
         7.f, // armLength
         4.f, // halfLength
-        4.f, // damage
+        3.f, // damage
         3.f, // knockBack
         1.7f, // recoil
         2.f, // bulletRange
@@ -126,10 +128,10 @@ public:
         m_sparkManager = new SparkManager{assets};
         stats = BlasterStats{
             8.f, // speed
-            3.f, // rate
+            5.f, // rate
             7.f, // armLength
             4.f, // halfLength
-            8.f, // damage
+            5.f, // damage
             12.f, // knockBack
             1.7f, // recoil
             3.f, // bulletRange
@@ -153,14 +155,14 @@ public:
         m_bulletAnim->setOrigin({3.f, 3.f});
         m_sparkManager = new SparkManager{assets};
         stats = BlasterStats{
-            6.f, // speed
-            11.f, // rate
+            3.f, // speed
+            20.f, // rate
             7.f, // armLength
             3.f, // halfLength
             11.f, // damage
             70.f, // knockBack
             2.f, // recoil
-            4.f, // bulletRange
+            8.f, // bulletRange
         };
     }
     
@@ -222,7 +224,7 @@ public:
             1.f, // rate
             7.f, // armLength
             4.f, // halfLength
-            13.f, // damage
+            40.f, // damage
             20.f, // knockBack
             0.1f, // recoil
             6.f, // bulletRange

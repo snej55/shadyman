@@ -602,7 +602,7 @@ void Game::shop()
     DrawTextEx(*m_assets.getFont("pixel"), "Knockback: Strong,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 15.f * CST::SCR_VRATIO}, 16, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Rate: Slow", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 20.f * CST::SCR_VRATIO}, 16, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Recoil: strong", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 25.f * CST::SCR_VRATIO}, 16, 0, WHITE);
-    DrawTextEx(*m_assets.getFont("pixel"), "360 shooting", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 30.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Bidirectional shooting", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 30.f * CST::SCR_VRATIO}, 16, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "An interesting cannon.", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 40.f * CST::SCR_VRATIO}, 16, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Price: $1700", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 45.f * CST::SCR_VRATIO}, 16, 0, WHITE);
 
@@ -632,7 +632,85 @@ void Game::shop()
         }
     }
 
-    m_shopScroll += spacing * 2;
+    m_shopScroll -= spacing;
+    thumb = m_assets.getTexture("thumbnails/big_modda");
+    DrawRectangleRounded({20.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO}, 0.1f, 40.f, {157, 99, 58, 255});
+    DrawTexturePro(*thumb, {0, 0, (float)thumb->width, (float)thumb->height}, {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO, width, height}, {0.0f, 0.0f}, 0.0f, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Big Modda: ", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 5.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Damage: 30,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 10.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Knockback: Powerful,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 15.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Rate: Slow", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 20.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Recoil: very strong", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 25.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Bidirectional shooting", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 30.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Overkill - have fun!.", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 40.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Price: $5000", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 45.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+
+    if (m_coins > 5000.f)
+    {
+        tex = m_assets.getTexture("buy");
+    } else {
+        tex = m_assets.getTexture("nope");
+    }
+    DrawTexturePro(*tex, {0, 0, 23.f, 12.f}, {std::floor(scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO), std::floor(scr_width * 0.5f - 28.f * CST::SCR_VRATIO), 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO}, {0.0f, 0.0f}, 0.0f, WHITE);
+
+    Button moddaButton{{scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO}, {static_cast<int>(23.f * CST::SCR_VRATIO), static_cast<int>(12.f * CST::SCR_VRATIO)}, m_assets.getTexture("nope")};
+    moddaButton.update(1.f);
+    if (moddaButton.getHover())
+    {
+        DrawRectangle(scr_width * 0.5f - 43.f * CST::SCR_VRATIO + CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO + CST::SCR_VRATIO, static_cast<int>(23.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, static_cast<int>(12.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, {255, 255, 255, 100});
+    }
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (m_coins > 5000.f)
+        {
+            if (moddaButton.getHover())
+            {
+                buyBlaster(Blasters::BIG_MODDA);
+            }
+        }
+    }
+
+    m_shopScroll -= spacing;
+    thumb = m_assets.getTexture("thumbnails/exterminator");
+    DrawRectangleRounded({20.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO, scr_width * 0.5f - 40.f * CST::SCR_VRATIO}, 0.1f, 40.f, {157, 99, 58, 255});
+    DrawTexturePro(*thumb, {0, 0, (float)thumb->width, (float)thumb->height}, {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO, width, height}, {0.0f, 0.0f}, 0.0f, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Blobbo exterminator: ", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 5.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Damage: 40,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 10.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Knockback: very strong,", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 15.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Rate: very fast", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 20.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Recoil: very weak", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 25.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Bidirectional shooting", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 30.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Strikes fear into blobbos.", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 40.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+    DrawTextEx(*m_assets.getFont("pixel"), "Price: $10000", {20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, 20.f * CST::SCR_VRATIO + padding * CST::SCR_VRATIO + height + 45.f * CST::SCR_VRATIO}, 16, 0, WHITE);
+
+    if (m_coins > 10000.f)
+    {
+        tex = m_assets.getTexture("buy");
+    } else {
+        tex = m_assets.getTexture("nope");
+    }
+    DrawTexturePro(*tex, {0, 0, 23.f, 12.f}, {std::floor(scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO), std::floor(scr_width * 0.5f - 28.f * CST::SCR_VRATIO), 23.f * CST::SCR_VRATIO, 12.f * CST::SCR_VRATIO}, {0.0f, 0.0f}, 0.0f, WHITE);
+
+    Button extermButton{{scr_width * 0.5f - 43.f * CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO}, {static_cast<int>(23.f * CST::SCR_VRATIO), static_cast<int>(12.f * CST::SCR_VRATIO)}, m_assets.getTexture("nope")};
+    extermButton.update(1.f);
+    if (extermButton.getHover())
+    {
+        DrawRectangle(scr_width * 0.5f - 43.f * CST::SCR_VRATIO + CST::SCR_VRATIO - m_shopScroll * CST::SCR_VRATIO, scr_width * 0.5f - 28.f * CST::SCR_VRATIO + CST::SCR_VRATIO, static_cast<int>(23.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, static_cast<int>(12.f * CST::SCR_VRATIO) - 2 * CST::SCR_VRATIO, {255, 255, 255, 100});
+    }
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (m_coins > 10000.f)
+        {
+            if (extermButton.getHover())
+            {
+                buyBlaster(Blasters::EXTERMINATOR);
+            }
+        }
+    }
+
+    m_shopScroll += spacing * static_cast<float>(static_cast<int>(Blasters::NONE) - 1);
     
     DrawTextEx(*m_assets.getFont("pixel"), ("Current blaster: " + m_currentBlaster).c_str(), {10.f * CST::SCR_VRATIO, m_height - 21.f * CST::SCR_VRATIO}, 24, 0, WHITE);
     DrawTextEx(*m_assets.getFont("pixel"), "Press [s] to close the shop", {10.f * CST::SCR_VRATIO, m_height - 13.f * CST::SCR_VRATIO}, 24, 0, WHITE);
@@ -640,6 +718,7 @@ void Game::shop()
     if (IsKeyPressed(KEY_S))
     {
         m_shop = false;
+        m_shopScroll = 0.0f;
     }
 
     constexpr float scrollSpeed{-20.f};
@@ -677,7 +756,7 @@ void Game::buyBlaster(Blasters blasterType)
             if (m_coins >= 1200.f)
             {
                 delete m_blaster;
-                m_blaster = new FireBlaster{&m_player, "default",  {0.f, 1.f}};
+                m_blaster = new FireBlaster{&m_player, "fire_blaster",  {0.f, 1.f}};
                 m_blaster->init(&m_assets);
                 m_coins -= 1200.f;
                 m_currentBlaster = "Fire blaster";
@@ -689,10 +768,34 @@ void Game::buyBlaster(Blasters blasterType)
             if (m_coins >= 1700.f)
             {
                 delete m_blaster;
-                m_blaster = new Cannon{&m_player, "default",  {0.f, 1.f}};
+                m_blaster = new Cannon{&m_player, "cannon",  {0.f, 1.f}};
                 m_blaster->init(&m_assets);
                 m_coins -= 1700.f;
                 m_currentBlaster = "Cannon";
+            } else {
+                std::cout << "ERROR: Not enough coins!\n";
+            }
+            return;
+        case Blasters::BIG_MODDA:
+            if (m_coins >= 5000.f)
+            {
+                delete m_blaster;
+                m_blaster = new BigModda{&m_player, "big_modda",  {0.f, 1.f}};
+                m_blaster->init(&m_assets);
+                m_coins -= 5000.f;
+                m_currentBlaster = "Big Modda";
+            } else {
+                std::cout << "ERROR: Not enough coins!\n";
+            }
+            return;
+        case Blasters::EXTERMINATOR:
+            if (m_coins >= 10000.f)
+            {
+                delete m_blaster;
+                m_blaster = new Exterminator{&m_player, "exterminator",  {0.f, 1.f}};
+                m_blaster->init(&m_assets);
+                m_coins -= 10000.f;
+                m_currentBlaster = "Exterminator";
             } else {
                 std::cout << "ERROR: Not enough coins!\n";
             }
