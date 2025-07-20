@@ -83,7 +83,7 @@ void Blaster::fire()
 {
     if (m_timer > stats.rate)
     {
-        float angle = m_flipped ? PI : 0.f;
+        float angle = m_angle;
         m_bullets.emplace_back(new Bullet{{
             m_pos.x + m_offset.x + (m_flipped ? -stats.armLength : stats.armLength) * 2.f, // pos
             m_pos.y + m_offset.y},

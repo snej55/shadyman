@@ -76,7 +76,7 @@ public:
 
     BlasterStats stats
     {
-        5.f, // speed
+        4.f, // speed
         9.f, // rate
         7.f, // armLength
         4.f, // halfLength
@@ -124,19 +124,17 @@ public:
         m_bulletAnim = new Anim{8, 3, 1, 0.1, true, assets->getTexture("bullets/fire_bullet")};
         m_bulletAnim->setOrigin({4.f, 1.5f});
         m_sparkManager = new SparkManager{assets};
+        stats = BlasterStats{
+            8.f, // speed
+            3.f, // rate
+            7.f, // armLength
+            4.f, // halfLength
+            8.f, // damage
+            12.f, // knockBack
+            1.7f, // recoil
+            3.f, // bulletRange
+        };
     }
-
-    BlasterStats stats
-    {
-        8.f, // speed
-        3.f, // rate
-        7.f, // armLength
-        4.f, // halfLength
-        8.f, // damage
-        12.f, // knockBack
-        1.7f, // recoil
-        3.f, // bulletRange
-    };
 };
 
 class Cannon : public Blaster
@@ -154,19 +152,18 @@ public:
         m_bulletAnim = new Anim{6, 6, 1, 0.1, true, assets->getTexture("bullets/ball")};
         m_bulletAnim->setOrigin({3.f, 3.f});
         m_sparkManager = new SparkManager{assets};
+        stats = BlasterStats{
+            6.f, // speed
+            11.f, // rate
+            7.f, // armLength
+            3.f, // halfLength
+            11.f, // damage
+            70.f, // knockBack
+            2.f, // recoil
+            4.f, // bulletRange
+        };
     }
-
-    BlasterStats stats
-    {
-        6.f, // speed
-        11.f, // rate
-        7.f, // armLength
-        3.f, // halfLength
-        11.f, // damage
-        70.f, // knockBack
-        4.f, // recoil
-        4.f, // bulletRange
-    };
+    
 
     void updateBullet(Bullet* bullet, const float dt, World* world)
     {
@@ -202,7 +199,64 @@ public:
             m_bulletAnim->render({bullet->pos.x, bullet->pos.y}, scroll);
         }
     }
-
 };
+
+class Exterminator : public Blaster
+{
+public:
+    Exterminator(Player* player, const std::string& name, const vec2<float>& offset)
+     : Blaster{player, name, offset}
+    {
+    }
+
+    void init(AssetManager* assets)
+    {
+        m_anim = new Anim{12, 5, 1, 0.5f, true, assets->getTexture("blasters/exterminator")};
+        m_anim->setOrigin({6.f, 2.5f});
+        m_bulletAnim = new Anim{8, 3, 1, 0.1, true, assets->getTexture("bullets/shell")};
+        m_bulletAnim->setOrigin({4.f, 1.5f});
+        m_sparkManager = new SparkManager{assets};
+        stats = BlasterStats
+        {
+            10.f, // speed
+            1.f, // rate
+            7.f, // armLength
+            4.f, // halfLength
+            13.f, // damage
+            20.f, // knockBack
+            0.1f, // recoil
+            6.f, // bulletRange
+        };
+    }
+};
+
+class BigModda : public Blaster
+{
+public:
+    BigModda(Player* player, const std::string& name, const vec2<float>& offset)
+     : Blaster{player, name, offset}
+    {
+    }
+
+    void init(AssetManager* assets)
+    {
+        m_anim = new Anim{12, 5, 1, 0.5f, true, assets->getTexture("blasters/big_modda")};
+        m_anim->setOrigin({6.f, 2.5f});
+        m_bulletAnim = new Anim{12, 5, 1, 0.1, true, assets->getTexture("bullets/bomb")};
+        m_bulletAnim->setOrigin({6.f, 2.5f});
+        m_sparkManager = new SparkManager{assets};
+        stats = BlasterStats{
+            13.f, // speed
+            10.f, // rate
+            7.f, // armLength
+            4.f, // halfLength
+            30.f, // damage
+            100.f, // knockBack
+            3.f, // recoil
+            10.f, // bulletRange
+        };
+    }
+};
+
 
 #endif

@@ -33,10 +33,14 @@ void AssetManager::init()
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     addTexture("blasters/fire_blaster", "data/images/blasters/fire_blaster.png");
     addTexture("blasters/cannon", "data/images/blasters/cannon.png");
+    addTexture("blasters/exterminator", "data/images/blasters/exterminator.png");
+    addTexture("blasters/big_modda", "data/images/blasters/big_modda.png");
     // bullets
     addTexture("bullets/laser", "data/images/blasters/laser.png");
     addTexture("bullets/fire_bullet", "data/images/blasters/fire_bullet.png");
     addTexture("bullets/ball", "data/images/blasters/ball.png");
+    addTexture("bullets/shell", "data/images/blasters/shell.png");
+    addTexture("bullets/bomb", "data/images/blasters/bomb.png");
     // random stuff + UI
     addTexture("health_bar", "data/images/health_bar.png"); // player health bar
     addTexture("blank", "data/images/blank.png"); // white blank texture for particles
@@ -54,6 +58,8 @@ void AssetManager::init()
     addTexture("thumbnails/blaster", "data/images/blasters/thumbnails/blaster.png");
     addTexture("thumbnails/fire_blaster", "data/images/blasters/thumbnails/fire_blaster.png");
     addTexture("thumbnails/cannon", "data/images/blasters/thumbnails/cannon.png");
+    addTexture("thumbnails/exterminator", "data/images/blasters/thumbnails/exterminator.png");
+    addTexture("thumbnails/big_modda", "data/images/blasters/thumbnails/big_modda.png");
     addTexture("buy", "data/images/ui/buy.png");
     addTexture("nope", "data/images/ui/nope.png");
     addTexture("noise", "data/images/noise.png");
