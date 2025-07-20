@@ -104,11 +104,11 @@ private:
     bool m_flipped{false};
     bool m_grounded{false};
 
-    float m_health{50.f};
-    float m_maxHealth{50.f};
+    float m_health{150.f};
+    float m_maxHealth{150.f};
 
     float m_recovery{99.f};
-    const float m_recoveryTime{10.f};
+    const float m_recoveryTime{30.f};
 
     vec2<float> m_offset{0.f, 0.f};
 

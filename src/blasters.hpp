@@ -82,7 +82,7 @@ public:
         9.f, // rate
         7.f, // armLength
         4.f, // halfLength
-        3.f, // damage
+        5.f, // damage
         3.f, // knockBack
         1.7f, // recoil
         2.f, // bulletRange

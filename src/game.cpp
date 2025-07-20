@@ -173,7 +173,7 @@ void Game::update()
 
     m_gameTime += m_dt;
     m_interval = std::max(1.f, m_interval - 0.002f * m_dt);
-    m_distance = std::min(650.f, m_distance + 0.04f * m_dt);
+    m_distance = std::min(650.f, m_distance + 0.02f * m_dt);
 
     m_timer += m_dt;
     if (m_timer > m_interval)
@@ -822,13 +822,11 @@ void Game::handleControls()
         m_player.getController()->setControl(C_UP, false);
     }
 
-    if (m_player.getRecovery() > m_player.getRecoverTime() + 20.f)
+    if (IsKeyDown(KEY_X) || IsKeyDown(KEY_SPACE))
     {
-        if (IsKeyDown(KEY_X) || IsKeyDown(KEY_SPACE))
-        {
-            m_blaster->fire();
-        }
+        m_blaster->fire();
     }
+
 
     if (IsKeyPressed(KEY_P))
     {

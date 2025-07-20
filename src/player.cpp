@@ -38,6 +38,7 @@ void Player::update(const float dt, World* world)
     m_falling += dt;
     m_jumping += dt;
     m_recovery += dt;
+    m_health = std::min(m_maxHealth, m_health + 0.005f * dt);
 
     // x velocity
     if (m_controller.getControl(C_RIGHT))
@@ -177,7 +178,7 @@ void Player::handleAnimations(const float dt, const float fallBuf)
         m_anim = m_idleAnim;
     }
 
-    if (m_recovery < m_recoveryTime)
+    if (m_recovery < m_recoveryTime - 8.f)
     {
         m_anim = m_damageAnim;
     }

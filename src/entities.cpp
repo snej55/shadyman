@@ -379,7 +379,7 @@ void Blobbo::update(const float dt, World* world, Player* player, float& screenS
     m_walk += dt;
     if (!m_wandering || m_attacking || (std::abs(player->getCenter().x - m_pos.x) < CST::TILE_SIZE * 2 && std::abs(player->getCenter().y - m_pos.y) < CST::TILE_SIZE * 2))
     {
-        if (std::abs(player->getPos().x - m_pos.x) < 192.f)
+        if (std::abs(player->getPos().x - m_pos.x) < 1920.f)
         {
             if (player->getPos().x > m_pos.x + 5.f)
             {

@@ -112,7 +112,7 @@ class Editor:
                         tile_type = key
                 off_grid.append({'pos': tile['pos'], 'type': tile_type, 'variant': tile['variant']});
             json.dump({'level': {'tiles': tiles, 'off_grid': off_grid}}, f)
-            print("Saved level data to `{path}`")
+            print(f"Saved level data to `{path}`")
 
     def auto_tile(self):
         for loc in self.tile_map:
