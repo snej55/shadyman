@@ -28,7 +28,37 @@ The level data is stored in a `JSON` file in `data/maps`, which contains a list 
 
 The soundtrack was made using [bosca ceoil](https://yurisizov.itch.io/boscaceoil-blue).
 
+---
+
 ### Libraries in use:
 
  - [nlohmann json](https://github.com/nlohmann/json)
  - [raylib](https://github.com/raysan5/raylib)
+
+---
+
+### Building on Linux
+
+> [!NOTE]  
+> It is required to install CMake and Ninja-build beforehand via your distro's package manager.
+
+1. First, clone the repo:
+
+```
+git clone --depth 1 https://github.com/snej55/shadyman.git .
+cd shadyman
+```
+
+2. Build it:
+
+```
+cmake -S . -B build -G Ninja
+cmake --build build/ -j4
+```
+
+3. Run it!
+```
+./build/main
+```
+
+Please don't hesitate to let me know if you encounter any issues during the build process!
