@@ -30,6 +30,10 @@ void AssetManager::init()
     addTexture("blobbo/hurt", "data/images/blobbo/hurt.png");
     addTexture("blobbo/run", "data/images/blobbo/run.png");
     addTexture("blobbo/damage", "data/images/blobbo/damage.png");
+    // penguin
+    addTexture("penguin/idle", "data/images/penguin/idle.png");
+    addTexture("penguin/run", "data/images/penguin/run.png");
+    addTexture("penguin/damage", "data/images/penguin/damage.png");
     // blasters
     addTexture("blasters/default", "data/images/blasters/blaster.png");
     addTexture("blasters/fire_blaster", "data/images/blasters/fire_blaster.png");

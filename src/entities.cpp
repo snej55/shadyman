@@ -473,3 +473,118 @@ void Blobbo::handleAnimations(const float dt)
     }
     m_anim->tick(dt);
 }
+
+Penguin::Penguin(const vec2<float>& pos)
+ : Entity{pos, {5, 8}, "penguin"}
+{
+}
+
+Penguin::~Penguin()
+{
+    delete m_idleAnim;
+    delete m_runAnim;
+    delete m_damage;
+}
+
+void Penguin::init(AssetManager* assets)
+{
+    m_idleAnim = new Anim{5, 8, 5, 0.15f, true, assets->getTexture("penguin/idle")};
+    m_runAnim = new Anim{5, 8, 4, 0.2f, true, assets->getTexture("penguin/run")};
+    m_damage = new Anim{5, 8, 1, 0.1f, true, assets->getTexture("penguin/damage")};
+
+    m_anim = m_idleAnim;
+
+    m_speed = Util::random() * 0.3f + 0.1f;
+}
+
+void Penguin::update(const float dt, World* world, Player* player, float& screenShake)
+{
+    // handle animations
+    handleAnimations(dt);
+
+    // basic movement
+
+    m_walk += dt;
+    if (!m_wandering || m_attacking || (std::abs(player->getCenter().x - m_pos.x) < CST::TILE_SIZE * 2 && std::abs(player->getCenter().y - m_pos.y) < CST::TILE_SIZE * 2))
+    {
+        if (std::abs(player->getPos().x - m_pos.x) < 1920.f)
+        {
+            if (player->getPos().x > m_pos.x + 5.f)
+            {
+                m_vel.x += m_speed * dt * 1.1f;
+                m_flipped = false;
+            } else if (player->getPos().x < m_pos.x - 5.f)
+            {
+                m_vel.x -= m_speed * dt * 1.1f;
+                m_flipped = true;
+            }
+        }
+        if (CheckCollisionRecs(player->getRect(), getRect()))
+        {
+            player->damage(m_danger, screenShake);
+        }
+    } else {
+        if (m_walk > m_walkTarget)
+        {
+            m_walk = 0.0f;
+            m_direction = (Util::random() > 0.5f) ? -1 : 1;
+            m_walking = !m_walking;
+            m_walkTarget = m_walking ? (Util::random() * 100 + 100.f) : (Util::random() * 60.f + 20.f);
+        }
+
+        if (m_walking)
+        {
+            m_vel.x += m_speed * static_cast<float>(m_direction);
+        } else {
+            m_vel.x += (m_vel.x * 0.1f - m_vel.x) * dt;
+        }
+
+        m_flipped = m_direction < 0;
+    }
+
+    if (Util::random() < (m_attacking ? 0.1 : 0.05) * dt)
+    {
+        if (m_falling < 3.0f)
+        {
+            m_vel.y = -2.f;
+            m_falling = 4.0f;
+        }
+    }
+
+    // handle beef with player
+    if (player->getVel().y > 0.2f)
+    {
+        if (CheckCollisionRecs(player->getRect(), getRect()) && m_vel.y < 1.0f)
+        {
+            player->setVelY(-4.f);
+        }
+    }
+
+    // update physics
+    Entity::update(dt, world, player, screenShake);
+}
+
+void Penguin::render(const vec2<int>& scroll)
+{
+    m_anim->render(m_pos, scroll);
+    m_anim->setFlipped(m_flipped);
+}
+
+void Penguin::handleAnimations(const float dt)
+{
+    if (m_falling > 3.0f)
+    {
+        m_anim = m_runAnim;
+    } else if (std::abs(m_vel.x) > 0.1f)
+    {
+        m_anim = m_runAnim;
+    } else {
+        m_anim = m_idleAnim;
+    }
+
+    if (!getRecovered())
+    {
+        m_anim = m_damage;
+    }
+    m_anim->tick(dt);
+}

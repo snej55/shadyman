@@ -180,4 +180,38 @@ private:
     const float m_danger{4.f};
 };
 
+class Penguin : public Entity
+{
+public:
+    Penguin(const vec2<float>& pos);
+    ~Penguin();
+
+    virtual void init(AssetManager* assets);
+    virtual void update(float dt, World* world, Player* player, float& screenShake);
+    virtual void render(const vec2<int>& scroll);
+
+    void handleAnimations(float dt);
+
+    void setFlipped(const bool val) {m_flipped = val;}
+    [[nodiscard]] bool getFlipped() const {return m_flipped;}
+
+private:
+    Anim* m_idleAnim{nullptr};
+    Anim* m_runAnim{nullptr};
+    Anim* m_damage{nullptr};
+
+    Anim* m_anim{nullptr};
+
+    bool m_flipped{false};
+
+    float m_speed = 0.05f;
+
+    float m_walk{110.0f};
+    float m_walkTarget{100.f};
+    int m_direction{1};
+    bool m_walking{true};
+
+    const float m_danger{4.f};
+};
+
 #endif
