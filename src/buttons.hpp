@@ -19,7 +19,8 @@ public:
     void update(const float scale)
     {
         Vector2 mousePos = GetMousePosition();
-        mousePos /= scale;
+        mousePos.x /= scale;
+        mousePos.y /= scale;
         m_hover = CheckCollisionPointRec(mousePos, getRect());
     }
 

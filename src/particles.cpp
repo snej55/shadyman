@@ -1,6 +1,8 @@
 #include "particles.hpp"
 #include "util.hpp"
 
+#include <rlgl.h>
+
 KnockbackManager::~KnockbackManager()
 {
     free();

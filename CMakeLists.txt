@@ -15,6 +15,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 add_executable(${BIN_NAME} ${SOURCES})
 
 set(LIBRARIES raylib GL m pthread dl rt)
+target_link_directories(${BIN_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/lib)
 target_link_libraries(${BIN_NAME} PUBLIC ${LIBRARIES})
 
 add_custom_target(copy_assets

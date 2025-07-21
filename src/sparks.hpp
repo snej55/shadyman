@@ -5,7 +5,9 @@
 
 #include "vec2.hpp"
 #include "assets.hpp"  // for blank texture
-#include "util.hpp"  // for DrawTexturePoly
+#include "util.hpp" 
+
+#include <rlgl.h>
 
 #include <vector>
 #include <array>
