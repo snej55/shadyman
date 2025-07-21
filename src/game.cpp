@@ -194,8 +194,8 @@ void Game::update()
     if (m_timer > m_interval)
     {
         m_timer = 0.0f;
-        m_entityManager.addEntity(EnemyType::BLOBBO, {Util::random() * m_distance + 10.f, -10}, &m_assets);
-        m_entityManager.addEntity(EnemyType::BLOBBO, {1188 - Util::random() * m_distance, -10}, &m_assets);
+        m_entityManager.addEntity(Util::random() < 0.5f ? EnemyType::BLOBBO : EnemyType::PENGUIN, {Util::random() * m_distance + 10.f, -10}, &m_assets);
+        m_entityManager.addEntity(Util::random() < 0.5f ? EnemyType::BLOBBO : EnemyType::PENGUIN, {1188 - Util::random() * m_distance, -10}, &m_assets);
     }
 
     // -------------------------- //

@@ -17,6 +17,7 @@
 enum class EnemyType
 {
     BLOBBO,
+    PENGUIN,
     NONE
 };
 

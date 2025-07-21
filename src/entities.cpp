@@ -313,6 +313,13 @@ void EntityManager::addEntity(EnemyType type, const vec2<float>& pos, AssetManag
                 m_entities.push_back(blobbo);
                 break;
             }
+        case EnemyType::PENGUIN:
+            {
+                Penguin* penguin {new Penguin{pos}};
+                penguin->init(assets);
+                m_entities.push_back(penguin);
+                return;
+            }
         default:
             { // "" ""
                 Entity* entity {new Entity{pos, {10, 10}, "dummy"}};
