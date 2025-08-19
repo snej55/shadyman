@@ -5,12 +5,10 @@
 
 #include "vec2.hpp"
 #include "assets.hpp"  // for blank texture
-#include "util.hpp" 
 
 #include <rlgl.h>
 
 #include <vector>
-#include <array>
 #include <cmath>
 #include <algorithm>
 
@@ -37,7 +35,6 @@ public:
 
     // free memory used by sparks
     void free()
-    {
         for (std::size_t i{0}; i < m_sparks.size(); ++i)
         {
             delete m_sparks[i];
@@ -96,7 +93,7 @@ public:
         constexpr Color color {WHITE};
 
         const float size{spark->speed * scale};
-        
+
         // weird polygon rendering
         rlSetTexture(m_blank->id);
         rlBegin(RL_TRIANGLES);
@@ -115,7 +112,7 @@ public:
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle + width * M_PI) * size);
         rlVertex2f(spark->pos.x - static_cast<float>(scroll.x) + std::cos(spark->angle) * size * scale,
                    spark->pos.y - static_cast<float>(scroll.y) + std::sin(spark->angle) * size * scale);
- 
+
         rlEnd();
         rlSetTexture(0);
     }
