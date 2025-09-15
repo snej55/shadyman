@@ -35,6 +35,7 @@ public:
 
     // free memory used by sparks
     void free()
+    {
         for (std::size_t i{0}; i < m_sparks.size(); ++i)
         {
             delete m_sparks[i];

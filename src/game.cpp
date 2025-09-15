@@ -59,6 +59,7 @@ bool Game::menu()
     double lastTime {GetTime()};
     while (!WindowShouldClose())
     {
+        std::cout << lastTime << ' hi\n';
         BeginTextureMode(m_targetBuffer);
         // render to screen buffer
 

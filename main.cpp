@@ -1,5 +1,10 @@
 #include "src/game.hpp"
 
+#define PLATFORM_WEB
+#if defined(PLATFORM_WEB)
+    #include <emscripten/emscripten.h>
+#endif
+
 int main()
 {
     Game game{};

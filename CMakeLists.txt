@@ -6,6 +6,11 @@ set(CMAKE_CPP_COMPILER g++)
 
 set(BIN_NAME main)
 
+if (EMSCRIPTEN)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
+    set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
+endif ()
+
 set(SOURCES main.cpp src/game.hpp src/constants.hpp src/game.cpp src/tiles.hpp src/tiles.cpp src/vec2.hpp
 src/assets.hpp src/assets.cpp src/player.hpp src/player.cpp src/util.hpp src/anim.hpp src/entities.hpp src/entities.cpp
 src/blasters.hpp src/blasters.cpp src/sparks.hpp src/buttons.hpp src/particles.hpp src/particles.cpp)
