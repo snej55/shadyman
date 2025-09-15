@@ -7,7 +7,7 @@ set(CMAKE_CPP_COMPILER g++)
 set(BIN_NAME main)
 
 if (EMSCRIPTEN)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s TOTAL_MEMORY=16777216 -Os -O3 -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1 -s FORCE_FILESYSTEM=1 --shell-file /home/jenskromdijk/src/raylib/src/minshell.html --preload-file data -DPLATFORM_WEB -s EXPORTED_RUNTIME_METHODS=ccall -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2")
     set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
 endif ()
 
