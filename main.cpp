@@ -14,7 +14,7 @@ int main()
     bool exit{false};
     while (!exit)
     {
-        exit = game.menu();
+        // exit = game.menu();
         game.run();
         exit = game.death();
         game.reset();
