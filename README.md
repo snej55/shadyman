@@ -1,6 +1,6 @@
 ## Shady Man
 
-Submission for the Summer of Making game jam 2025, organized by hackclub - theme was "waves". Play as a shady rabbit who fights off waves of suspicious enemies (Slimes? Squids? Blobbos?), whilst upgrading his weaponry (and causing a lot of explosions).
+Submission for the Summer of Making game jam 2025 (2nd place!), organized by hackclub - theme was "waves". Play as a shady rabbit who fights off waves of suspicious enemies (Slimes? Squids? Blobbos?), whilst upgrading his weaponry (and causing a lot of explosions).
 
 ---
 ![screenshot](https://github.com/snej55/shadyman/blob/main/media/Screenshot_20250720_224735.png)
